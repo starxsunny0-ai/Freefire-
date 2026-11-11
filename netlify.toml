@@ -1,0 +1,54 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+  [build.environment]
+    NODE_VERSION = "20"
+    # Netlify's secret scanner mistakes the public Firebase web key (AIza...) in app.html for a secret and fails the deploy.
+    # That key is meant to be public, so smart detection is turned off. Real environment variable values are still scanned.
+    SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+    SECRETS_SCAN_OMIT_KEYS = "SITE_URL"
+
+[functions]
+  external_node_modules = ["firebase-admin"]
+
+# Android needs this file at /.well-known/assetlinks.json to open the app full screen (no browser bar).
+# You can simply put assetlinks.json next to index.html: this rule shows it at the address Android asks for.
+# (A real file inside a .well-known folder, if you have one, is used first.)
+[[redirects]]
+  from = "/.well-known/assetlinks.json"
+  to = "/assetlinks.json"
+  status = 200
+
+[[headers]]
+  for = "/.well-known/assetlinks.json"
+  [headers.values]
+    Content-Type = "application/json"
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/assetlinks.json"
+  [headers.values]
+    Content-Type = "application/json"
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*.apk"
+  [headers.values]
+    Content-Type = "application/vnd.android.package-archive"
+    Content-Disposition = "attachment"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/img-*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/icon-*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"

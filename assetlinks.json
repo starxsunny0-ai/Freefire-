@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.netlify.freefireearningturnament.twa",
+        "sha256_cert_fingerprints": ["AB:16:CE:F2:79:E0:67:F5:C1:07:75:27:22:E3:99:BA:D0:3E:AF:7D:BA:12:3D:2E:49:7B:6A:8D:15:51:B6:37"]
+      }
+    }]

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Download Fraglord - Free Fire &amp; BGMI Tournament App</title>
+<meta name="description" content="Download the Fraglord app: join Free Fire and BGMI custom room tournaments, win real prizes, add money by UPI and withdraw your winnings.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Fraglord">
+<meta property="og:title" content="Download Fraglord"><meta property="og:description" content="Free Fire and BGMI custom room tournaments. Play. Compete. Win.">
+<meta property="og:image" content="/img-og.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="/img-og.jpg">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/icon-192.png"><link rel="apple-touch-icon" href="/icon-192.png"><link rel="manifest" href="/manifest.json">
+<link rel="preload" as="image" href="/img-logo.webp"><link rel="preload" as="image" href="/img-shot2.jpg">
+<style>
+:root{--ink:#0b0c10;--mut:#5b6272;--line:#e4e7ee;--soft:#f5f6fa;--g1:#15a34a;--g2:#22c55e;--blue:#1f56c8}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;background:#fff;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+img{max-width:100%}
+.wrap{max-width:1000px;margin:auto;padding:0 18px}
+section{padding:46px 0}
+.eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;color:var(--g1);margin-bottom:8px}
+h2{font-size:30px;line-height:1.15;letter-spacing:-.4px;margin-bottom:8px}
+.lead{color:var(--mut);font-size:16px;max-width:620px;margin-bottom:24px}
+.center{text-align:center}.center .lead{margin-left:auto;margin-right:auto}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.top .wrap{display:flex;align-items:center;gap:10px;height:58px}
+.top .lg{width:34px;height:34px;border-radius:9px;background:#121212 center/cover no-repeat}
+.top b{font-size:17px;letter-spacing:2px;font-style:italic;flex:1}
+.top nav{display:none;gap:22px;font-size:14px;font-weight:600}.top nav a{color:var(--mut);text-decoration:none}.top nav a:hover{color:var(--ink)}
+@media(min-width:760px){.top nav{display:flex}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:1px solid #0f8a3d;padding:17px 46px;border-radius:16px;font-size:19px;font-weight:800;text-decoration:none;cursor:pointer;box-shadow:0 12px 30px rgba(21,163,74,.38);transition:transform .15s,box-shadow .15s;touch-action:manipulation;position:relative}
+.btn:hover{box-shadow:0 16px 38px rgba(21,163,74,.5);transform:translateY(-1px)}.btn:active{transform:scale(.97)}
+.btn svg{width:22px;height:22px;flex:none}
+.btn.sm{padding:9px 18px;font-size:14px;border-radius:11px;box-shadow:0 6px 16px rgba(21,163,74,.3)}
+.btn.pulse::after{content:"";position:absolute;inset:-1px;border-radius:inherit;border:2px solid var(--g2);animation:pl 2.2s ease-out infinite}
+@keyframes pl{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.14,1.35);opacity:0}}
+.note{color:var(--mut);font-size:13px;margin-top:12px}
+.msg{display:none;max-width:460px;margin:14px auto 0;border:1px solid #f1c9a7;background:#fff7ef;color:#7a4313;border-radius:12px;padding:12px 14px;font-size:14px;text-align:left}
+
+/* hero */
+.hero{position:relative;padding:40px 0 20px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-40px -10% auto;height:560px;background:radial-gradient(520px 320px at 50% 30%,rgba(150,165,200,.30),transparent 70%),radial-gradient(380px 260px at 85% 60%,rgba(34,197,94,.14),transparent 70%),radial-gradient(380px 260px at 12% 70%,rgba(31,86,200,.10),transparent 70%);z-index:-1}
+.logo{width:116px;height:116px;border-radius:26px;margin:0 auto 14px;background:#121212 center/cover no-repeat;box-shadow:0 18px 40px rgba(10,12,20,.32),0 2px 6px rgba(10,12,20,.2)}
+h1{font-size:46px;letter-spacing:5px;font-style:italic;font-weight:800;line-height:1.1;background:linear-gradient(180deg,#0b0c10,#4a5163);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{font-size:18px;color:#2b2f3b;margin:8px auto 22px;max-width:520px}.tag em{font-style:normal;color:var(--g1);font-weight:800}
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.pills span{border:1px solid var(--line);background:#fff;border-radius:30px;padding:6px 14px;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(10,12,20,.05)}
+.stage{position:relative;height:430px;max-width:560px;margin:34px auto 0}
+.ph{position:absolute;bottom:0;width:208px;aspect-ratio:390/800;border-radius:30px;border:6px solid #0b0c10;background:#0b0c10;box-shadow:0 24px 50px rgba(10,12,20,.32);overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph.c{left:50%;transform:translateX(-50%);z-index:3;animation:fl 5s ease-in-out infinite}
+.ph.l{left:50%;transform:translateX(-128%) rotate(-7deg);transform-origin:bottom right;z-index:2;width:176px;opacity:.96}
+.ph.r{left:50%;transform:translateX(28%) rotate(7deg);transform-origin:bottom left;z-index:2;width:176px;opacity:.96}
+@keyframes fl{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+@media(max-width:420px){.stage{height:360px}.ph{width:170px}.ph.l,.ph.r{width:140px}.ph.l{transform:translateX(-118%) rotate(-7deg)}.ph.r{transform:translateX(18%) rotate(7deg)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:-4px}
+.stats div{border:1px solid var(--line);border-radius:16px;padding:16px 8px;text-align:center;background:#fff;box-shadow:0 4px 14px rgba(10,12,20,.05)}
+.stats b{display:block;font-size:26px;line-height:1.1}.stats span{font-size:12px;color:var(--mut);font-weight:600}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff;box-shadow:0 3px 14px rgba(10,12,20,.05);transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(10,12,20,.1)}
+.ic{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#0b0c10,#3a4054);display:grid;place-items:center;font-size:22px;margin-bottom:12px;box-shadow:0 6px 14px rgba(10,12,20,.25)}
+.card b{display:block;font-size:17px;margin-bottom:4px}.card p{color:var(--mut);font-size:14.5px}
+.band{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* tabs + modes */
+.tabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px;margin-bottom:20px;gap:4px;box-shadow:0 3px 10px rgba(10,12,20,.05)}
+.tabs button{border:0;background:none;padding:10px 20px;border-radius:10px;font-size:15px;font-weight:700;color:var(--mut);cursor:pointer;touch-action:manipulation}
+.tabs button.on{background:var(--ink);color:#fff}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.mc{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 3px 14px rgba(10,12,20,.06);transition:transform .2s}
+.mc:hover{transform:translateY(-3px)}
+.mc .im{position:relative}.mc img{width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;display:block;background:#111}
+.mc .im span{position:absolute;left:10px;bottom:10px;background:rgba(11,12,16,.82);color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:20px}
+.mc div.t{padding:13px 15px 16px}.mc b{display:block;font-size:17px}.mc p{color:var(--mut);font-size:14px;margin-top:3px}
+
+/* sample match card */
+.split{display:grid;grid-template-columns:1fr;gap:26px;align-items:center}
+@media(min-width:800px){.split{grid-template-columns:1fr 1fr}}
+.smc{max-width:360px;margin:auto;border:1px solid #1c1f29;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#14161d,#0a0b0f);color:#e8ecf6;box-shadow:0 22px 50px rgba(10,12,20,.3)}
+.smc img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.smc .b{padding:14px 16px 16px}.smc .r1{display:flex;justify-content:space-between;align-items:center}.smc .r1 b{font-size:18px}
+.smc .open{background:#16a34a;color:#fff;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px}
+.smc .r2{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.smc .r2 div{background:#1b1e28;border:1px solid #2a2e3c;border-radius:12px;padding:8px;text-align:center}.smc .r2 small{display:block;color:#9aa3b5;font-size:11px}.smc .r2 b{font-size:16px}
+.smc .tm{color:#9aa3b5;font-size:13px;margin-bottom:12px}
+.smc .jn{background:linear-gradient(135deg,#10204f,#1f56c8 55%,#4b86f0);border:1px solid #cdd5e6;border-radius:12px;text-align:center;padding:11px;font-weight:800;letter-spacing:1px}
+.cap{text-align:center;color:var(--mut);font-size:12px;margin-top:10px}
+.chk{list-style:none;display:grid;gap:12px}
+.chk li{display:flex;gap:12px;align-items:flex-start}.chk i{flex:none;width:28px;height:28px;border-radius:50%;background:rgba(34,197,94,.15);color:var(--g1);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14px}
+.chk b{display:block}.chk span{color:var(--mut);font-size:14.5px}
+
+/* steps */
+.steps{list-style:none;position:relative;display:grid;gap:14px;max-width:720px;margin:auto}
+.steps::before{content:"";position:absolute;left:20px;top:10px;bottom:10px;width:2px;background:linear-gradient(var(--g2),var(--line))}
+.steps li{position:relative;display:flex;gap:16px;align-items:flex-start;padding-left:0}
+.steps .n{flex:none;width:42px;height:42px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;z-index:1;border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.steps .tx{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px 16px;flex:1;box-shadow:0 3px 12px rgba(10,12,20,.05)}
+.steps b{display:block;font-size:16px}.steps span{color:var(--mut);font-size:14.5px}
+
+/* screenshots */
+.shots{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 18px 18px;margin:0 -18px}
+.shots figure{flex:0 0 190px;scroll-snap-align:center}
+.shots .ph2{border:6px solid #0b0c10;border-radius:28px;overflow:hidden;background:#0b0c10;box-shadow:0 14px 30px rgba(10,12,20,.22)}
+.shots img{width:100%;height:auto;aspect-ratio:390/800;object-fit:cover;display:block}
+figcaption{font-size:13px;font-weight:700;margin-top:10px;text-align:center}
+@media(min-width:900px){.shots{justify-content:center}}
+
+/* wallet */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:15px}td{padding:12px 4px;border-bottom:1px solid var(--line)}tr:last-child td{border:0}td:last-child{text-align:right;font-weight:800}
+.split2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.split2 div{border-radius:14px;padding:12px;font-size:14px}.pb{background:#eef2ff;border:1px solid #d7defa}.wn{background:#ecfdf3;border:1px solid #c6f0d6}.split2 b{display:block;font-size:15px;margin-bottom:2px}.split2 span{color:var(--mut);font-size:13px}
+
+/* install */
+.itabs{display:flex;gap:8px;margin-bottom:16px}
+.itabs button{flex:1;max-width:200px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;font-weight:700;font-size:15px;cursor:pointer;touch-action:manipulation}.itabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pane{display:none}.pane.on{display:block}
+
+/* faq */
+details{border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:10px;background:#fff}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px;font-size:16px}summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;line-height:1;color:var(--g1);transition:transform .2s}details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--mut);font-size:14.5px;margin-top:9px}
+
+/* final */
+.final{background:radial-gradient(600px 300px at 50% 0,#2a2f3d,transparent 70%),#0b0c10;color:#fff;text-align:center;padding:56px 18px;position:relative;overflow:hidden}
+.final .logo{width:92px;height:92px;border-radius:22px;box-shadow:0 0 0 1px #3a3f4d,0 14px 40px rgba(0,0,0,.6)}
+.final h2{font-size:32px}.final p{color:#aab2c3;margin:6px auto 22px;max-width:480px}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:24px 18px 90px}
+footer a{color:var(--blue);font-weight:700;text-decoration:none}
+
+/* sticky bottom install bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .3s}
+.bar.on{transform:none}.bar .lg{width:40px;height:40px;border-radius:10px;background:#121212 center/cover no-repeat;flex:none}
+.bar div{flex:1;line-height:1.2;font-size:13px;color:var(--mut)}.bar div b{display:block;color:var(--ink);font-size:15px}
+@media(min-width:760px){.bar{display:none}}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.ph.c,.btn.pulse::after{animation:none}html{scroll-behavior:auto}}
+@media(min-width:700px){h1{font-size:68px}.logo{width:132px;height:132px}h2{font-size:36px}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="lg" id="tlogo"></div><b>FRAGLORD</b>
+  <nav><a href="#modes">Game modes</a><a href="#how">How it works</a><a href="#wallet">Wallet</a><a href="#install">Install</a><a href="#faq">FAQ</a></nav>
+  <a class="btn sm dl" href="/fraglord.apk" download="Fraglord.apk"><span>Install</span></a>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <div class="logo" id="logo" role="img" aria-label="Fraglord logo"></div>
+  <h1>FRAGLORD</h1>
+  <p class="tag">Free Fire &amp; BGMI custom room tournaments. <em>Play. Compete. Win.</em></p>
+  <a class="btn pulse dl" id="dl" href="/fraglord.apk" download="Fraglord.apk">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg><span>Install app</span>
+  </a>
+  <p class="note" id="dlNote">Free download &bull; Android 6.0 and above</p>
+  <p class="note" id="apkAlt" style="margin-top:6px"><a href="/fraglord.apk" download="Fraglord.apk" style="color:var(--blue);font-weight:700;text-decoration:none">Or download the APK file</a></p>
+  <div class="msg" id="msg"></div>
+  <div class="pills"><span>✔ Free to install</span><span>🔐 Google sign-in</span><span>💳 UPI wallet</span><span id="ver">Version 1.0</span></div>
+  <div class="stage" aria-hidden="true">
+    <div class="ph l"><img src="/img-shot3.jpg" alt="" width="390" height="800"></div>
+    <div class="ph r"><img src="/img-shot4.jpg" alt="" width="390" height="800"></div>
+    <div class="ph c"><img src="/img-shot2.jpg" alt="" width="390" height="800" fetchpriority="high"></div>
+  </div>
+</div></div>
+
+<div class="wrap" style="padding-top:8px"><div class="stats rv">
+  <div><b>2</b><span>Games</span></div><div><b>11</b><span>Game modes</span></div><div><b>UPI</b><span>Wallet</span></div><div><b>Free</b><span>To install</span></div>
+</div></div>
+
+<section id="why"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">Why Fraglord</span><h2>Everything a tournament player needs</h2><p class="lead">Fair rooms, quick payments and clear results, all in one app.</p></div>
+  <div class="grid">
+    <div class="card rv"><div class="ic">🎮</div><b>Free Fire and BGMI</b><p>Switch between the two games and see only the modes that belong to each.</p></div>
+    <div class="card rv"><div class="ic">🔑</div><b>Room ID in the app</b><p>After you join, the Room ID and password appear on the match screen before the match starts.</p></div>
+    <div class="card rv"><div class="ic">👛</div><b>Wallet with UPI</b><p>Add money from ₹10 to ₹10,000 by UPI. Your wallet updates once the payment is confirmed.</p></div>
+    <div class="card rv"><div class="ic">🏆</div><b>Real prizes</b><p>Winning amount, kill based, or both. The prize is shown on every match card.</p></div>
+    <div class="card rv"><div class="ic">↩️</div><b>Fair refunds</b><p>If a match is cancelled or does not get enough players, your entry fee goes back to your wallet.</p></div>
+    <div class="card rv"><div class="ic">📊</div><b>Leaderboard</b><p>Matches played, wins and kills for every player, updated after each match.</p></div>
+  </div>
+</div></section>
+
+<section class="band" id="modes"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">Game modes</span><h2>Pick your game. Pick your mode.</h2><p class="lead">From solo survival to quick 1v1 duels, there is a room for every style.</p>
+    <div class="tabs" id="gtabs"><button class="on" data-g="ff">Free Fire</button><button data-g="bg">BGMI</button></div></div>
+  <div class="mgrid" id="mg"></div>
+</div></section>
+
+<section id="tour"><div class="wrap"><div class="split">
+  <div class="rv"><span class="eyebrow">Tournaments</span><h2>Know everything before you join</h2><p class="lead" style="margin-bottom:18px">Every match card shows the details up front, so there are no surprises after you pay.</p>
+    <ul class="chk">
+      <li><i>1</i><div><b>Entry fee</b><span>The amount taken from your wallet when you join.</span></div></li>
+      <li><i>2</i><div><b>Prize</b><span>A fixed winning amount, a reward per kill, or both.</span></div></li>
+      <li><i>3</i><div><b>Slots</b><span>See how many places are left in real time.</span></div></li>
+      <li><i>4</i><div><b>Start time, map and rules</b><span>Written on the match page. The Room ID and password unlock before the start.</span></div></li>
+      <li><i>5</i><div><b>Results</b><span>The host updates the results and winnings are credited to your wallet.</span></div></li>
+    </ul></div>
+  <div class="rv"><div class="smc"><img src="/img-lw.jpg" alt="Sample match card" width="640" height="360" loading="lazy">
+    <div class="b"><div class="r1"><b>Lone Wolf 1v1</b><span class="open">OPEN</span></div>
+    <div class="r2"><div><small>Entry</small><b>₹25</b></div><div><small>Prize</small><b>₹40</b></div><div><small>Slots</small><b>1/2</b></div></div>
+    <div class="tm">🕒 Today, 8:30 PM &bull; Bermuda</div><div class="jn">JOIN · ₹25</div></div></div>
+    <p class="cap">Example match card</p></div>
+</div></div></section>
+
+<section class="band" id="how"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">How it works</span><h2>From install to winning in 5 steps</h2></div>
+  <ol class="steps" style="margin-top:22px">
+    <li class="rv"><div class="n">1</div><div class="tx"><b>Sign in with Google</b><span>One tap login. Then set your in-game name and your UID.</span></div></li>
+    <li class="rv"><div class="n">2</div><div class="tx"><b>Add money to your wallet</b><span>Pay by any UPI app. The balance shows up in your wallet within moments.</span></div></li>
+    <li class="rv"><div class="n">3</div><div class="tx"><b>Join a match</b><span>Choose a mode, check the prize and entry fee, then confirm.</span></div></li>
+    <li class="rv"><div class="n">4</div><div class="tx"><b>Play in the custom room</b><span>Open the game, go to Custom Room and enter the Room ID and password shown in Fraglord. Use the exact name you registered.</span></div></li>
+    <li class="rv"><div class="n">5</div><div class="tx"><b>Get paid</b><span>Prizes are credited to your Winnings balance. Withdraw to your UPI ID whenever you want.</span></div></li>
+  </ol>
+</div></section>
+
+<section id="shots"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">Inside the app</span><h2>Take a look</h2><p class="lead">Swipe to see the screens.</p></div>
+  <div class="shots" id="sh"></div>
+</div></section>
+
+<section class="band" id="wallet"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">Wallet and payments</span><h2>Simple rules, nothing hidden</h2></div>
+  <div class="two" style="margin-top:22px">
+    <div class="card rv"><b>Your wallet has two parts</b><div class="split2">
+      <div class="pb"><b>Play balance</b><span>Money you add. Used for entry fees. Not withdrawable.</span></div>
+      <div class="wn"><b>Winnings</b><span>Prizes and kills. Can be withdrawn to UPI.</span></div></div></div>
+    <div class="card rv"><table>
+      <tr><td>Add money</td><td>₹10 – ₹10,000</td></tr><tr><td>Minimum withdrawal</td><td>₹100</td></tr>
+      <tr><td>Withdraw from</td><td>Winnings only</td></tr><tr><td>Payment method</td><td>UPI</td></tr><tr><td>Cancelled match</td><td>Full refund</td></tr></table></div>
+  </div>
+</div></section>
+
+<section id="fair"><div class="wrap">
+  <div class="center rv"><span class="eyebrow">Fair play</span><h2>Every player gets the same chance</h2></div>
+  <div class="grid" style="margin-top:22px">
+    <div class="card rv"><div class="ic">🪪</div><b>Registered name and UID</b><p>Room entry is checked against the name and UID you saved in the app.</p></div>
+    <div class="card rv"><div class="ic">🚫</div><b>No hacks, no teaming</b><p>Hacking or teaming in solo matches means disqualification and no refund.</p></div>
+    <div class="card rv"><div class="ic">✅</div><b>Verified hosts</b><p>Matches are created by approved hosts and managed by the Fraglord admin team.</p></div>
+    <div class="card rv"><div class="ic">🔞</div><b>18+ only</b><p>Fraglord is for players aged 18 and above. Please play responsibly.</p></div>
+  </div>
+</div></section>
+
+<section class="band" id="install"><div class="wrap" style="max-width:760px">
+  <div class="center rv"><span class="eyebrow">Install</span><h2>Get the app in a minute</h2></div>
+  <div class="itabs" style="justify-content:center;margin-top:18px"><button class="on" data-p="and">Android</button><button data-p="ios">iPhone</button></div>
+  <div class="pane on" id="p-and"><ol class="steps">
+    <li><div class="n">1</div><div class="tx"><b>Tap “Install app”</b><span>The Fraglord file downloads to your phone.</span></div></li>
+    <li><div class="n">2</div><div class="tx"><b>Open the downloaded file</b><span>If Android asks, allow installs from your browser. This is needed only once.</span></div></li>
+    <li><div class="n">3</div><div class="tx"><b>If Play Protect shows a warning</b><span>Tap “More details”, then “Install anyway”. It is a normal message for apps from outside the Play Store.</span></div></li>
+    <li><div class="n">4</div><div class="tx"><b>Open Fraglord and sign in</b><span>Set up your profile and join your first match.</span></div></li>
+  </ol></div>
+  <div class="pane" id="p-ios"><div class="card"><b>iPhone and iPad</b><p>An APK cannot be installed on iPhone. Open the web version in Safari, tap the Share button, then “Add to Home Screen”. <a href="/app.html" style="color:var(--blue);font-weight:700">Open web version</a></p></div></div>
+</div></section>
+
+<section id="faq"><div class="wrap" style="max-width:760px">
+  <div class="center rv"><span class="eyebrow">FAQ</span><h2>Questions</h2></div><div style="margin-top:22px">
+  <details><summary>Is the app free?</summary><p>Yes. Installing and using Fraglord is free. Each match has its own entry fee, which is shown before you join.</p></details>
+  <details><summary>Is it safe to install?</summary><p>Fraglord is a light app that mainly needs internet access. Android may show a standard warning because the file comes from outside the Play Store. Choose “Install anyway” to continue.</p></details>
+  <details><summary>How do I add money?</summary><p>Open Wallet, tap Add Money, enter an amount between ₹10 and ₹10,000 and pay with any UPI app. The wallet updates by itself.</p></details>
+  <details><summary>How do withdrawals work?</summary><p>Request a withdrawal from your Winnings (minimum ₹100). The admin team checks it and pays your UPI ID. You can follow the status in your wallet.</p></details>
+  <details><summary>What if a match gets cancelled?</summary><p>Your entry fee is refunded to your wallet automatically when a match is cancelled or does not fill the minimum players.</p></details>
+  <details><summary>Where do I find the Room ID?</summary><p>Join a match, then open it. The Room ID and password appear a few minutes before the start time.</p></details>
+  <details><summary>The app is not working</summary><p>Close and open it again. If the problem stays, message support with your username and a screenshot.</p></details>
+</div></div></section>
+
+<div class="final">
+  <div class="logo" id="flogo"></div>
+  <h2>Ready to play?</h2><p>Install Fraglord and join your first match today.</p>
+  <a class="btn dl" href="/fraglord.apk" download="Fraglord.apk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg><span>Install app</span></a>
+</div>
+
+<footer>
+  <p>Need help? <a id="wa" href="#">Message us on WhatsApp</a></p>
+  <p style="margin-top:8px">Fraglord is not affiliated with Garena or KRAFTON. 18+ only. Play responsibly.</p>
+</footer>
+
+<div class="bar" id="bar"><div class="lg" id="blogo"></div><div><b>Fraglord</b>Free Fire &amp; BGMI tournaments</div><a class="btn sm dl" href="/fraglord.apk" download="Fraglord.apk"><span>Install</span></a></div>
+
+<script>try{var q=new URLSearchParams(location.search),r=(q.get("ref")||"").toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,12),g=(q.get("gift")||"").replace(/[^A-Za-z0-9-]/g,"").slice(0,20);if(r)localStorage.setItem("fl_ref",r);if(g)localStorage.setItem("fl_gift",g)}catch(e){}</script>
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+/* Edit only this block */
+const APK_URL = "/fraglord.apk";      // upload the APK to the main folder with this name (see README)
+const VERSION = "Version 1.0";
+const SUPPORT = { whatsapp: "", email: "" };   // whatsapp: country code + number, no plus sign
+const SHOTS = [ ["/img-shot1.jpg", "Login"], ["/img-shot2.jpg", "Home"], ["/img-shot3.jpg", "BGMI modes"], ["/img-shot4.jpg", "Match details"], ["/img-shot5.jpg", "Wallet"] ];
+const MODES = {
+  ff: [
+    ["/img-br.jpg", "BR Rank Push", "Solo / Duo / Squad", "Classic battle royale. Last player or team standing wins. Prize by winning amount, kills, or both."],
+    ["/img-cs.jpg", "Clash Squad", "4v4 / 2v2 / 1v1", "Fast round based fights. Win the rounds to win the match."],
+    ["/img-lw.jpg", "Lone Wolf", "1v1 / 2v2", "Duels on the Lone Wolf map. Pure skill decides the winner."],
+    ["/img-v2.jpg", "CS 2v2", "2v2 only", "Two player teams in short, quick Clash Squad matches."],
+    ["/img-head.jpg", "Only Head", "Headshot only", "Custom rooms where only headshots count. Aim is everything."],
+    ["/img-match.jpg", "Tournaments", "Live + upcoming", "Scheduled tournaments you can join in advance, with clear prizes."]
+  ],
+  bg: [
+    ["/img-bclassic.jpg", "Classic", "Solo / Duo / Squad", "Full map battle royale with fixed prizes and per-kill rewards."],
+    ["/img-bduel.jpg", "TDM 1v1", "Duel", "One on one team deathmatch. First to the kill target wins."],
+    ["/img-btdm.jpg", "TDM 2v2 and 4v4", "Team deathmatch", "Small team fights in a closed arena with quick matches."],
+    ["/img-bwow.jpg", "WOW Mode", "Arcade", "Fun arcade maps with special rules and fast action."],
+    ["/img-bpayload.jpg", "Payload", "Special mode", "Special mode with heavy weapons and big fights."]
+  ]
+};
+
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+["#tlogo", "#logo", "#flogo", "#blogo"].forEach(s => $(s).style.backgroundImage = "url('/img-logo.webp')");
+$("#ver").textContent = VERSION;
+$("#sh").innerHTML = SHOTS.map(x => `<figure><div class="ph2"><img src="${x[0]}" alt="${x[1]} screen" width="390" height="800" loading="lazy"></div><figcaption>${x[1]}</figcaption></figure>`).join("");
+const showModes = g => { $("#mg").innerHTML = MODES[g].map(x => `<div class="mc"><div class="im"><img src="${x[0]}" alt="${x[1]}" width="640" height="360" loading="lazy"><span>${x[2]}</span></div><div class="t"><b>${x[1]}</b><p>${x[3]}</p></div></div>`).join(""); };
+showModes("ff");
+$$("#gtabs button").forEach(b => b.onclick = () => { $$("#gtabs button").forEach(x => x.classList.toggle("on", x == b)); showModes(b.dataset.g); });
+$$(".itabs button").forEach(b => b.onclick = () => { $$(".itabs button").forEach(x => x.classList.toggle("on", x == b)); $$(".pane").forEach(p => p.classList.toggle("on", p.id == "p-" + b.dataset.p)); });
+$("#wa").href = SUPPORT.whatsapp ? "https://wa.me/" + SUPPORT.whatsapp : (SUPPORT.email ? "mailto:" + SUPPORT.email : "#");
+if (!SUPPORT.whatsapp && SUPPORT.email) $("#wa").textContent = "Email " + SUPPORT.email;
+if (!SUPPORT.whatsapp && !SUPPORT.email) $("#wa").parentNode.style.display = "none";
+
+/* scroll effects */
+const io = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 }) : null;
+$$(".rv").forEach(el => io ? io.observe(el) : el.classList.add("in"));
+if ("IntersectionObserver" in window) new IntersectionObserver(es => $("#bar").classList.toggle("on", !es[0].isIntersecting && es[0].boundingClientRect.top < 0), { threshold: 0 }).observe($("#dl"));
+
+/* download button */
+const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent), btns = $$(".dl"), TXT = $$(".dl span");
+let apkOk = null, DP = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); DP = e; });
+if (isIOS) {                                   // iPhones cannot install an APK, send them to the web app
+  btns.forEach(b => { b.href = "/app.html"; b.removeAttribute("download"); });
+  TXT.forEach(t => t.textContent = t.textContent == "Install" ? "Open" : "Open Fraglord");
+  $("#dlNote").textContent = "On iPhone: open in Safari, tap Share, then Add to Home Screen";
+  $$(".itabs button")[1].click();
+} else {                                       // check once if the APK exists, so the button never leads to a dead page
+  btns.forEach(b => b.href = APK_URL);
+  fetch(APK_URL, { method: "HEAD", cache: "no-store" }).then(r => { apkOk = r.ok && !/text\/html/i.test(r.headers.get("content-type") || ""); }).catch(() => { apkOk = null; });
+}
+btns.forEach(b => b.addEventListener("click", e => {
+  if (isIOS) return;
+  if (DP) {                                    // best way: Chrome installs the app directly, no "risky app" warning
+    e.preventDefault(); const p = DP; DP = null; p.prompt();
+    p.userChoice.then(c => { $("#dlNote").textContent = c.outcome == "accepted" ? "Installing... open Fraglord from your home screen." : "You can also download the APK file below."; });
+    return; }
+  if (apkOk !== false) return;                 // normal case: the browser downloads the APK file
+  e.preventDefault();
+  const m = $("#msg"); m.style.display = "block"; scrollTo({ top: 0, behavior: "smooth" });
+  m.innerHTML = "The app file is not uploaded yet. For now open this page in Chrome, tap the ⋮ menu and choose <b>Install app</b> or <b>Add to Home screen</b>.";
+}));
+addEventListener("appinstalled", () => { $("#dlNote").textContent = "Installed! Open Fraglord from your home screen."; });
+if (isIOS) $("#apkAlt").style.display = "none";
+</script>
+</body>
+</html>

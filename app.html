@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050507">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Fraglord - Free Fire &amp; BGMI Custom Room Tournaments</title>
+<meta name="description" content="Fraglord: join Free Fire and BGMI custom room tournaments, win real prizes, add money by UPI and withdraw your winnings.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Fraglord">
+<meta property="og:title" content="Fraglord - Free Fire &amp; BGMI Tournaments"><meta property="og:description" content="Play. Compete. Win. Custom room tournaments for Free Fire and BGMI.">
+<meta property="og:image" content="/img-og.jpg"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="/img-og.jpg">
+<link rel="icon" href="/icon-192.png"><link rel="preload" as="image" href="/img-logo.webp">
+<link rel="preconnect" href="https://www.gstatic.com" crossorigin><link rel="preconnect" href="https://firestore.googleapis.com" crossorigin><link rel="preconnect" href="https://identitytoolkit.googleapis.com" crossorigin><link rel="preconnect" href="https://securetoken.googleapis.com" crossorigin>
+<!-- Firebase loads only on live hosting. Without it the app runs in demo mode. -->
+<style>
+:root{--b:#3d78f2;--bg:#050507;--card:#0d0e13;--line:#3a3f4d;--gold:#dbe3f2;--ok:#2ecc71;--red:#ff4757;--silver:linear-gradient(180deg,#fff,#a9b6d0)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+button,a,.ic,.chip,.mode,.tile,.card,nav a,.pick,.side a{touch-action:manipulation}
+.btn:active,.chip:active,.mode:active,nav a:active,.ic:active,.card.m:active{transform:scale(.97);opacity:.85}
+.boot{min-height:100vh;display:grid;place-items:center;text-align:center}.spin{width:34px;height:34px;border:3px solid #262a38;border-top-color:#9db8f5;border-radius:50%;animation:sp .8s linear infinite;margin:14px auto 0}@keyframes sp{to{transform:rotate(360deg)}}
+body{font-family:"Segoe UI",Roboto,Arial,sans-serif;color:#fff;background-color:var(--bg);min-height:100vh;padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 80% 0,rgba(120,135,170,.22),transparent 50%),radial-gradient(circle at 0 100%,rgba(42,108,255,.10),transparent 45%);pointer-events:none;z-index:-1}
+.img{background-size:cover;background-position:center;background-color:#1a1c24}
+header{display:flex;align-items:center;gap:10px;padding:12px 14px;position:sticky;top:0;z-index:20;background:rgba(6,6,9,.92);backdrop-filter:blur(8px)}
+header b{flex:1;font-size:20px;font-style:italic;letter-spacing:2px;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ic{width:40px;height:40px;border:1px solid var(--line);border-radius:10px;display:grid;place-items:center;cursor:pointer;background:var(--card);flex-shrink:0}
+.chip{border:1px solid var(--b);border-radius:10px;padding:7px 11px;font-weight:700;background:rgba(150,165,200,.12);cursor:pointer}
+main{max-width:900px;margin:auto;padding:8px 14px}
+h2{font-style:italic;font-size:17px;margin:18px 0 10px;letter-spacing:.5px;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{border:1px solid var(--line);border-radius:12px;padding:12px;background:linear-gradient(160deg,#171921,#090a0e);box-shadow:inset 0 1px 0 rgba(220,230,255,.14);margin-bottom:10px}
+.banner{height:170px;border-radius:14px;border:1px solid var(--b);position:relative;overflow:hidden;box-shadow:0 0 18px rgba(150,165,200,.28)}
+.banner div{position:absolute;right:14px;top:26px;text-align:right}.banner h3{font-size:26px;font-style:italic}.banner p{color:var(--gold);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.grid4{grid-template-columns:repeat(4,1fr)}
+.mode{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);cursor:pointer;text-align:center}
+.mode .img{height:60px}.mode b{display:block;font-size:12px;padding:6px 4px 0}.mode small{font-size:10px;color:var(--b);display:block;padding-bottom:6px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:10px 4px;text-align:center;font-size:11px;background:var(--card);cursor:pointer}.tile em{display:block;font-style:normal;font-size:22px}
+.m{display:flex;justify-content:space-between;gap:8px;cursor:pointer}.m h4{font-size:15px}.dim,.m small{color:#9aa3b5;font-size:12px;text-shadow:0 1px 5px rgba(0,0,0,.9)}
+.tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:var(--ok);color:#000;margin-left:6px}.tag.live{background:var(--red);color:#fff}.tag.x{background:#445;color:#fff}
+.bar{height:5px;background:#262a38;border-radius:4px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--b)}
+.gold{color:var(--gold);font-weight:700}.big{font-size:32px;font-weight:800}
+.btn{display:block;width:100%;background:linear-gradient(135deg,#10204f,#1f56c8 55%,#4b86f0);border:1px solid #dbe3f2;color:#fff;padding:12px;border-radius:9px;font-weight:700;font-size:14px;cursor:pointer;margin-top:10px}
+.btn.alt{background:var(--card);border-color:var(--line)}.btn.ok{background:var(--ok);color:#000;border-color:var(--ok)}.btn:disabled{opacity:.5}
+input,select,textarea{width:100%;padding:11px;margin:5px 0 8px;border-radius:8px;border:1px solid var(--line);background:#0c0d12;color:#fff;font-size:14px}
+label{font-size:12px;color:#9aa3b5}.row{display:flex;gap:8px}.row>*{flex:1}
+.tabs{display:flex;gap:8px;margin:8px 0;overflow-x:auto}.tabs button{border:1px solid var(--line);background:var(--card);color:#ddd;padding:7px 16px;border-radius:20px;white-space:nowrap;cursor:pointer}.tabs button.on{background:var(--b);border-color:var(--b)}
+nav{position:fixed;bottom:0;left:0;right:0;padding-bottom:env(safe-area-inset-bottom);height:calc(64px + env(safe-area-inset-bottom));background:rgba(6,6,9,.97);border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;z-index:20}
+nav a{color:#9aa3b5;font-size:11px;text-align:center;cursor:pointer;padding:6px 8px}nav a.on{color:var(--b)}nav em{display:block;font-style:normal;font-size:21px}
+.side{position:fixed;top:0;left:-270px;width:250px;height:100%;background:#090a0e;border-right:1px solid var(--line);z-index:40;padding:70px 12px;transition:.3s}.side.open{left:0}
+.side a{display:block;padding:13px;border-radius:10px;color:#ddd;cursor:pointer}.side a:hover{background:rgba(150,165,200,.2)}
+.dlg{position:fixed;inset:0;background:rgba(0,0,0,.75);display:grid;place-items:center;z-index:50;padding:16px}.dlg>div{background:#0c0d12;border:1px solid var(--b);border-radius:14px;padding:16px;width:100%;max-width:400px;max-height:90vh;overflow:auto}
+.pick{border:2px solid var(--line);border-radius:10px;height:64px;display:flex;align-items:flex-end;font-size:10px;cursor:pointer;background-size:cover;background-position:center;background-color:#1a1c24;overflow:hidden}.pick span{background:rgba(0,0,0,.65);width:100%;text-align:center;padding:2px}.pick.on{border-color:#dbe3f2;box-shadow:0 0 10px var(--b)}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#101219;border:1px solid var(--b);padding:10px 16px;border-radius:10px;z-index:60;font-size:13px}
+.center{text-align:center;padding:50px 20px}.warn{color:#ff8a8a;font-size:12px}.hide{display:none}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{padding:8px 4px;border-bottom:1px solid #1d202a;text-align:left}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.65);opacity:0;pointer-events:none;transition:opacity .3s;z-index:30}.ov.open{opacity:1;pointer-events:auto}.side{transition:left .3s ease;box-shadow:none}.side.open{box-shadow:6px 0 30px rgba(0,0,0,.8)}
+.chat{display:flex;flex-direction:column;height:calc(100dvh - 190px);min-height:360px;background:#090a0e;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.chead{display:flex;gap:10px;align-items:center;padding:10px 12px;background:#171921;border-bottom:1px solid var(--line)}
+.av{width:38px;height:38px;border-radius:50%;background:var(--b);display:grid;place-items:center;flex:none}
+.cmsgs{flex:1;overflow-y:auto;padding:10px;background:#050507}
+.mrow{display:flex;margin:3px 0}.mrow.me{justify-content:flex-end}
+.bub{max-width:80%;padding:6px 9px 4px;border-radius:10px 10px 10px 2px;background:#1d202a;font-size:14px;word-break:break-word}
+.bub.me{background:#1e5bd8;border-radius:10px 10px 2px 10px}
+.who{font-size:11px;font-weight:700;color:#9aa3b5;margin-bottom:2px;cursor:pointer}.who .own{background:var(--b);color:#fff;border-radius:4px;padding:0 4px}
+.tm{font-size:10px;color:#b8c4dc;text-align:right;margin-top:2px}
+.dsep{text-align:center;margin:8px 0}.dsep span{font-size:11px;background:#171921;color:#9aa3b5;padding:3px 10px;border-radius:10px}
+.tags{display:flex;gap:6px;overflow-x:auto;padding:6px 8px;background:#090a0e}.tags button{border:1px solid var(--line);background:var(--card);color:#ddd;border-radius:14px;padding:3px 10px;white-space:nowrap;font-size:12px}
+.cbar{display:flex;gap:8px;padding:8px;background:#171921}.cbar input{margin:0;border-radius:20px}.send{width:44px;border-radius:50%;border:0;background:var(--b);color:#fff;font-size:18px;flex:none}
+.bdg{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 5px}
+
+/* login */
+.lg{min-height:100vh;position:relative;display:flex;justify-content:center;align-items:center;padding:28px 20px calc(28px + env(safe-area-inset-bottom));overflow:hidden}
+.lgo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,7,.58) 0%,rgba(5,5,7,.78) 45%,rgba(5,5,7,.96) 100%),radial-gradient(420px 260px at 50% 22%,rgba(170,185,215,.22),transparent 70%)}
+.lgc{position:relative;width:100%;max-width:380px;text-align:center;animation:lgin .6s ease both}
+@keyframes lgin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lglogo{width:104px;height:104px;border-radius:24px;margin:0 auto 14px;box-shadow:0 0 0 1px rgba(120,130,155,.25),0 18px 44px rgba(0,0,0,.7)}
+.lgname{font-size:34px;font-weight:800;font-style:italic;letter-spacing:5px;line-height:1.1;background:linear-gradient(180deg,#fff,#a9b3c7);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lgtag{font-size:11px;letter-spacing:3px;color:#9db8f5;font-weight:700;margin-top:6px}
+.lgsub{color:#c4cbda;font-size:15px;margin:14px auto 20px;max-width:310px;line-height:1.45}
+.lgfeat{display:grid;gap:8px;margin-bottom:22px;text-align:left}
+.lgfeat div{display:grid;grid-template-columns:40px 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;background:rgba(20,22,30,.62);border:1px solid rgba(160,172,198,.22);border-radius:14px;padding:10px 12px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.lgfeat i{grid-row:1/3;width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,#1c2030,#2d3348);display:grid;place-items:center;font-style:normal;font-size:19px}
+.lgfeat b{font-size:14px;color:#f1f4fb}.lgfeat span{font-size:12px;color:#9aa3b5}
+.gbtn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#1f2430;border:0;border-radius:14px;padding:15px 18px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.45);touch-action:manipulation;transition:transform .12s}
+.gbtn:active{transform:scale(.97)}.gbtn svg{width:22px;height:22px;flex:none}
+.lgsec{display:flex;align-items:center;justify-content:center;gap:6px;color:#9aa3b5;font-size:12px;margin-top:12px}
+.lgterms{color:#8b94a7;font-size:12px;line-height:1.5;margin-top:16px}.lgterms a{color:#b9c8ee;text-decoration:underline;cursor:pointer}
+.lgget{display:inline-block;margin-top:14px;color:#9db8f5;font-size:13px;font-weight:600;text-decoration:none}
+
+/* polish */
+.btn{box-shadow:0 6px 18px rgba(31,86,200,.30)}.btn.alt,.btn.ok{box-shadow:none}
+.mode{transition:border-color .15s,box-shadow .15s}.mode:hover,.mode:active{border-color:var(--b);box-shadow:0 0 14px rgba(61,120,242,.35)}.mode .img{height:76px}
+nav a.on{color:#fff}nav a.on em{filter:drop-shadow(0 0 8px var(--b))}
+.card.m:hover{border-color:#4a5578}
+/* invite, daily, gift cards */
+.hero{position:relative;overflow:hidden;border:1px solid #5b86e8;border-radius:16px;padding:16px;background:radial-gradient(260px 160px at 92% 0,rgba(90,140,255,.38),transparent 70%),linear-gradient(150deg,#16224a,#0a0c14 70%);box-shadow:0 0 24px rgba(61,120,242,.22);margin-bottom:10px}
+.hero h3{font-size:20px;font-style:italic;line-height:1.25}
+.code{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0;border:1.5px dashed #9db8f5;border-radius:12px;padding:10px 12px;background:rgba(5,5,7,.55)}
+.code b{font-size:24px;letter-spacing:4px;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.steps div{text-align:center;font-size:11px;color:#c4cbda;background:rgba(20,22,30,.7);border:1px solid var(--line);border-radius:12px;padding:10px 4px}.steps i{display:block;font-style:normal;font-size:22px;margin-bottom:4px}
+.rank{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--card)}.rank.done{border-color:var(--ok)}
+.rank em{font-style:normal;font-size:20px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#1c2030;flex:none}.rank.done em{background:rgba(46,204,113,.2)}.rank div{flex:1}.rank b.r{color:var(--ok)}
+.dgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:10px 0}
+.dd{text-align:center;border:1px solid var(--line);border-radius:10px;padding:7px 0;font-size:10px;color:#9aa3b5;background:var(--card)}.dd b{display:block;font-size:13px;color:#fff;margin-top:2px}
+.dd.done{border-color:var(--ok);background:rgba(46,204,113,.12)}.dd.today{border-color:#9db8f5;box-shadow:0 0 12px rgba(61,120,242,.5);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 4px rgba(61,120,242,.2)}}
+.gc{position:relative;overflow:hidden;border-radius:18px;padding:18px;min-height:158px;color:#fff;background:linear-gradient(135deg,#0f1c46,#2358c9 55%,#8fb0f5);box-shadow:0 14px 34px rgba(30,80,200,.35);border:1px solid rgba(255,255,255,.35);margin-bottom:10px}
+.gc::after{content:"";position:absolute;top:-40%;right:-20%;width:70%;height:200%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:rotate(12deg);pointer-events:none}
+.gct{font-size:11px;letter-spacing:3px;font-weight:700;opacity:.85}.gca{font-size:38px;font-weight:800;font-style:italic;margin:6px 0 2px;text-shadow:0 2px 12px rgba(0,0,0,.35)}
+.gcn{font-size:13px;opacity:.92;min-height:18px;word-break:break-word}.gcf{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;margin-top:12px;font-size:11px}.gcf b{letter-spacing:2px;font-size:13px}
+.promo{display:flex;align-items:center;gap:12px;cursor:pointer}.promo .pi{font-size:34px}
+
+/* ice glass: black base, frosted blue and silver glass, one glow on the hero pieces */
+:root{--line:rgba(190,205,235,.16);--glass:linear-gradient(155deg,rgba(255,255,255,.085),rgba(255,255,255,.02));--edge:inset 0 1px 0 rgba(255,255,255,.24),inset 0 0 0 1px rgba(255,255,255,.03)}
+body::before{background:radial-gradient(420px 360px at 88% -4%,rgba(95,150,255,.34),transparent 70%),radial-gradient(380px 380px at -8% 62%,rgba(150,170,215,.20),transparent 70%),radial-gradient(300px 300px at 70% 108%,rgba(61,120,242,.16),transparent 70%)}
+header{background:rgba(8,9,14,.55);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border-bottom:1px solid var(--line)}
+nav{background:rgba(8,9,14,.60);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border-top:1px solid var(--line)}
+.card,.mode,.tile,.rank,.dd,.ic,.tabs button,.steps div{background:var(--glass);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line);box-shadow:var(--edge),0 8px 24px rgba(0,0,0,.28)}
+.card{border-radius:16px}.mode{border-radius:16px}
+.tabs button.on{background:linear-gradient(180deg,rgba(120,170,255,.85),rgba(40,95,225,.85));border-color:rgba(200,220,255,.6);color:#fff}
+.btn{background:linear-gradient(180deg,rgba(125,172,255,.95),rgba(38,92,224,.92));border:1px solid rgba(210,225,255,.65);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 22px rgba(40,95,225,.38);text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.btn.alt{background:var(--glass);border-color:rgba(200,212,238,.28);box-shadow:var(--edge);text-shadow:none}
+.btn.ok{background:linear-gradient(180deg,#58e08f,#22a85c);color:#04150b}
+input,select,textarea{background:rgba(255,255,255,.05);border-color:rgba(190,205,235,.2);box-shadow:inset 0 1px 3px rgba(0,0,0,.4)}input:focus,select:focus,textarea:focus{outline:none;border-color:#8fb3ff;box-shadow:0 0 0 3px rgba(95,150,255,.25)}
+.dlg>div{background:rgba(14,16,24,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(200,215,245,.28);box-shadow:var(--edge),0 24px 60px rgba(0,0,0,.6)}
+.side{background:rgba(10,11,17,.72);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+.hero{background:radial-gradient(240px 170px at 92% 0,rgba(120,170,255,.45),transparent 70%),linear-gradient(150deg,rgba(60,100,210,.38),rgba(12,14,24,.55) 70%);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);border:1px solid rgba(190,212,255,.4);box-shadow:var(--edge),0 0 34px rgba(61,120,242,.28)}
+.code{background:rgba(255,255,255,.06);border:1.5px dashed rgba(210,225,255,.6);backdrop-filter:blur(8px)}
+.gc{background:linear-gradient(135deg,rgba(24,44,110,.9),rgba(55,112,235,.88) 55%,rgba(200,215,245,.85));border:1px solid rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 18px 40px rgba(40,95,225,.4)}
+button.chip{color:#fff;font-size:13px}
+.gct{letter-spacing:.5px;font-size:12px}
+@media (prefers-reduced-motion:reduce){.dd.today{animation:none}*{transition:none!important}}
+
+/* match cards, podium, level and badges */
+.tag.live{animation:lp 1.6s infinite}@keyframes lp{0%{box-shadow:0 0 0 0 rgba(255,71,87,.6)}70%,100%{box-shadow:0 0 0 7px rgba(255,71,87,0)}}
+.pod{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px}.pd{flex:1;text-align:center;border:1px solid var(--line);border-radius:14px;padding:10px 4px;background:var(--glass);box-shadow:var(--edge);min-width:0}
+.pd b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pd em{font-size:24px;font-style:normal;display:block}.pd small{color:#9aa3b5;font-size:11px}
+.pd.p0{padding-top:24px;border-color:rgba(210,225,255,.55);box-shadow:var(--edge),0 0 24px rgba(120,170,255,.35)}.pd.p0 em{font-size:32px}
+.bdgs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.bd{text-align:center;font-size:11px;padding:10px 4px;border-radius:12px;border:1px solid rgba(200,220,255,.35);background:var(--glass)}.bd i{display:block;font-style:normal;font-size:24px;margin-bottom:2px}.bd.lock{opacity:.38;filter:grayscale(1)}
+.fast{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:rgba(255,71,87,.18);color:#ff9aa4;border:1px solid rgba(255,71,87,.4);margin-left:6px}
+@media (prefers-reduced-motion:reduce){.tag.live{animation:none}}
+
+/* delight: headings, button shine, confetti, wheel */
+h2{display:flex;align-items:center;gap:8px}h2::before{content:"";flex:none;width:4px;height:18px;border-radius:2px;background:linear-gradient(#c9d6f2,#3d78f2)}
+.btn{position:relative;overflow:hidden}.btn:not(.alt):not(:disabled)::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);animation:shine 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+.cf{position:fixed;inset:0;pointer-events:none;z-index:99;overflow:hidden}.cf i{position:absolute;top:-14px;width:8px;height:14px;border-radius:2px;animation:cf 2s ease-in forwards}@keyframes cf{to{transform:translateY(105vh) rotate(720deg)}}
+.wheelbox{position:relative;width:240px;height:250px;margin:10px auto}.wptr{position:absolute;top:0;left:50%;margin-left:-11px;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:22px solid #fff;z-index:2;filter:drop-shadow(0 2px 4px rgba(0,0,0,.6))}
+.wheel{position:absolute;top:14px;left:0;width:240px;height:240px;border-radius:50%;border:4px solid rgba(255,255,255,.7);box-shadow:0 0 30px rgba(61,120,242,.5),inset 0 0 18px rgba(0,0,0,.35)}
+.wheel b{position:absolute;top:50%;left:50%;width:50px;margin:-9px 0 0 -25px;text-align:center;font-size:14px}
+@media (prefers-reduced-motion:reduce){.cf{display:none}.btn::after{animation:none!important}}
+
+
+/* home: organized rewards hub */
+.hub{margin-top:14px;padding:14px}.hub .ht{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.hub .ht b{font-size:16px;font-style:italic}
+.tiles{display:grid;gap:8px}.tile2{text-align:center;padding:12px 4px;border-radius:14px;cursor:pointer;background:var(--glass);border:1px solid var(--line);box-shadow:var(--edge)}
+.tile2 i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}.tile2 b{display:block;font-size:13px}.tile2 small{display:block;font-size:11px;color:#9aa3b5;margin-top:2px}
+.tile2.go{border-color:rgba(157,184,245,.85);box-shadow:var(--edge),0 0 18px rgba(61,120,242,.4)}.tile2.go small{color:#cfe0ff}
+.dots{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px}.dots small{margin-right:6px}.dots span{width:9px;height:9px;border-radius:50%;background:#2a3042}.dots span.d{background:var(--ok)}.dots span.t{background:#9db8f5;box-shadow:0 0 8px #7fa8ff}
+
+/* fun + motion: view slide-in, sliding nav marker, pull to refresh, achievement popup */
+nav a{flex:1}nav{overflow:visible}
+nav::before{content:"";position:absolute;top:-1px;left:calc((var(--i) + .5) / var(--n) * 100% - 20px);width:40px;height:3px;border-radius:0 0 6px 6px;background:linear-gradient(90deg,#c9d6f2,#3d78f2);box-shadow:0 0 14px #5f96ff;animation:ns .34s cubic-bezier(.3,.8,.3,1)}
+@keyframes ns{from{left:calc((var(--p) + .5) / var(--n) * 100% - 20px)}}
+main.in{animation:vin .34s cubic-bezier(.2,.7,.2,1)}@keyframes vin{from{opacity:0;transform:translateY(12px)}}
+.ptr{position:fixed;top:0;left:50%;transform:translate(-50%,-60px);z-index:70;background:rgba(14,16,24,.9);border:1px solid rgba(190,205,235,.3);border-radius:20px;padding:7px 16px;font-size:12px;opacity:0;pointer-events:none;backdrop-filter:blur(10px)}.ptr.go{transition:transform .22s,opacity .22s}
+.ach{text-align:center;padding:6px 0}.ach .e{font-size:72px;line-height:1;animation:pop .6s cubic-bezier(.2,1.6,.4,1)}.ach h3{font-style:italic;margin:10px 0 4px;font-size:22px}
+@keyframes pop{from{transform:scale(.2) rotate(-20deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){main.in,nav::before,.ach .e{animation:none}}
+
+/* premium finish: depth, light and detail */
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+body{font-variant-numeric:tabular-nums;padding-bottom:100px}h2{letter-spacing:.5px}
+body::before{inset:-12%;animation:aur 24s ease-in-out infinite alternate;will-change:transform}
+@keyframes aur{to{transform:translate3d(-3%,2.5%,0) scale(1.08)}}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.05;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));padding-bottom:0;height:62px;border-radius:24px;border:1px solid rgba(190,205,235,.22);box-shadow:var(--edge),0 14px 38px rgba(0,0,0,.6)}
+.hero::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--ang),rgba(157,184,245,0) 0,rgba(190,212,255,.95) 12%,rgba(157,184,245,0) 30%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;animation:ang 7s linear infinite}
+@keyframes ang{to{--ang:360deg}}
+.wcard{background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.13) 50%,transparent 62%) 0 0/260% 100%,radial-gradient(260px 170px at 100% 0,rgba(120,170,255,.4),transparent 70%),linear-gradient(155deg,#1b2a55,#0a0c14 75%);animation:sheen 7s linear infinite}
+@keyframes sheen{from{background-position:130% 0,0 0,0 0}to{background-position:-130% 0,0 0,0 0}}
+.wcard::before{content:"";position:absolute;right:18px;top:16px;width:36px;height:27px;border-radius:6px;background:linear-gradient(135deg,#f1f5fd,#9aa8c6 60%,#d8e0f0);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.wcard .wl{position:absolute;left:18px;top:19px;font-size:10px;letter-spacing:3px;font-weight:700;color:#a9b6d0}.wcard .big{margin-top:10px;text-shadow:0 2px 18px rgba(95,150,255,.45)}
+.greet{margin:2px 2px 12px;font-size:13px;color:#9aa3b5}.greet b{display:block;color:#fff;font-size:21px;font-style:italic;margin-top:1px}
+.toast{background:rgba(14,16,24,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(190,205,235,.3);border-radius:14px;box-shadow:var(--edge),0 10px 30px rgba(0,0,0,.5);bottom:104px;animation:tin .25s ease-out}
+@keyframes tin{from{opacity:0;transform:translate(-50%,10px)}}
+header.tight b{display:none}header.tight .chip{margin-left:auto}header .img{flex-shrink:0}header .chip{white-space:nowrap;flex-shrink:0}header b{min-width:0;white-space:nowrap;overflow:hidden}
+@media (prefers-reduced-motion:reduce){body::before,.hero::after,.wcard{animation:none}}
+
+/* premium finish: depth, touch feel, rhythm */
+::selection{background:rgba(95,150,255,.4)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>")}
+body::before{animation:aur 20s ease-in-out infinite alternate}@keyframes aur{to{transform:translate3d(-3%,2%,0) scale(1.08)}}
+.btn,.card.m,.mode,.tile2,.chip,.rank{transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .2s,border-color .2s}
+.btn:active,.card.m:active,.mode:active,.tile2:active,.chip:active,.rank:active{transform:scale(.97);transition-duration:.07s}
+nav a em{display:inline-block;transition:transform .2s cubic-bezier(.3,1.5,.5,1)}nav a:active em{transform:scale(.88)}nav a.on em{transform:translateY(-2px) scale(1.12)}
+.big,.chip,.gca,.wcard,table td,.dd b{font-variant-numeric:tabular-nums}
+.gold{background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+main.in{animation:none}main.in>*{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+main.in>*:nth-child(2){animation-delay:.05s}main.in>*:nth-child(3){animation-delay:.1s}main.in>*:nth-child(4){animation-delay:.15s}main.in>*:nth-child(5){animation-delay:.2s}main.in>*:nth-child(6){animation-delay:.25s}main.in>*:nth-child(n+7){animation-delay:.3s}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+body.sc header{background:rgba(8,9,14,.82);box-shadow:0 10px 28px rgba(0,0,0,.5)}
+.sk{height:68px;border-radius:14px;margin:10px 0;background:linear-gradient(100deg,rgba(255,255,255,.04) 30%,rgba(255,255,255,.11) 50%,rgba(255,255,255,.04) 70%);background-size:220% 100%;animation:skl 1.3s linear infinite}@keyframes skl{to{background-position:-220% 0}}
+@media (prefers-reduced-motion:reduce){body::before,main.in>*,.sk{animation:none!important}nav a.on em{transform:none}}
+</style>
+</head>
+<body>
+<div id="app"><div class="boot"><div><div class="img" style="width:84px;height:84px;border-radius:18px;margin:auto;background-image:url('/img-logo.webp')"></div><div class="spin"></div></div></div></div>
+<div class="ov" id="ov" onclick="toggleSide(false)"></div>
+<div class="side" id="side"></div>
+<script>/* if the app files do not start within 12 seconds, show a message instead of a bare logo */
+window.__t=setTimeout(function(){if(window.__ok)return;var a=document.getElementById("app");if(a&&a.querySelector(".boot"))a.innerHTML='<div class="boot"><div style="max-width:320px;padding:0 22px;color:#fff"><h2 style="font-size:20px">Could not load</h2><p style="color:#9aa3b5;font-size:14px;margin:8px 0 18px">Check your internet connection and try again.</p><button class="btn" onclick="location.reload()">Try again</button></div></div>'},12000);</script>
+<script>
+window.__ok = true; clearTimeout(window.__t);
+/* 1. SETTINGS - edit only this section */
+// Paste your Firebase web config here (Firebase console > Project settings).
+const FIREBASE_CONFIG = { apiKey:"AIzaSyCsQDJYw_Xeo29dretW4Nx5F6Dc0oevgLs", authDomain:"shadow-infinity-c02df.firebaseapp.com", projectId:"shadow-infinity-c02df", appId:"1:918033582033:web:1e537deefcf0f253ddc2f0" };
+const ADMIN_EMAIL = "starxsunny0@gmail.com";
+// Netlify function that talks to FamGateway (keep payment.js in your Netlify functions folder).
+const PAY_URL = "/.netlify/functions/payment";
+// IMAGE SLOTS: type the image name or link between the quotes, e.g. br:"br.jpg". Empty = plain colour.
+const IMG = {
+  splash:"/img-splash.jpg",   // login screen, full background
+  logo:"/img-logo.webp",      // app logo (top bar and login)
+  banner:"/img-banner.jpg",   // Free Fire home banner
+  br:"/img-br.jpg",           // BR Rank Push card
+  cs:"/img-cs.jpg",           // Clash Squad and CS Prime cards
+  v2:"/img-v2.jpg",           // CS 2v2 and Clash Squad 2v2 cards
+  lw:"/img-lw.jpg",           // Lone Wolf and LW Prime cards
+  head:"/img-head.jpg",       // Only Head card
+  match:"/img-match.jpg",     // FF Tournaments card and the default match picture
+  bgmi:"/img-bgmi.jpg",       // BGMI home banner
+  bclassic:"/img-bclassic.jpg", // BGMI Classic card
+  btdm:"/img-btdm.jpg",       // BGMI TDM 4v4 and TDM 2v2 cards
+  bduel:"/img-bduel.jpg",     // BGMI TDM 1v1 card
+  bwow:"/img-bwow.jpg",       // BGMI WOW Mode card
+  bpayload:"/img-bpayload.jpg"  // BGMI Payload card
+};
+// Pictures a host can choose when creating a match.
+const MATCH_IMAGES = {
+ FF:[{n:"1v1",k:"1v1",src:"/img-lw.jpg"},{n:"2v2",k:"2v2",src:"/img-v2.jpg"},{n:"4v4",k:"4v4",src:"/img-cs.jpg"},{n:"BR Rank Push",k:"BR",src:"/img-br.jpg"}],
+ BGMI:[{n:"Classic",k:"BR",src:"/img-bclassic.jpg"},{n:"TDM 1v1",k:"1v1",src:"/img-bduel.jpg"},{n:"TDM 2v2",k:"2v2",src:"/img-v2.jpg"},{n:"TDM 4v4",k:"4v4",src:"/img-btdm.jpg"},{n:"WOW Mode",k:"WOW",src:"/img-bwow.jpg"},{n:"Payload",k:"PAY",src:"/img-bpayload.jpg"}]};
+const MODES = {
+ FF:[["BR RANK PUSH","Solo / Duo / Squad","👑","BR","br"],["CLASH SQUAD","4v4 / 2v2 / 1v1","👥","CS","cs"],["FF TOURNAMENTS","Live • Upcoming","🏆","","match"],["LONE WOLF","1v1 • 2v2","🐺","LW","lw"],["CS 2v2","2v2 Only","🎯","CS","v2"],["CLASH SQUAD 2v2","Fast Mode","👥","CS","v2"],["LW PRIME","Premium","🐺","LW","lw"],["CS PRIME","Premium","🎯","CS","cs"],["ONLY HEAD","Headshot Only","💀","CS","head"]],
+ BGMI:[["CLASSIC","Solo / Duo / Squad","🪂","BR","bclassic"],["TDM 4v4","Team Deathmatch","⚔️","CS","btdm"],["TDM 1v1","Duel","🎯","LW","bduel"],["TDM 2v2","Fast Mode","👥","CS","btdm"],["WOW MODE","Arcade","🌐","WOW","bwow"],["PAYLOAD","Special","🚁","PAY","bpayload"]]};
+const GM = {
+ FF:  {BR:["BR Mode",[20,48]], CS:["Clash Squad",[2,4,8]], LW:["Lone Wolf",[2,4]]},
+ BGMI:{BR:["Classic",[20,48]], CS:["TDM",[2,4,8]], LW:["TDM Duel",[2]], WOW:["WOW Mode",[4,8]], PAY:["Payload",[4,8]]}};
+const catName = m => ((GM[m.game || "FF"] || {})[m.cat] || ["Other"])[0];
+const MAX_PAYOUT = 0.8;
+
+/* 2. DATA LAYER - Firebase when configured, otherwise demo mode (saved in the browser) */
+let FB = false, db, auth, FBERR = "";
+// Firebase is big. If it is part of the page load, Android keeps the splash logo on screen until it has downloaded.
+// So the page finishes loading first, and only then the app fetches Firebase in the background.
+const loadJS = src => new Promise((ok, no) => { const e = document.createElement("script"); e.src = src; e.async = false; e.onload = ok; e.onerror = () => no(new Error("could not load " + src.split("/").pop())); document.head.appendChild(e); });
+const FBREADY = new Promise(done => { const go = async () => { try {
+    if (!FIREBASE_CONFIG.apiKey) return done(false);
+    const base = "https://www.gstatic.com/firebasejs/10.12.2/firebase-";
+    await Promise.all([loadJS(base + "app-compat.js"), loadJS(base + "auth-compat.js"), loadJS(base + "firestore-compat.js")]);   // all three download at the same time
+    firebase.initializeApp(FIREBASE_CONFIG); db = firebase.firestore(); try { db.settings({experimentalAutoDetectLongPolling:true, merge:true}); } catch (e) {} auth = firebase.auth(); FB = true; done(true);
+  } catch (e) { FBERR = String((e && (e.code || e.message)) || e); console.error(e); done(false); } };
+  document.readyState == "complete" ? setTimeout(go, 0) : addEventListener("load", () => setTimeout(go, 0)); });
+window.__loaded = false; addEventListener("load", () => { window.__loaded = true; const e = document.querySelector(".lg"); if (e && IMG.splash) e.style.backgroundImage = "url('" + IMG.splash + "')"; });   // big login picture only after the page is loaded
+const LOCAL = ["localhost", "127.0.0.1", ""].includes(location.hostname) || location.protocol == "file:";   // demo mode is only for testing on your own computer
+const APPV = "2026-10-31.1";
+let FAILED = false;
+// If the app cannot start, show a clear message with a retry button instead of leaving only the logo on screen.
+const fail = (title, why) => { if (FAILED) return; FAILED = true;
+  document.querySelector("#app").innerHTML = '<div class="boot"><div style="max-width:320px;padding:0 22px"><div class="img" style="width:84px;height:84px;border-radius:18px;margin:0 auto 16px;background-image:url(\'/img-logo.webp\')"></div><h2 style="font-size:20px">' + title + '</h2><p style="color:#9aa3b5;font-size:14px;margin:8px 0 18px">' + why + '</p><button class="btn" onclick="location.reload()">Try again</button><p style="color:#6b7385;font-size:11px;margin-top:16px;word-break:break-word">v' + APPV + (FBERR ? " · " + FBERR.replace(/[<>&]/g, "") : "") + '</p></div></div>'; };
+let bootSince = 0;
+setInterval(() => { if (FAILED) return; if (document.querySelector("#app .boot")) { bootSince = bootSince || Date.now(); if (Date.now() - bootSince > 10000) fail("Taking too long to load", "Check your internet connection and try again."); } else bootSince = 0; }, 1000);
+addEventListener("error", () => { if (!READY && document.querySelector("#app .boot")) fail("Something went wrong", "Please try again."); });
+addEventListener("unhandledrejection", () => { if (!READY && document.querySelector("#app .boot")) fail("Something went wrong", "Please try again."); });
+try { const q = new URLSearchParams(location.search), r = (q.get("ref") || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12), g = (q.get("gift") || "").replace(/[^A-Za-z0-9-]/g, "").slice(0, 20); if (r) localStorage.setItem("fl_ref", r); if (g) localStorage.setItem("fl_gift", g); } catch (e) {}   // invite and gift links
+const LS = "fraglord_demo"; let mem = null;
+try { mem = JSON.parse(localStorage.getItem(LS)); } catch (e) {}
+const H1 = 36e5, now = () => Date.now();
+const seed = () => ({users:{}, withdrawals:{}, matches:{
+ a1:{title:"BR Solo",game:"FF",cat:"BR",team:"Solo",max:48,fee:25,mode:"win",win:1000,kill:0,map:"Bermuda",start:now()+2*H1,status:"open",players:{},rules:"No teaming. Use your registered name."},
+ a2:{title:"Clash Squad 2v2",game:"FF",cat:"CS",team:"2v2",max:4,fee:30,mode:"win",win:200,kill:0,map:"Bermuda",start:now()+3*H1,status:"open",players:{},rules:"7 rounds. Headshot only OFF."},
+ a3:{title:"Lone Wolf 1v1",game:"FF",cat:"LW",team:"1v1",max:2,fee:20,mode:"both",win:30,kill:5,map:"Bermuda",start:now()+4*H1,status:"open",players:{},rules:"Default rules."},
+ a4:{title:"BGMI Classic",game:"BGMI",cat:"BR",team:"Squad",max:48,fee:50,mode:"win",win:2000,kill:0,map:"Erangel",start:now()+5*H1,status:"open",players:{},rules:"TPP. Default zone."}}});
+mem = mem || seed();
+const persist = () => { try { localStorage.setItem(LS, JSON.stringify(mem)); } catch (e) {} };
+const store = {
+  async get(c, id) { if (FB) { const d = await db.collection(c).doc(id).get(); return d.exists ? {id, ...d.data()} : null; } const v = mem[c] && mem[c][id]; return v ? {id, ...v} : null; },
+  async set(c, id, data) { if (FB) return db.collection(c).doc(id).set(data, {merge:true}); mem[c] = mem[c] || {}; const o = mem[c][id] || {}, r = {...o}; for (const k in data) { const v = data[k]; r[k] = v && typeof v == "object" && !Array.isArray(v) && o[k] && typeof o[k] == "object" && !Array.isArray(o[k]) ? {...o[k], ...v} : v; } mem[c][id] = r; persist(); },
+  async list(c, n = 100) { if (FB) { const s = await db.collection(c).limit(n).get(); return s.docs.map(d => ({id:d.id, ...d.data()})); } return Object.entries(mem[c] || {}).map(([id, v]) => ({id, ...v})).slice(0, n); },
+  async where(c, f, v, n = 50) { if (FB) { const s = await db.collection(c).where(f, "==", v).limit(n).get(); return s.docs.map(d => ({id:d.id, ...d.data()})); } return Object.entries(mem[c] || {}).map(([id, x]) => ({id, ...x})).filter(x => x[f] == v).slice(0, n); },
+  async del(c, id) { if (FB) return db.collection(c).doc(id).delete(); if (mem[c]) delete mem[c][id]; persist(); },
+  async update(c, id, fn) {
+    if (FB) { const r = db.collection(c).doc(id); return db.runTransaction(async t => { const s = await t.get(r); const v = fn(s.exists ? s.data() : {}); if (v) t.set(r, v, {merge:true}); return !!v; }); }
+    const v = fn({...((mem[c] || {})[id] || {})}); if (v) await store.set(c, id, v); return !!v; }
+};
+
+/* 3. HELPERS */
+let HIMG = -1, NOTICE = "", ME = null, U = null, M = [], LB = [], W = [], V = "home", A = null, G = "FF", TAB = "All", MODE = "", MT = "Details";
+let CMX = null, NOTICE_AT = 0, P = [], HE = [], HLIST = [], CT = "all", CM = null, INSTALLS = 0, HL = {day:5, live:2}, OD = [], MTAB = "Overview", DP = null;
+let READY = false, LAST = 0, RV = 0, NAVAT = 0, LOADED = {};
+const BOOT = '<div class="boot"><div><div class="img" style="width:84px;height:84px;border-radius:18px;margin:auto;background-image:url(\'/img-logo.webp\')"></div><div class="spin"></div></div></div>';
+const STANDALONE = matchMedia("(display-mode: standalone)").matches;
+const $ = s => document.querySelector(s);
+const R = n => "₹" + (+n).toLocaleString("en-IN", {minimumFractionDigits:Number.isInteger(+n) ? 0 : 2, maximumFractionDigits:2});
+const T = t => new Date(t).toLocaleString("en-IN", {day:"numeric", month:"short", hour:"numeric", minute:"2-digit", hour12:true, timeZone:"Asia/Kolkata"});
+const bg = (k, x = "") => `style="${IMG[k] ? `background-image:url('${IMG[k]}');` : ""}${x}"`;
+const pic = m => { if (m.img) return m.img; const k = ["BR", "WOW", "PAY"].includes(m.cat) ? m.cat : m.team, f = ((MATCH_IMAGES[m.game || "FF"] || []).find(x => x.k == k) || {}).src; return f || IMG.match; };
+const mimg = (m, x = "") => { const u = pic(m); return `style="${u ? `background-image:url('${u}');` : ""}${x}"`; };
+const tot = () => (U.play || 0) + (U.win || 0);
+const n = m => Object.keys(m.players || {}).length;
+const addTx = (d, t, note, amt, pend) => [{t, note, amt, at:now(), pend:!!pend}, ...(d.tx || [])].slice(0, 40);
+const prize = m => m.mode == "win" ? "Winning " + R(m.win) : m.mode == "kill" ? R(m.kill) + " per kill" : R(m.win) + " + " + R(m.kill) + " per kill";
+const stat = m => ({open:["OPEN",""], live:["LIVE","live"], completed:["COMPLETED","x"], cancelled:["CANCELLED","x"]})[m.status] || ["",""];
+
+const safe = (fn, ...a) => { try { return fn(...a); } catch (e) { console.error(e); return `<div class="card warn">This section has an error. The rest of the app still works.</div>`; } };
+const act = fn => async (...a) => { try { await fn(...a); } catch (e) { console.error(e); toast(e && e.user ? e.message : "Something went wrong. Please try again."); } };
+// talks to the Netlify function (invite codes, daily reward, gift cards). The server checks everything and moves the money.
+const srv = async (action, data = {}) => { const bad = m => { const e = new Error(m); e.user = true; return e; };
+  if (!FB) throw bad("This feature works on the live site only.");
+  const r = await fetch(PAY_URL, {method:"POST", body:JSON.stringify({action, token:await auth.currentUser.getIdToken(), ...data})}); let j = {}; try { j = await r.json(); } catch (x) {}
+  if (!r.ok) throw bad(j.error || "Something went wrong. Please try again."); return j; };
+const IST = () => new Date(now() + 198e5).toISOString().slice(0, 10);
+const mkCode = uid => "FL" + String(uid).replace(/[^A-Za-z0-9]/g, "").slice(0, 6).toUpperCase().padEnd(6, "X");
+const CFG0 = {refOn:true, refReferrer:10, refFriend:10, refMin:100, ladder:[{n:5, b:50}, {n:15, b:200}, {n:30, b:500}, {n:50, b:1000}], daily:[1, 1, 1, 2, 2, 2, 4], giftOn:true, giftMin:10, giftMax:5000, giftFee:0, wdMin:100, spinOn:true, spin:[0, 0, 0, 1, 1, 1, 2, 4], spinMin:100, fdPct:10, fdMax:100};
+const cfgOf = st => { st = st || {}; const nn = (v, d) => v === undefined || v === null || v === "" || !Number.isFinite(+v) ? d : +v;
+  return {refOn:st.refOn !== false, refReferrer:nn(st.refReferrer, 10), refFriend:nn(st.refFriend, 10), refMin:nn(st.refMin, 100), ladder:(Array.isArray(st.refLadder) ? st.refLadder : CFG0.ladder).filter(x => x.n > 0),
+   daily:Array.isArray(st.dailyRewards) && st.dailyRewards.length == 7 ? st.dailyRewards.map(Number) : CFG0.daily, giftOn:st.giftOn !== false, giftMin:nn(st.giftMin, 10), giftMax:nn(st.giftMax, 5000), giftFee:nn(st.giftFee, 0), wdMin:nn(st.wdMin, 100), spinOn:st.spinOn !== false, spin:Array.isArray(st.spinPrizes) && st.spinPrizes.length == 8 ? st.spinPrizes.map(Number) : CFG0.spin, spinMin:nn(st.spinMin, 100), fdPct:nn(st.fdPct, 10), fdMax:nn(st.fdMax, 100)}; };
+let CFG = CFG0, GC = [], MYW = [], GA = null, GT = "create", DL = false;
+let SUP = null, SL = [], SQ = [], SQN = 0, ST = null, STH = null, SCK = null, SIMG = null, SCAT = "";
+const refLink = () => location.origin + "/?ref=" + (U.refCode || mkCode(ME.uid));
+const fmtCode = c => "FL-" + c.slice(0, 4) + "-" + c.slice(4, 8) + "-" + c.slice(8, 12);
+const doShare = text => { if (navigator.share) navigator.share({text}).catch(() => {}); else window.open("https://wa.me/?text=" + encodeURIComponent(text), "_blank"); };
+function toast(t) { const d = document.createElement("div"); d.className = "toast"; d.textContent = t; document.body.append(d); setTimeout(() => d.remove(), 2500); }
+function dlg(h) { const d = document.createElement("div"); d.className = "dlg"; d.innerHTML = "<div>" + h + "</div>"; d.onclick = e => { if (e.target === d) d.remove(); }; document.body.append(d); }
+const closeDlg = () => document.querySelectorAll(".dlg").forEach(d => d.remove());
+window.addEventListener("error", e => console.error(e.message));
+window.addEventListener("unhandledrejection", e => console.error(e.reason));
+const setG = g => { G = g; MODE = ""; draw(); };
+const track = async () => { const em = (ME.email || "").toLowerCase(), he = FB ? await store.get("hostEmails", em) : null; return store.update("users", ME.uid, d => ({email:ME.email || "", lastLogin:now(), refCode:d.refCode || mkCode(ME.uid), loginCount:(d.loginCount || 0) + 1, firstLogin:d.firstLogin || now(), role:!FB || em == ADMIN_EMAIL ? "master" : he && he.on ? "host" : (d.role == "master" ? "player" : d.role || "player"), seen:now()})); };
+const go = (v, a) => { if (v == "support" && SUP && SUP.lastBy == "a") { store.set("support", ME.uid, {uSeen:now()}).catch(() => {}); SUP.uSeen = now(); } if (v == "match") { const mm = M.find(x => x.id == a); MT = mm && mm.res ? "Results" : "Details"; } if (v == "notif") mark("notifSeen"); if (v == "chat") mark("chatSeen"); V = v; A = a; NAVAT = now(); ANIMV = true; toggleSide(false); render(["lb", "master", "chat", "refer", "gift", "support"].includes(v) ? "now" : true); scrollTo(0, 0); };
+
+/* 4. SCREENS */
+const loginV = () => `<div class="lg img" ${window.__loaded ? bg("splash") : ""}><div class="lgo"></div><div class="lgc">
+ <div class="lglogo img" ${bg("logo")}></div>
+ <div class="lgname">FRAGLORD</div><div class="lgtag">PLAY • COMPETE • WIN</div>
+ <p class="lgsub">Free Fire &amp; BGMI custom room tournaments with real prizes.</p>${(() => { try { return localStorage.getItem("fl_ref") ? '<div class="card" style="text-align:left">🎁 <b>You were invited!</b><br><small class="dim">Sign in and add money for the first time to get your welcome bonus.</small></div>' : localStorage.getItem("fl_gift") ? '<div class="card" style="text-align:left">🎫 <b>A gift card is waiting for you.</b><br><small class="dim">Sign in to claim it.</small></div>' : ""; } catch (e) { return ""; } })()}
+ <div class="lgfeat">
+  <div><i>🎮</i><b>Daily custom rooms</b><span>Free Fire and BGMI, every mode</span></div>
+  <div><i>👛</i><b>Instant UPI wallet</b><span>Add money and withdraw your winnings</span></div>
+  <div><i>🛡️</i><b>Fair play</b><span>Verified hosts and automatic refunds</span></div>
+ </div>
+ <button class="gbtn" onclick="H.login()"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.5 13.2l7.9 6.1C12.3 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.4 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.5 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.7-4.1-13.6-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>
+ <div class="lgsec">🔒 Secure sign-in. We never see your password.</div>
+ <p class="lgterms">By continuing you confirm that you are 18+ and agree to our <a onclick="H.rules()">Terms &amp; Privacy Policy</a>.</p>
+ ${STANDALONE ? "" : '<a class="lgget" href="/">Get the Android app</a>'}
+ <p class="lgterms" style="font-size:10px;opacity:.55;margin-top:10px">v${APPV}</p>
+</div></div>`;
+const setupV = () => `<main><h2>Set up your profile</h2><div class="card"><label>Username (in-game name)</label><input id="u" maxlength="20" placeholder="3-20 characters">
+ <label>Free Fire UID</label><input id="id" inputmode="numeric" maxlength="15" placeholder="UID"><p class="dim">Use the exact name and UID from your game. Room entry is checked against them.</p>
+ ${CFG.refOn && !U.refBy ? `<label>Invite code (optional)</label><input id="rc" maxlength="12" placeholder="Friend's code" value="${(() => { try { return (localStorage.getItem("fl_ref") || "").replace(/[^A-Z0-9]/g, ""); } catch (e) { return ""; } })()}"><p class="dim">Got a friend's code? You get ${R(CFG.refFriend)} bonus when you add ${R(CFG.refMin)} or more for the first time.</p>` : ""}
+ <button class="btn" onclick="H.saveProfile()">SAVE &amp; CONTINUE</button></div></main>`;
+const mcard = m => { const [l, c] = stat(m), pc = Math.min(100, n(m) / m.max * 100), mine = m.res && m.res[ME.uid]; return `<div class="card m" onclick="go('match','${m.id}')"><div style="display:flex;gap:10px;min-width:0;flex:1"><div class="img" ${mimg(m, "width:64px;height:64px;border-radius:10px;flex-shrink:0")}></div><div style="min-width:0;flex:1">
+ <h4>${esc(m.title)}<span class="tag ${c}">${l}</span>${U.joined && U.joined[m.id] ? '<span class="tag">JOINED</span>' : ""}</h4><small>${catName(m)} • ${m.team} • ${m.map}</small>
+ <div class="gold" style="margin:4px 0">${prize(m)}</div><small>Entry ${m.fee ? R(m.fee) : "Free"} • Slots ${n(m)}/${m.max}</small>${m.status == "open" ? `<div class="bar" style="margin:6px 0 0"><i style="width:${pc}%"></i></div>` : ""}${m.status == "open" && n(m) < m.max && pc >= 70 ? '<span class="fast" style="margin:6px 0 0">Filling fast</span>' : ""}${mine ? `<div><small class="gold">Your kills ${mine.k || 0} • ${mine.a ? "Won " + R(mine.a) : "No prize"}</small></div>` : ""}</div></div>
+ <small style="text-align:right;flex:none">${T(m.start)}${m.status == "open" ? '<br><b class="gold">⏱ ' + eta(m.start) + "</b>" : ""}</small></div>`; };
+
+const openM = () => M.filter(m => ["open", "live"].includes(m.status) && m.game == G && (!MODE || m.cat == MODE)).sort((a, b) => a.start - b.start);
+const homeV = () => `${NOTICE ? `<div class="card">📢 ${NOTICE}</div>` : ""}${greetV()}${posterV()}${safe(firstV)}${safe(rewardsHub)}
+ <div class="tabs" style="margin-top:16px"><button class="${G == "FF" ? "on" : ""}" onclick="setG('FF')">Free Fire</button><button class="${G == "BGMI" ? "on" : ""}" onclick="setG('BGMI')">BGMI</button></div>
+  <h2>🎮 GAME MODES</h2><div class="grid">${MODES[G].map(x => `<div class="mode" onclick="MODE='${x[3]}';go('mode')"><div class="img" ${bg(x[4])}></div><b>${x[2]} ${x[0]}</b><small>${x[1]}</small></div>`).join("")}</div>
+ ${safe(winnersV)}<h2>📅 UPCOMING MATCHES</h2>${openM().map(m => safe(mcard, m)).join("") || '<p class="dim">No matches right now. Check back soon!</p>'}
+ `;
+const modeV = () => `<h2>${MODE && GM[G][MODE] ? GM[G][MODE][0] : "All"} Matches</h2><div class="tabs">${["", ...Object.keys(GM[G])].map(k => `<button class="${MODE == k ? "on" : ""}" onclick="MODE='${k}';render()">${k ? GM[G][k][0] : "All"}</button>`).join("")}</div>${openM().map(m => safe(mcard, m)).join("") || '<p class="dim">No open matches in this mode.</p>'}`;
+const matchV = () => { const m = M.find(x => x.id == A); if (!m) return '<p class="dim center">This match is no longer available.</p>'; const j = U.joined && U.joined[m.id], full = n(m) >= m.max; let bar;
+ if (m.status == "open" && !j) bar = full ? '<button class="btn" disabled>MATCH FULL</button>' : `<button class="btn" onclick="H.join('${m.id}')">JOIN · ${m.fee ? R(m.fee) : "FREE"}</button>`;
+ else if (j && m.room && ["open", "live"].includes(m.status)) bar = `<div class="card"><small>Room ID</small> <b class="gold">${m.room.id}</b> <button class="chip" onclick="navigator.clipboard&&navigator.clipboard.writeText('${m.room.id}');toast('Copied')">Copy</button><br><small>Password</small> <b class="gold">${m.room.pw}</b></div><p class="dim">Open the game &gt; Custom Room &gt; Join. Use the exact name you registered with.</p>`;
+ else if (j && ["open", "live"].includes(m.status)) bar = '<button class="btn ok">JOINED ✓</button>';
+ else bar = `<button class="btn" disabled>${{live:"REGISTRATION CLOSED", completed:"MATCH COMPLETED", cancelled:"MATCH CANCELLED"}[m.status] || "CLOSED"}</button>`;
+ const body = {Details:`<small>Mode: ${catName(m)} • Team: ${m.team} • Map: ${m.map}<br>Starts: ${T(m.start)}<br>${m.room ? "" : j ? "Room details will appear 3-5 minutes before the match." : "Join the match to unlock the room ID and password."}</small>`,
+  Rules:`<small>${esc(m.rules || "")}</small>`, Players:`<small>${n(m)} joined${m.pn ? "<br>" + Object.values(m.pn).map(esc).join(", ") : ""}</small>`, Results:resH(m)}[MT];
+ return `<div class="banner img" ${mimg(m, "height:130px")}></div><h2>${esc(m.title)}</h2><div class="card"><div class="big gold">${prize(m)}</div><div class="bar"><i style="width:${n(m) / m.max * 100}%"></i></div>
+ <div class="row"><div><small>Entry</small><br><b>${m.fee ? R(m.fee) : "Free"}</b></div><div><small>Slots</small><br><b>${n(m)}/${m.max}</b></div><div><small>Starts</small><br><b>${T(m.start)}</b></div></div></div>
+ <div class="tabs">${["Details", "Rules", "Players", ...(m.res ? ["Results"] : [])].map(t => `<button class="${MT == t ? "on" : ""}" onclick="MT='${t}';render()">${t}</button>`).join("")}</div><div class="card">${body}</div>${bar}${CFG.refOn ? `<button class="btn alt" onclick="H.shareMatch('${m.id}')">📣 Invite friends to this match</button>` : ""}`; };
+const myV = () => { const a = M.filter(m => U.joined && U.joined[m.id]); const f = s => a.filter(m => s.includes(m.status)).map(m => safe(mcard, m)).join("") || '<p class="dim">Nothing here yet.</p>';
+ return `<div class="tabs">${["Upcoming", "Live", "Completed"].map(t => `<button class="${TAB == t ? "on" : ""}" onclick="TAB='${t}';render()">${t}</button>`).join("")}</div>${f(TAB == "Live" ? ["live"] : TAB == "Completed" ? ["completed", "cancelled"] : ["open"])}`; };
+const walletV = () => { const ic = {deposit:"➕", entry:"🎮", prize:"🏆", refund:"↩️", bonus:"🎁", gift:"🎫", adjust:"🛠️", withdraw:"💸"};
+ return `<div class="hero wcard center" style="padding:20px"><span class="wl">FRAGLORD WALLET</span><small class="dim" style="display:block;margin-top:22px">Total balance</small><div class="big" data-k="wal" data-n="${tot()}">${R(tot())}</div><div class="row"><div><small class="dim">Play balance (not withdrawable)</small><br><b>${R(U.play || 0)}</b></div><div><small class="dim">Winnings (withdrawable)</small><br><b>${R(U.win || 0)}</b></div></div></div>
+ <div class="row"><button class="btn" onclick="H.addMoney()">Add Money</button><button class="btn alt" onclick="H.withdraw()">Withdraw</button></div>
+ <div class="row"><button class="btn alt" onclick="go('gift')">🎫 Gift Card</button><button class="btn alt" onclick="go('refer')">🎁 Invite &amp; Earn</button></div>
+ ${MYW.length ? `<h2>My withdrawals</h2>${MYW.slice().sort((a, b) => String(b.id).localeCompare(String(a.id))).slice(0, 5).map(w => `<div class="card m" style="cursor:default"><span><b>${R(w.a)}</b> to ${esc(w.upi)}<br><small>${w.at ? T(w.at) : ""}</small></span><span class="tag ${w.st == "paid" ? "" : w.st == "pending" ? "x" : "live"}">${w.st == "paid" ? "PAID ✓" : String(w.st).toUpperCase()}</span></div>`).join("")}` : ""}<h2>Recent transactions</h2>
+ ${(U.tx || []).map(t => `<div class="card m" style="cursor:default"><span>${ic[t.t] || "•"} ${t.note}${t.pend ? '<span class="tag x">PENDING</span>' : ""}<br><small>${T(t.at)}</small></span><b style="color:${t.amt < 0 ? "#ff8a8a" : "var(--ok)"}">${t.amt < 0 ? "-" : "+"}${R(Math.abs(t.amt))}</b></div>`).join("") || '<p class="dim">No transactions yet.</p>'}`; };
+const lbV = () => { const r = LB.filter(x => x.name && !x.banned).sort((a, b) => (b.k || 0) - (a.k || 0)); return `<h2>Leaderboard</h2>${podiumV(r)}<div class="card"><table><tr><th>#</th><th>Player</th><th>Matches</th><th>Wins</th><th>Kills</th></tr>
+ ${r.map((x, i) => `<tr style="${x.id == ME.uid ? "background:rgba(150,165,200,.16)" : ""}"><td style="color:${["#dbe3f2", "#ccc", "#cd7f32"][i] || "#fff"}">${i + 1}</td><td>${x.name || "-"}</td><td>${x.mt || 0}</td><td>${x.w || 0}</td><td>${x.k || 0}</td></tr>`).join("")}</table></div>`; };
+const acctV = () => `<div class="card"><div class="row" style="align-items:center"><div class="img" ${bg("logo", "width:64px;height:64px;border-radius:50%;flex:none")}></div><div><b style="font-size:20px">${U.name}</b><br><small class="dim">${U.email || ""}<br>Game UID ${U.gid}</small></div></div>
+ <div class="row" style="margin-top:12px;text-align:center"><div><b class="gold">${U.mt || 0}</b><br><small>Matches</small></div><div><b class="gold">${U.w || 0}</b><br><small>Wins</small></div><div><b class="gold">${U.k || 0}</b><br><small>Kills</small></div></div></div>
+ ${levelV()}<div class="card"><label>Change username</label><input id="nn" value="${U.name}" maxlength="20"><button class="btn alt" onclick="H.rename()">Save changes</button><p class="dim">The game UID is locked. Contact support to change it.</p></div>`;
+const setV = () => `<h2>Settings</h2><div class="card"><b>Sound &amp; vibration</b><div class="tabs"><button class="${SFX ? "on" : ""}" onclick="H.sfxSet(1)">On</button><button class="${SFX ? "" : "on"}" onclick="H.sfxSet(0)">Off</button></div><small class="dim">Plays on rewards, wins and the lucky spin.</small></div><div class="card"><b>Game preference</b><div class="tabs"><button class="${G == "FF" ? "on" : ""}" onclick="setG('FF')">Free Fire</button><button class="${G == "BGMI" ? "on" : ""}" onclick="setG('BGMI')">BGMI</button></div></div>
+ <div class="card"><small>Add money limit: ₹10 - ₹10,000<br>Withdraw limit: ${R(CFG.wdMin)} and above, from Winnings only</small></div>`;
+
+/* ---------- HOST ---------- */
+const hostV = () => `<h2>Create match</h2><div class="card"><div class="row"><div><label>Category</label><select id="hc" onchange="HIMG=-1;hForm()"></select></div><div><label>Game</label><select id="hg" onchange="HIMG=-1;hForm()"><option value="FF">Free Fire</option><option value="BGMI" ${G == "BGMI" ? "selected" : ""}>BGMI</option></select></div></div>
+ <div class="row"><div><label>Players</label><select id="hp" onchange="HIMG=-1;hForm()"></select></div><div><label>Entry fee (₹)</label><input id="hf" type="number" value="25" oninput="hForm()"></div></div>
+ <label>Match image (tap to choose)</label><div class="grid grid4" id="himgs" style="margin-bottom:8px"></div><label>Title (optional)</label><input id="ht" maxlength="40"><label>Start date &amp; time</label><input id="hs" type="datetime-local"><label>Map</label><input id="hmap" value="Bermuda"><div id="bm"><label>Minimum players (below this the match is cancelled and refunded)</label><input id="hn" type="number" value="30"></div>
+ <label>Prize type</label><select id="hm" onchange="hForm()"><option value="win">Winning amount</option><option value="kill">Kill based</option><option value="both">Both</option></select>
+ <div class="row"><div id="bw"><label>Winning amount (₹)</label><input id="hw" type="number" value="1000" oninput="hForm()"></div><div id="bk" class="hide"><label>Amount per kill (₹)</label><input id="hk" type="number" value="5" oninput="hForm()"></div></div>
+ <label>Rules</label><textarea id="hr" rows="2">No teaming. Use your registered name.</textarea><div class="card" id="rev"></div><button class="btn" id="golive" onclick="H.goLive()">GO LIVE (open for joining)</button></div>
+ <h2>My matches</h2>${M.filter(m => m.by == ME.uid || U.role == "master").map(m => `<div class="card"><b>${esc(m.title)}</b><span class="tag ${stat(m)[1]}">${stat(m)[0]}</span><br><small>${n(m)}/${m.max} joined • ${T(m.start)}</small>
+ ${m.status == "open" ? `<div class="row"><button class="btn alt" onclick="H.room('${m.id}')">Publish room</button><button class="btn" ${n(m) >= (m.cat == "BR" ? (m.min || m.max) : m.max) ? "" : "disabled"} onclick="H.status('${m.id}','live')">START MATCH (game begins)</button></div><button class="btn alt" onclick="H.cancel('${m.id}')">Cancel &amp; refund</button>` : ""}
+ ${m.status == "live" ? `<button class="btn ok" onclick="H.results('${m.id}')">Enter results &amp; pay prizes</button>` : ""}${m.res ? `<button class="btn alt" onclick="go('match','${m.id}')">View results</button>` : ""}</div>`).join("") || '<p class="dim">No matches yet.</p>'}`;
+function hForm() { if (!$("#hs").value) $("#hs").value = new Date(now() + 2 * H1 - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16); const g = $("#hg").value, hc = $("#hc"), cats = Object.keys(GM[g]), oldC = hc.value;
+ hc.innerHTML = cats.map(k => `<option value="${k}">${GM[g][k][0]}</option>`).join(""); hc.value = cats.includes(oldC) ? oldC : cats[0];
+ const c = hc.value, p = $("#hp"), _b = $("#bm").classList.toggle("hide", c != "BR"), keep = +p.value, PL = GM[g][c][1]; p.innerHTML = PL.map(x => `<option ${x == (PL.includes(keep) ? keep : PL.at(-1)) ? "selected" : ""}>${x}</option>`).join("");
+ const md = $("#hm").value, N = +p.value, f = +$("#hf").value || 0; $("#bw").classList.toggle("hide", md == "kill"); $("#bk").classList.toggle("hide", md == "win");
+ const w = md == "kill" ? 0 : +$("#hw").value || 0, k = md == "win" ? 0 : +$("#hk").value || 0, col = f * N, pay = w + k * (c == "BR" ? N - 1 : 30);
+ $("#rev").innerHTML = `<b>Review</b><br><small>Max collection ${R(col)} • Max payout ${R(pay)} • Margin ${R(col - pay)}</small>${pay > col * MAX_PAYOUT ? '<div class="warn">Payout is above 80% of collection. Go Live is blocked.</div>' : ""}`;
+ const list = MATCH_IMAGES[$("#hg").value] || [], tt = ["BR", "WOW", "PAY"].includes(c) ? c : N / 2 + "v" + N / 2;
+ if (HIMG < 0 || HIMG >= list.length) HIMG = Math.max(0, list.findIndex(x => x.k == tt));
+ $("#himgs").innerHTML = list.map((x, i) => `<div class="pick ${i == HIMG ? "on" : ""}" style="${x.src ? `background-image:url('${x.src}')` : ""}" onclick="HIMG=${i};hForm()"><span>${x.n}</span></div>`).join("");
+ $("#golive").disabled = pay > col * MAX_PAYOUT; }
+
+/* ---------- MASTER ---------- */
+const masterV = () => { const day = now() - 864e5, on = now() - 12e4, by = id => LB.find(u => u.id == id) || {}, pend = W.filter(w => w.st == "pending"), paid = W.filter(w => w.st == "paid"), cash = id => paid.filter(w => w.uid == id).reduce((s, w) => s + w.a, 0), got = OD.filter(o => o.status == "paid");
+ const box = (v, l) => `<div class="card center" style="padding:12px"><div class="big">${v}</div><small class="dim">${l}</small></div>`;
+ const tabs = `<div class="tabs">${["Overview", "Payments", "Withdrawals", "Support", "Users", "Hosts", "Posters", "Bonus", "Rewards"].map(t => `<button class="${MTAB == t ? "on" : ""}" onclick="MTAB='${t}';render()">${t}${t == "Support" && supUnread() ? " (" + supUnread() + ")" : ""}</button>`).join("")}</div>`;
+ const B = {
+  Overview: `<div class="row">${box(LB.length, "Logged-in users")}${box(LB.filter(u => u.seen > on).length, "Online now")}</div><div class="row">${box(INSTALLS, "App installs")}${box(LB.filter(u => u.lastLogin > day).length, "Active in 24h")}</div><div class="row">${box(M.length, "Matches")}${box(R(LB.reduce((s, u) => s + (u.play || 0) + (u.win || 0), 0)), "All wallets")}</div>
+   <h2>Announcement</h2><div class="card"><textarea id="an" rows="2">${NOTICE}</textarea><button class="btn alt" onclick="H.notice()">Save announcement</button></div>
+   ${FB ? "" : '<h2>Demo tools</h2><div class="card"><button class="btn alt" onclick="H.demoPrize()">Add ₹500 demo winnings</button><button class="btn alt" onclick="try{localStorage.removeItem(LS)}catch(e){};location.reload()">Reset demo data</button></div>'}`,
+  Payments: `${box(R(got.reduce((s, o) => s + o.amount, 0)), "Payments received")}${OD.map(o => `<div class="card m" style="cursor:default"><span><b>${R(o.amount)}</b> <span class="tag ${o.status == "paid" ? "" : "x"}">${(o.status || "").toUpperCase()}</span><br><small class="dim">${by(o.uid).name || o.uid} • ${T(o.at)}</small></span></div>`).join("") || '<p class="dim">No payments yet.</p>'}`,
+  Withdrawals: `<div class="row">${box(pend.length, "Pending requests")}${box(R(paid.reduce((s, w) => s + w.a, 0)), "Total cashed out")}</div>${W.map(w => { const u = by(w.uid); return `<div class="card"><b>${R(w.a)}</b> to ${w.upi} <span class="tag x">${w.st.toUpperCase()}</span><br><small class="dim">${u.name || "-"} • ${u.email || ""}<br>Wallet left: Play ${R(u.play || 0)} • Winnings ${R(u.win || 0)} • Cashed out so far ${R(cash(w.uid))}</small>
+   ${w.st == "pending" ? `<div class="row"><button class="btn ok" onclick="H.wd('${w.id}','paid')">Mark paid</button><button class="btn alt" onclick="H.wd('${w.id}','rejected')">Reject</button></div>` : ""}</div>`; }).join("") || '<p class="dim">No requests.</p>'}`,
+  Support: supMaster(),
+  Users: `<div class="card"><table><tr><th>User</th><th>Wallet</th><th>Cashed out</th><th></th></tr>${LB.map(u => `<tr><td>${u.name || "(no profile)"}<br><small class="dim">${u.email || ""}<br>UID ${u.gid || "-"} • ${u.loginCount || 1} logins<br>${u.lastLogin ? T(u.lastLogin) : "-"}</small></td><td>${R((u.play || 0) + (u.win || 0))}<br><small class="dim">Win ${R(u.win || 0)}</small></td><td>${R(cash(u.id))}</td><td><button class="chip" onclick="H.manage('${sid(u.id)}')">Manage</button> <button class="chip" onclick="H.ban('${u.id}',${!u.banned})">${u.banned ? "Unban" : "Ban"}</button></td></tr>`).join("")}</table></div>`,
+  Hosts: (() => { const hs = LB.filter(u => u.role == "host"), pe = HE.filter(h => h.on && !LB.some(u => (u.email || "").toLowerCase() == h.id)), mails = u => esc(u.email || "");
+   return `<p class="dim">Hosts: ${hs.length + pe.length} / 10</p><div class="card"><label>Add host by email</label><input id="he" type="email" placeholder="name@gmail.com"><button class="btn" onclick="H.addHostEmail()">MAKE HOST</button></div>
+   <div class="card"><label>Max rooms per host per day</label><input id="hl1" type="number" value="${HL.day}"><label>Max rooms running at once</label><input id="hl2" type="number" value="${HL.live}"><button class="btn alt" onclick="H.limits()">Save limits</button></div>
+   <h2>Hosts</h2>${hs.map(u => { const my = M.filter(x => x.by == u.id); return `<div class="card"><b>${esc(u.name || "-")}</b> <span class="tag">HOST</span>${u.banned ? '<span class="tag x">BANNED</span>' : ""}<br><small class="dim">${mails(u)} • Game UID ${u.gid || "-"}<br>Last login ${u.lastLogin ? T(u.lastLogin) : "-"} • ${u.loginCount || 1} logins<br>Rooms: ${my.length} total • ${my.filter(x => now() - (x.created || 0) < 864e5).length} today • ${my.filter(x => ["open", "live"].includes(x.status)).length} running • ${my.filter(x => x.status == "completed").length} completed<br>Players joined: ${my.reduce((t, x) => t + n(x), 0)}</small><div class="row"><button class="chip" onclick="H.setHost('${u.id}',false)">Remove host</button><button class="chip" onclick="H.ban('${u.id}',${!u.banned})">${u.banned ? "Unban" : "Ban"}</button></div></div>`; }).join("") || '<p class="dim">No hosts yet.</p>'}
+   ${pe.map(h => `<div class="card m" style="cursor:default"><span>${esc(h.id)}<br><small class="dim">Waiting for first login</small></span><button class="chip" onclick="H.delHostEmail('${h.id}')">Remove</button></div>`).join("")}
+   <h2>All users</h2>${LB.filter(u => u.name && u.role != "host" && u.id != ME.uid).map(u => `<div class="card m" style="cursor:default"><span>${esc(u.name)}<br><small class="dim">${mails(u)}</small></span><button class="chip" onclick="H.setHost('${u.id}',true)">Make host</button></div>`).join("") || '<p class="dim">No other users yet.</p>'}`; })(),
+  Posters: `<div class="card"><label>Poster image link</label><input id="pu" placeholder="https://..."><label>Title (optional)</label><input id="pt" maxlength="40"><button class="btn" onclick="H.addPoster()">ADD POSTER</button></div>${P.map(p => `<div class="card"><div class="img" style="height:90px;border-radius:10px;background-image:url('${String(p.url).replace(/'/g, "%27")}')"></div><small class="dim">${esc(p.title || "")}</small> <span class="tag ${p.on ? "" : "x"}">${p.on ? "SHOWING" : "HIDDEN"}</span><div class="row"><button class="chip" onclick="H.posterOn('${p.id}',${!p.on})">${p.on ? "Hide" : "Show"}</button><button class="chip" onclick="H.delPoster('${p.id}')">Remove</button></div></div>`).join("") || '<p class="dim">No posters yet. The default banner is showing.</p>'}`,
+  Rewards: (() => { const c = CFG, L = c.ladder.slice().sort((a, b) => a.n - b.n), inp = (id, v, l) => `<div><label>${l}</label><input id="${id}" type="number" min="0" value="${v}"></div>`, sel = (id, on) => `<select id="${id}"><option value="1" ${on ? "selected" : ""}>ON</option><option value="0" ${on ? "" : "selected"}>OFF</option></select>`;
+   const act = GA ? GA.filter(g => g.status == "active") : [];
+   return `<div class="row">${box(LB.reduce((s, u) => s + (u.refCount || 0), 0), "Invites rewarded")}${box(R(LB.reduce((s, u) => s + (u.refEarn || 0), 0)), "Invite rewards paid")}</div><div class="row">${box(GA ? GA.length : "-", "Gift cards made")}${box(GA ? R(act.reduce((s, g) => s + g.amount, 0)) : "-", "Unclaimed gift value")}</div>
+   <h2>Invite program</h2><div class="card"><label>Invite program</label>${sel("ron", c.refOn)}<div class="row">${inp("rrf", c.refReferrer, "Reward for inviter (₹)")}${inp("rfr", c.refFriend, "Bonus for new friend (₹)")}</div>${inp("rmn", c.refMin, "Friend's first deposit must be at least (₹)")}
+   <small class="dim">Both rewards are paid in play balance, only after the friend's first successful deposit.</small></div>
+   <h2>Rank rewards (extra bonus)</h2><div class="card">${[0, 1, 2, 3].map(i => `<div class="row">${inp("rln" + (i + 1), (L[i] || {}).n || "", "Rank " + (i + 1) + ": friends needed")}${inp("rlb" + (i + 1), (L[i] || {}).b || "", "Bonus (₹)")}</div>`).join("")}<small class="dim">Leave a row empty to remove it.</small></div>
+   <h2>Daily check-in rewards (₹)</h2><div class="card"><div class="row">${[0, 1, 2, 3].map(i => inp("rd" + i, c.daily[i], "Day " + (i + 1))).join("")}</div><div class="row">${[4, 5, 6].map(i => inp("rd" + i, c.daily[i], "Day " + (i + 1))).join("")}<div></div></div><small class="dim">Set every day to 0 to hide the daily check-in.</small></div>
+   <h2>Gift cards &amp; withdrawals</h2><div class="card"><label>Gift cards</label>${sel("gon", c.giftOn)}<div class="row">${inp("gmn", c.giftMin, "Minimum (₹)")}${inp("gmx", c.giftMax, "Maximum (₹)")}</div>${inp("gfe", c.giftFee, "Fee when creating (%)")}${inp("wdm", c.wdMin, "Minimum withdrawal (₹)")}</div>
+   <h2>Lucky spin</h2><div class="card"><label>Lucky spin</label>${sel("son", c.spinOn)}${inp("smn", c.spinMin, "Unlocks after the user has added this much in total (₹)")}<small class="dim">8 wheel slots (₹). One random slot per spin, one spin a day. Repeat a value to make it more likely. 0 means no prize.</small><div class="row">${[0, 1, 2, 3].map(i => inp("rs" + i, c.spin[i], "Slot " + (i + 1))).join("")}</div><div class="row">${[4, 5, 6, 7].map(i => inp("rs" + i, c.spin[i], "Slot " + (i + 1))).join("")}</div></div>
+   <h2>First deposit bonus</h2><div class="card"><div class="row">${inp("fdp", c.fdPct, "Bonus (%)")}${inp("fdm", c.fdMax, "Max bonus (₹)")}</div><small class="dim">Paid in play balance on a user's first paid deposit. Set 0 to turn it off.</small></div>
+   <button class="btn" onclick="H.saveRewards()">SAVE REWARD SETTINGS</button>`; })(),
+  Bonus: `<div class="card"><label>Bonus amount (₹)</label><input id="bn" type="number"><label>Send to</label><select id="bt"><option value="all">All players</option><option value="ids">Chosen players</option></select><label>Chosen players: game UIDs separated by commas</label><textarea id="bl" rows="2"></textarea><button class="btn" onclick="H.bonus()">SEND BONUS</button></div>`};
+ return `<h2>Master admin</h2>${tabs}${B[MTAB] || ""}`; };
+
+
+/* ---------- INVITE, DAILY, GIFT CARDS ---------- */
+const xpOf = () => (U.mt || 0) * 10 + (U.w || 0) * 40 + (U.k || 0) * 2;
+const greetV = () => { const h = new Date().getHours(); return `<div class="greet">${h < 5 ? "Late night grind" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : h < 21 ? "Good evening" : "Good night"}<b>${esc(U.name || "Player")}</b></div>`; };
+const rewardsHub = () => { const dl = CFG.daily, T3 = []; let dots = "";
+  if (dl.some(x => x > 0)) { const dd = U.daily || {}, today = IST(), yest = new Date(now() + 198e5 - 864e5).toISOString().slice(0, 10), can = dd.last != today, cur = dd.last == today || dd.last == yest ? dd.streak || 0 : 0, done = can ? cur % 7 : (cur - 1) % 7 + 1;
+    T3.push(`<div class="tile2 ${can ? "go" : ""}" onclick="${can ? "H.daily()" : "toast('Claimed today. Come back tomorrow!')"}"><i>📅</i><b>Daily</b><small>${can ? "Claim " + R(dl[done]) : "Claimed ✓"}</small></div>`);
+    dots = `<div class="dots"><small class="dim">🔥 ${cur}-day streak</small>${dl.map((x, i) => `<span class="${i < done ? "d" : can && i == done ? "t" : ""}"></span>`).join("")}</div>`; }
+  if (CFG.spinOn && CFG.spin.some(x => x > 0)) { const done = (U.spin || {}).last == IST(), lk = spinLock(); T3.push(`<div class="tile2 ${!lk && !done ? "go" : ""}" onclick="H.spinOpen()"><i>${lk ? "🔒" : "🎡"}</i><b>Lucky spin</b><small>${lk ? "Add " + R(CFG.spinMin - depOf()) + " first" : done ? "Spun today" : "Free spin"}</small></div>`); }
+  if (CFG.refOn) T3.push(`<div class="tile2" onclick="go('refer')"><i>🎁</i><b>Invite</b><small>Earn ${R(CFG.refReferrer)} each</small></div>`);
+  if (!T3.length) return "";
+  return `<div class="card hub"><div class="ht"><b>Rewards</b><small class="dim">Free every day</small></div><div class="tiles" style="grid-template-columns:repeat(${T3.length},1fr)">${T3.join("")}</div>${dots}</div>`; };
+const resH = m => { const r = Object.entries(m.res || {}).map(([id, x]) => ({id, ...x})).sort((a, b) => (b.w ? 1 : 0) - (a.w ? 1 : 0) || (a.p || 99) - (b.p || 99) || (b.k || 0) - (a.k || 0));
+  if (!r.length) return '<small class="dim">Results are not published yet.</small>';
+  return `<table><tr><th>#</th><th>Player</th><th>Kills</th><th>Prize</th></tr>${r.map((x, i) => `<tr style="${x.id == ME.uid ? "background:rgba(150,165,200,.16)" : ""}"><td>${x.w ? "🏆" : x.p || i + 1}</td><td>${esc(x.n || "-")}</td><td>${x.k || 0}</td><td>${x.a ? R(x.a) : "-"}</td></tr>`).join("")}</table>${m.res && m.res[ME.uid] ? `<button class="btn" onclick="H.shareWin('${m.id}')">📣 Share my result</button>` : ""}`; };
+const eta = t => { const d = t - now(); if (d <= 0) return "starting"; const m = Math.floor(d / 6e4), h = Math.floor(m / 60); return h >= 24 ? Math.floor(h / 24) + "d " + h % 24 + "h" : h ? h + "h " + m % 60 + "m" : m + "m"; };
+const firstV = () => { if ((U.mt || 0) > 0) return ""; const m = openM().filter(x => x.status == "open").sort((a, b) => a.fee - b.fee || a.start - b.start)[0]; if (!m) return "";
+  return `<div class="card promo" style="margin-top:12px" onclick="go('match','${m.id}')"><div class="pi">🚀</div><div><b>Join your first match</b><br><small class="dim">${esc(m.title)} • ${m.fee ? "Entry " + R(m.fee) : "Free entry"} • ${prize(m)}</small></div></div>`; };
+const winnersV = () => { const w = M.filter(m => m.status == "completed" && m.res).sort((a, b) => (b.endedAt || 0) - (a.endedAt || 0)).slice(0, 4).flatMap(m => { const t = Object.values(m.res).sort((a, b) => (b.a || 0) - (a.a || 0))[0]; return t && t.a ? [{n:t.n, a:t.a, t:m.title}] : []; });
+  if (!w.length) return ""; return `<h2>🏆 Recent winners</h2><div class="card">${w.map(x => `<div class="row" style="padding:6px 0;border-bottom:1px solid #1d202a;align-items:center"><span>🥇 ${esc(x.n)}<br><small class="dim">${esc(x.t)}</small></span><b class="gold" style="text-align:right;flex:none">${R(x.a)}</b></div>`).join("")}</div>`; };
+const LVT = [0, 100, 300, 700, 1500, 3000], LVN = ["Rookie", "Fighter", "Warrior", "Elite", "Champion", "Legend"];
+const levelV = () => { const xp = (U.mt || 0) * 10 + (U.w || 0) * 40 + (U.k || 0) * 2, i = LVT.filter(x => xp >= x).length - 1, nx = LVT[i + 1], pct = nx ? (xp - LVT[i]) / (nx - LVT[i]) * 100 : 100;
+  const B = badgeList();
+  return `<div class="card"><b>${LVN[i]}</b> <small class="dim">• ${xp} XP${nx ? " • " + (nx - xp) + " XP to " + LVN[i + 1] : ""}</small><div class="bar"><i style="width:${pct}%"></i></div><small class="dim">Earn XP: 10 per match, 40 per win, 2 per kill.</small>
+  <div class="bdgs">${B.map(b => `<div class="bd ${b[2] ? "" : "lock"}"><i>${b[0]}</i>${b[1]}</div>`).join("")}</div></div>`; };
+const podiumV = r => r.length < 3 ? "" : `<div class="pod">${[1, 0, 2].map(i => `<div class="pd p${i}"><em>${["🥇", "🥈", "🥉"][i]}</em><b>${esc(r[i].name)}</b><small>${r[i].k || 0} kills</small></div>`).join("")}</div>`;
+
+/* ---------- CUSTOMER CARE ---------- */
+const SCATS = [["Deposit", "💳", "Money not added after paying"], ["Withdrawal", "💸", "Withdrawal late or rejected"], ["Match / room", "🎮", "Room ID, kills or result problem"], ["Prize", "🏆", "Prize not received"], ["Account", "👤", "Login, name, UID or ban"], ["Other", "💬", "Anything else"]];
+const SNEED = ["Deposit", "Withdrawal", "Match / room", "Prize"];
+const sid = x => String(x).replace(/[^A-Za-z0-9_-]/g, "");
+const safeImg = d => /^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(String(d || "")) ? d : "";
+const shrink = f => new Promise((ok, no) => { const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => { const k = Math.min(1, 900 / Math.max(im.width, im.height)), w = Math.round(im.width * k), h = Math.round(im.height * k), c = document.createElement("canvas"); c.width = w; c.height = h; c.getContext("2d").drawImage(im, 0, 0, w, h); let q = .7, d = c.toDataURL("image/jpeg", q); while (d.length > 260000 && q > .3) { q -= .1; d = c.toDataURL("image/jpeg", q); } ok(d); }; im.onerror = no; im.src = r.result; }; r.onerror = no; r.readAsDataURL(f); });
+const supUnread = () => SQ.filter(t => t.lastBy == "u" && (t.last || 0) > (t.aSeen || 0) && t.status != "closed").length;
+const supMsgs = (th, mine) => { const L = (th && th.msgs) || []; if (!L.length) return '<p class="dim" style="text-align:center;margin-top:30px">Tell us what happened. Add a screenshot if you can.</p>'; let last = "";
+  return L.map(x => { const me = x.f == mine, d = dayL(x.at), sep = d != last ? `<div class="dsep"><span>${d}</span></div>` : ""; last = d;
+    return sep + `<div class="mrow ${me ? "me" : ""}"><div class="bub ${me ? "me" : ""}">${me ? "" : `<div class="who"><span class="own">${mine == "u" ? "Support" : esc((th && th.name) || "User")}</span></div>`}${x.t ? `<div>${fmt(x.t)}</div>` : ""}${x.img ? `<div><button class="chip" onclick="H.shot('${sid(x.img)}')">📷 View screenshot</button></div>` : ""}<div class="tm">${clk(x.at)}</div></div></div>`; }).join(""); };
+const paintSup = () => { const c = $("#smsgs"); if (!c) return; const th = V == "support" ? SUP : STH, n = String(((th || {}).msgs || []).length); if (c.dataset.h == n) return; c.dataset.h = n; c.innerHTML = supMsgs(th, V == "support" ? "u" : "a"); c.scrollTop = 1e9; };
+const supV = () => { const live = SUP && (SUP.msgs || []).length && SUP.status != "closed";
+  if (!SCAT) return `<h2>Help &amp; support</h2><p class="dim">What do you need help with? Pick a topic.</p>${live ? `<div class="card m" onclick="H.supCont()"><span><b>Continue your open ticket</b><br><small class="dim">${esc(SUP.cat || "")} • we reply here</small></span><span class="tag live">OPEN</span></div>` : ""}${SCATS.map((c, i) => `<div class="card m" onclick="SCAT=SCATS[${i}][0];render('now')"><span style="font-size:26px;margin-right:10px">${c[1]}</span><span style="flex:1"><b>${c[0]}</b><br><small class="dim">${c[2]}</small></span><b>›</b></div>`).join("")}`;
+  const need = SNEED.includes(SCAT) && !((SUP && SUP.msgs) || []).some(m => m.f == "u" && m.img && m.cat == SCAT);
+  return `<div class="chat"><div class="chead"><button class="chip" onclick="SCAT='';SIMG=null;render('now')">‹</button><div class="av">🎧</div><div><b>${SCAT}</b><br><small class="dim">${SUP && SUP.status == "closed" ? "Ticket closed. Send a message to reopen it." : "Tell us the problem. We reply here."}</small></div></div>
+ ${need ? '<div class="card" style="margin:6px 8px">📷 <b>Please attach a screenshot</b> of the problem (tap 📎), then describe it. We check it against your account.</div>' : ""}
+ <div id="smsgs" class="cmsgs">${supMsgs(SUP, "u")}</div>
+ ${SIMG ? '<div class="tags"><span class="dim">📷 Screenshot attached</span><button onclick="SIMG=null;render(\'now\')">Remove</button></div>' : ""}
+ <div class="cbar"><button class="send" style="background:#2a2f40" onclick="$('#sfile').click()">📎</button><input id="sfile" type="file" accept="image/*" class="hide" onchange="H.pick(this)"><input id="sm" placeholder="Describe your problem" autocomplete="off" onkeydown="if(event.key=='Enter')H.supSend()"><button class="send" onclick="H.supSend()">➤</button></div></div>`; };
+const ckH = r => { const cs = r.checks || [], col = l => l == "bad" ? "#ff6b6b" : l == "warn" ? "#f0b429" : "#2ecc71";
+  return `<div style="margin-top:10px"><b>${cs.some(c => c.level == "bad") ? "⚠️ Problem found" : cs.some(c => c.level == "warn") ? "🟡 Please check" : "✅ Nothing wrong found"}</b><br><small class="dim">Wallet ${R(r.facts.play)} play + ${R(r.facts.win)} winnings • ${r.facts.deposits} paid deposits (${R(r.facts.depTotal)})</small>
+  ${cs.map((c, i) => `<div class="card" style="margin:6px 0;border-color:${col(c.level)}">${c.level == "bad" ? "❌" : c.level == "warn" ? "🟡" : "✅"} ${esc(c.text)}${c.fix ? `<br><button class="btn ok" style="margin-top:8px" onclick="H.fix(${i})">${esc(c.fix.label)}</button>` : ""}</div>`).join("")}</div>`; };
+const supMaster = () => { if (!ST) return `<h2>Help &amp; support tickets</h2>${SL.length ? SL.slice().sort((a, b) => (b.last || 0) - (a.last || 0)).map(t => { const un = t.lastBy == "u" && (t.last || 0) > (t.aSeen || 0) && t.status != "closed", lm = (t.msgs || []).slice(-1)[0] || {};
+    return `<div class="card m" onclick="H.supOpen('${sid(t.id)}')"><span><b>${esc(t.name || "User")}</b> ${un ? '<span class="tag live">NEW</span>' : ""}${t.status == "closed" ? ' <span class="tag x">CLOSED</span>' : ""}<br><small class="dim">UID ${esc(t.gid || "-")} • ${esc(t.cat || "")} • ${esc(String(lm.t || "📷 Screenshot").slice(0, 60))}</small></span><span style="text-align:right"><small>${T(t.last || 0)}</small><br><button class="chip" onclick="event.stopPropagation();H.supQuick('${sid(t.id)}')">🤖 Check</button></span></div>`; }).join("") : '<p class="dim">No tickets yet.</p>'}`;
+  const th = STH || SL.find(x => x.id == ST) || {};
+  return `<button class="btn alt" onclick="ST=null;STH=null;SCK=null;render('now')">← All tickets</button><div class="card"><b>${esc(th.name || "User")}</b> <small class="dim">${esc(th.email || "")} • UID ${esc(th.gid || "-")} • ${esc(th.cat || "")}</small><div class="row"><button class="btn" onclick="H.supCheck()">🤖 Assistant check</button><button class="btn alt" onclick="H.manage('${sid(ST)}')">💰 Manage user</button></div>${SCK ? ckH(SCK) : ""}</div>
+  <div class="chat" style="height:340px"><div id="smsgs" class="cmsgs">${supMsgs(th, "a")}</div><div class="cbar"><input id="sm" placeholder="Reply to the user" autocomplete="off" onkeydown="if(event.key=='Enter')H.supReply()"><button class="send" onclick="H.supReply()">➤</button></div></div>
+  <button class="btn alt" onclick="H.supClose()">${th.status == "closed" ? "Reopen ticket" : "Close ticket"}</button>`; };
+const RANKS = ["Scout", "Captain", "Commander", "Legend", "Mythic", "Immortal"];
+let SFX = (() => { try { return localStorage.getItem("fl_sfx") != "0"; } catch (e) { return true; } })(), AC = null, PI = 0, ANIMV = false; const PN = {};
+const sfx = k => { if (!SFX) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state == "suspended") AC.resume();
+  const seq = {win:[[523, 0], [659, .09], [784, .18], [1047, .27]], tick:[[1300, 0]], ok:[[660, 0], [880, .08]]}[k] || [], tk = k == "tick";
+  seq.forEach(([f, t]) => { const o = AC.createOscillator(), g = AC.createGain(), a = AC.currentTime + t; o.type = tk ? "square" : "sine"; o.frequency.value = f; g.gain.setValueAtTime(.0001, a); g.gain.exponentialRampToValueAtTime(tk ? .04 : .16, a + .01); g.gain.exponentialRampToValueAtTime(.0001, a + (tk ? .04 : .22)); o.connect(g); g.connect(AC.destination); o.start(a); o.stop(a + .25); }); } catch (e) {} };
+const buzz = p => { if (SFX && navigator.vibrate) try { navigator.vibrate(p); } catch (e) {} };
+addEventListener("scroll", () => document.body.classList.toggle("sc", scrollY > 8), {passive:true});
+document.addEventListener("click", e => { if (e.target.closest && e.target.closest(".btn,.chip,nav a,.tile2,.mode,.card.m,.tabs button,.ic,.rank")) buzz(8); }, true);
+// numbers count up or down to the new value (wallet chip and wallet page)
+const animNums = () => document.querySelectorAll("[data-n]").forEach(el => { const k = el.dataset.k, to = +el.dataset.n, from = PN[k]; PN[k] = to; if (from == null || from === to) return;
+  const t0 = performance.now(), step = t => { const p = Math.min(1, (t - t0) / 700), v = from + (to - from) * (1 - Math.pow(1 - p, 3)); el.textContent = R(Math.round(v * 100) / 100) + (el.dataset.s || ""); if (p < 1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+const badgeList = () => [["🎮", "First match", (U.mt || 0) >= 1], ["🔥", "10 matches", (U.mt || 0) >= 10], ["🏆", "First win", (U.w || 0) >= 1], ["⭐", "5 wins", (U.w || 0) >= 5], ["💀", "50 kills", (U.k || 0) >= 50], ["👥", "3 friends invited", (U.refCount || 0) >= 3], ["📅", "7-day streak", ((U.daily || {}).streak || 0) >= 7], ["🎡", "Lucky spinner", !!(U.spin && U.spin.last)]];
+// a popup with confetti the first time a badge is earned (the first run only remembers what is already earned)
+const checkAch = () => { if (!ME || !U || !U.name || document.querySelector(".dlg")) return; const k = "fl_ach_" + ME.uid; let seen = null; try { seen = JSON.parse(localStorage.getItem(k)); } catch (e) {}
+  const all = badgeList(), have = all.filter(b => b[2]).map(b => b[1]), save = () => { try { localStorage.setItem(k, JSON.stringify(have)); } catch (e) {} };
+  if (!Array.isArray(seen)) return save(); const fresh = all.filter(b => b[2] && !seen.includes(b[1])); if (!fresh.length) return; save();
+  dlg(`<div class="ach"><div class="e">${fresh[0][0]}</div><h3>Achievement unlocked!</h3><b class="gold">${fresh[0][1]}</b>${fresh.length > 1 ? `<br><small class="dim">+ ${fresh.length - 1} more badge${fresh.length > 2 ? "s" : ""}</small>` : ""}<button class="btn" onclick="closeDlg()">AWESOME</button></div>`); burst(); };
+(() => { const bar = document.createElement("div"); bar.className = "ptr"; bar.textContent = "↓ Pull to refresh"; document.body.appendChild(bar); let y0 = 0, pull = 0, on = false;
+  const reset = () => { bar.classList.add("go"); bar.style.transform = ""; bar.style.opacity = 0; };
+  addEventListener("touchstart", e => { on = scrollY <= 0 && !!ME && READY && !["chat", "support"].includes(V) && !document.querySelector(".dlg") && !$("#side").classList.contains("open"); y0 = e.touches[0].clientY; pull = 0; bar.classList.remove("go"); }, {passive:true});
+  addEventListener("touchmove", e => { if (!on) return; pull = e.touches[0].clientY - y0; if (pull > 8) { const q = Math.min(pull, 100); bar.style.transform = "translate(-50%," + (q - 50) + "px)"; bar.style.opacity = Math.min(1, q / 60); bar.textContent = pull > 80 ? "Release to refresh" : "↓ Pull to refresh"; } }, {passive:true});
+  addEventListener("touchend", async () => { if (!on) return; on = false; if (pull > 80) { bar.textContent = "Refreshing..."; bar.classList.add("go"); bar.style.transform = "translate(-50%,16px)"; bar.style.opacity = 1; LAST = 0; try { await render(true); } catch (e) {} sfx("ok"); setTimeout(reset, 500); } else reset(); }, {passive:true}); })();
+const burst = () => { sfx("win"); buzz([20, 40, 20]); const c = document.createElement("div"); c.className = "cf"; c.innerHTML = Array.from({length:26}, (_, i) => `<i style="left:${Math.random() * 100}%;animation-delay:${Math.random() * .4}s;background:${["#7fa8ff", "#e4ebf7", "#3d78f2", "#ffd36b"][i % 4]}"></i>`).join(""); document.body.appendChild(c); setTimeout(() => c.remove(), 2600); };
+const wheel = p => `<div class="wheelbox"><i class="wptr"></i><div class="wheel" id="wh" style="background:conic-gradient(${p.map((_, i) => `${i % 2 ? "#c9d4ec" : "#2f66e8"} ${i * 45}deg ${(i + 1) * 45}deg`).join(",")})">${p.map((x, i) => `<b style="color:${i % 2 ? "#0b1020" : "#fff"};transform:rotate(${i * 45 + 22.5}deg) translateY(-92px)${i * 45 + 22.5 > 90 && i * 45 + 22.5 < 270 ? " rotate(180deg)" : ""}">${x ? R(x) : "✕"}</b>`).join("")}</div></div>`;
+const depOf = () => U.depTotal != null ? U.depTotal : (U.tx || []).filter(t => t.t == "deposit").reduce((a, t) => a + (t.amt || 0), 0);
+const spinLock = () => depOf() < CFG.spinMin ? "Add " + R(CFG.spinMin - depOf()) + " more to unlock the lucky spin." : "";
+const fdBanner = () => CFG.fdPct > 0 && !U.fdDone && !(U.tx || []).some(t => t.t == "deposit") ? `<div class="card" style="margin:8px 0">🎁 First deposit bonus: <b class="gold">+${CFG.fdPct}% extra</b> (up to ${R(CFG.fdMax)})</div>` : "";
+const referV = () => { if (!CFG.refOn) return '<p class="dim center">The invite program is paused right now.</p>';
+  const code = U.refCode || mkCode(ME.uid), cnt = U.refCount || 0, L = CFG.ladder.slice().sort((a, b) => a.n - b.n), nxt = L.find(x => x.n > cnt), prev = L.filter(x => x.n <= cnt).pop(), from = prev ? prev.n : 0,
+   pct = nxt ? Math.min(100, (cnt - from) / (nxt.n - from) * 100) : 100, rk = L.filter(x => x.n <= cnt).length, top = LB.filter(x => x.name && !x.banned && x.refCount > 0).sort((a, b) => b.refCount - a.refCount).slice(0, 5);
+  const box = (v, l) => `<div class="card center" style="padding:10px"><div class="big" style="font-size:22px">${v}</div><small class="dim">${l}</small></div>`;
+  return `<div class="hero"><small class="dim">Your invite code</small><h3>Invite friends.<br>Earn ${R(CFG.refReferrer)} for each one.</h3><small class="dim">Your friend gets ${R(CFG.refFriend)} too.</small>
+  <div class="code"><b>${code}</b><button class="chip" onclick="H.copy('${code}')">Copy</button></div>
+  <div class="row"><button class="btn" style="margin-top:0" onclick="H.shareRef()">📲 Share</button><button class="btn alt" style="margin-top:0" onclick="H.copy('${refLink()}')">🔗 Copy link</button></div></div>
+  <div class="steps"><div><i>📤</i>Share your code or link</div><div><i>💳</i>Friend joins and adds ${R(CFG.refMin)}+</div><div><i>🎁</i>You both get a bonus</div></div>
+  <div class="row">${box(cnt, "Friends joined")}${box(R(U.refEarn || 0), "Total earned")}${box(rk ? RANKS[rk - 1] : "Recruit", "Your rank")}</div>
+  <h2>🏅 Rank rewards</h2><div class="card"><small class="dim">${nxt ? (nxt.n - cnt) + " more friend" + (nxt.n - cnt > 1 ? "s" : "") + " to reach " + RANKS[rk] + " and win " + R(nxt.b) : "You reached the top rank. Legend!"}</small><div class="bar"><i style="width:${pct}%"></i></div></div>
+  ${L.map((x, i) => `<div class="rank ${cnt >= x.n ? "done" : ""}"><em>${cnt >= x.n ? "✅" : "🔒"}</em><div><b>${RANKS[i] || "Rank " + (i + 1)}</b><br><small class="dim">Invite ${x.n} friends</small></div><b class="r">+${R(x.b)}</b></div>`).join("")}
+  ${!U.refBy ? `<h2>Have a friend's code?</h2><div class="card"><input id="rc" maxlength="12" placeholder="Enter code" style="text-transform:uppercase"><button class="btn alt" onclick="H.applyRef()">APPLY CODE</button><small class="dim">Works only before your first deposit.</small></div>` : ""}
+  <h2>🔥 Top recruiters</h2><div class="card">${top.map((x, i) => `<div class="row" style="padding:6px 0;border-bottom:1px solid #1d202a"><span>${["🥇", "🥈", "🥉"][i] || i + 1 + "."} ${esc(x.name)}</span><b style="text-align:right">${x.refCount}</b></div>`).join("") || '<small class="dim">No recruiters yet. Be the first!</small>'}</div>
+  <small class="dim">Rewards go to your play balance. Invite rewards count only when a friend adds money for the first time.</small>`; };
+const gcard = g => `<div class="gc"><div class="gct">Fraglord gift card</div><div class="gca">${R(g.amount)}</div><div class="gcn">${esc(g.note || "Good luck in the arena!")}</div><div class="gcf"><span>From ${esc(g.byName || "a friend")}</span><b>${g.code ? fmtCode(g.code) : "FL-••••-••••-••••"}</b></div></div>`;
+const giftV = () => { if (!CFG.giftOn) return '<p class="dim center">Gift cards are paused right now.</p>';
+  const body = {create:`<div id="gprev">${gcard({amount:+(($("#ga") || {}).value) || 100, byName:U.name, note:""})}</div><div class="card"><label>Amount (${R(CFG.giftMin)} - ${R(CFG.giftMax)})</label><input id="ga" type="number" value="100" oninput="H.gprev()"><label>Message (optional)</label><input id="gn" maxlength="60" placeholder="Happy birthday, champ!" oninput="H.gprev()">
+     <small class="dim">Taken from your wallet (play balance first, then winnings).${CFG.giftFee > 0 ? " A " + CFG.giftFee + "% fee applies." : ""} Whoever has the code can claim it, from any account. The money goes to their play balance.</small><button class="btn" onclick="H.giftMake()">CREATE GIFT CARD</button></div>`,
+   redeem:`<div class="card"><label>Gift card code</label><input id="gr" placeholder="FL-XXXX-XXXX-XXXX" style="text-transform:uppercase"><button class="btn" onclick="H.giftUse()">CLAIM GIFT</button><small class="dim">The amount is added to your play balance at once.</small></div>`,
+   mine:GC.map(g => `<div class="card">${g.status == "active" ? gcard(g) : `<b>${R(g.amount)}</b> <span class="tag ${g.status == "redeemed" ? "" : "x"}">${g.status.toUpperCase()}</span>${g.toName ? `<br><small class="dim">Claimed by ${esc(g.toName)}</small>` : ""}<br><small class="dim">${T(g.at)}</small>`}
+     ${g.status == "active" ? `<div class="row"><button class="btn" onclick="H.shareGift('${g.code}')">📲 Share</button><button class="btn alt" onclick="H.copy('${fmtCode(g.code)}')">Copy code</button><button class="btn alt" onclick="H.giftCancel('${g.code}')">Cancel</button></div>` : ""}</div>`).join("") || '<p class="dim center">You have not created any gift cards.</p>'}[GT];
+  return `<h2>🎫 Gift cards</h2><div class="tabs">${[["create", "Create"], ["redeem", "Redeem"], ["mine", "My cards"]].map(t => `<button class="${GT == t[0] ? "on" : ""}" onclick="GT='${t[0]}';render('now')">${t[1]}</button>`).join("")}</div>${body}`; };
+const deepLinks = () => { if (DL || !U || !U.name) return; DL = true; let g = ""; try { g = (localStorage.getItem("fl_gift") || "").replace(/[^A-Za-z0-9-]/g, ""); localStorage.removeItem("fl_gift"); } catch (e) {}
+  if (g) dlg(`<b>🎫 You received a gift card!</b><p class="dim">Tap below to add it to your wallet.</p><input id="gr" value="${g}"><button class="btn" onclick="H.giftUse()">CLAIM GIFT</button>`); };
+
+const esc = t => String(t).replace(/[&<>]/g, c => ({"&":"&amp;", "<":"&lt;", ">":"&gt;"})[c]);
+const fmt = t => esc(t).replace(/@owner|@[\w.+-]+@[\w.-]*\w/gi, m => `<b class="gold">${m}</b>`);
+const seen = k => { try { return +localStorage.getItem(k) || 0; } catch (e) { return 0; } }, mark = k => { try { localStorage.setItem(k, now()); } catch (e) {} };
+const dayL = t => new Date(t).toLocaleDateString("en-IN", {day:"numeric", month:"short", year:"numeric"});
+const clk = t => new Date(t).toLocaleTimeString("en-IN", {hour:"numeric", minute:"2-digit", hour12:true});
+const paint = () => { const b = $("#msgs"); if (!b) return; const nb = b.scrollHeight - b.scrollTop - b.clientHeight < 80; b.innerHTML = msgsH(); if (nb) b.scrollTop = b.scrollHeight; };
+const msgsH = () => { const L = (CM && CM.msgs) || []; if (!L.length) return '<p class="dim" style="text-align:center;margin-top:30px">No messages yet. Say hello!</p>'; let last = "";
+ return L.map(x => { const me = x.f == ME.uid, e = String(x.e || "").replace(/[^\w.@+-]/g, ""), d = dayL(x.at), sep = d != last ? `<div class="dsep"><span>${d}</span></div>` : ""; last = d;
+  return sep + `<div class="mrow ${me ? "me" : ""}"><div class="bub ${me ? "me" : ""}">${me ? "" : `<div class="who" onclick="H.tag('${e}')"><span class="${x.r == "owner" ? "own" : ""}">${x.r == "owner" ? "Owner" : "Host"}</span> ${esc(x.e || x.n)}</div>`}<div>${fmt(x.t)}</div><div class="tm">${clk(x.at)}</div></div></div>`; }).join(""); };
+const chatV = () => { if (!["host", "master"].includes(U.role)) return '<p class="dim">Not available.</p>'; const mst = U.role == "master", th = [["all", "Group"], ...(mst ? LB.filter(u => u.role == "host").map(h => [h.id, "DM: " + (h.email || h.name)]) : [[ME.uid, "Owner (private)"]])];
+ const ppl = [...(mst ? [] : [["owner", "@owner"]]), ...HLIST.filter(h => h.id != ME.uid && h.e).map(h => [h.e.replace(/[^\w.@+-]/g, ""), "@" + h.e])], cur = th.find(t => t[0] == CT) || th[0];
+ return `<div class="chat"><div class="chead"><div class="av">${CT == "all" ? "👥" : "👤"}</div><div><b>${CT == "all" ? "Owner &amp; Hosts" : esc(cur[1])}</b><br><small class="dim">${CT == "all" ? (HLIST.length + 1) + " members • " : ""}tap a name to tag</small></div></div>
+ <div class="tabs" style="margin:6px 8px">${th.map(t => `<button class="${CT == t[0] ? "on" : ""}" onclick="CT='${t[0]}';CM=null;render('now')">${esc(t[1])}</button>`).join("")}</div><div id="msgs" class="cmsgs">${msgsH()}</div>
+ <div class="tags">${ppl.map(x => `<button onclick="H.tag('${x[0]}')">${esc(x[1])}</button>`).join("")}</div><div class="cbar"><input id="cm" placeholder="Message" autocomplete="off" onkeydown="if(event.key=='Enter')H.send()"><button class="send" onclick="H.send()">➤</button></div></div>`; };
+const chatUnread = () => V == "chat" ? 0 : ((CMX && CMX.msgs) || []).filter(x => x.f != ME.uid && x.at > seen("chatSeen")).length;
+const notifs = () => { const out = [], me = U || {};
+ if (NOTICE) out.push({ic:"📢", t:"Announcement", d:NOTICE, at:NOTICE_AT});
+ M.filter(m => me.joined && me.joined[m.id]).forEach(m => { if (m.room && ["open", "live"].includes(m.status)) out.push({ic:"🔑", t:"Room details are out", d:m.title + ": open the match to see the Room ID and password.", at:m.roomAt || 0}); if (m.status == "live") out.push({ic:"🔴", t:"Match is live", d:m.title, at:0}); if (m.status == "completed") out.push({ic:"🏁", t:"Match completed", d:m.title, at:0}); if (m.status == "cancelled") out.push({ic:"↩️", t:"Match cancelled", d:m.title + ": your entry fee was refunded.", at:0}); });
+ (me.tx || []).slice(0, 8).forEach(x => out.push({ic:({deposit:"➕", entry:"🎮", prize:"🏆", refund:"↩️", bonus:"🎁", gift:"🎫", adjust:"🛠️", withdraw:"💸"})[x.t] || "•", t:x.note, d:(x.amt < 0 ? "-" : "+") + R(Math.abs(x.amt)), at:x.at}));
+ if (["host", "master"].includes(me.role)) { const u = chatUnread(); if (u) out.push({ic:"💬", t:u + " new chat message" + (u > 1 ? "s" : ""), d:"Open Host chat from the menu.", at:now()}); }
+ if (me.role == "master") { const q = SQ.filter(t => t.lastBy == "u" && (t.last || 0) > (t.aSeen || 0) && t.status != "closed"); if (q.length) out.push({ic:"🎧", t:q.length + " customer message" + (q.length > 1 ? "s" : ""), d:"Open Master admin, then Support.", at:Math.max(...q.map(t => t.last || 0))}); }
+ if (SUP && SUP.lastBy == "a" && (SUP.last || 0) > (SUP.uSeen || 0)) out.push({ic:"🎧", t:"Support replied", d:"Open Help &amp; support from the menu.", at:SUP.last});
+ return out.sort((a, b) => b.at - a.at); };
+const unread = () => notifs().filter(x => x.at > seen("notifSeen")).length;
+const notifV = () => `<h2>Notifications</h2>${notifs().map(x => `<div class="card" style="cursor:default"><b>${x.ic} ${esc(x.t)}</b><br><small class="dim">${esc(x.d)}${x.at ? " • " + T(x.at) : ""}</small></div>`).join("") || '<p class="dim">You are all caught up.</p>'}`;
+const posterV = () => { const a = P.filter(p => p.on); if (!a.length) return `<div class="banner img" ${bg(G == "FF" ? "banner" : "bgmi")}><div><h3>${G == "FF" ? "FREE FIRE" : "BGMI"}</h3><p>${G == "FF" ? "BATTLE IN STYLE" : "WINNER WINNER"}</p></div></div>`;
+ return `<div style="display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory">${a.map(p => `<div class="banner img" style="flex:0 0 100%;scroll-snap-align:center;background-image:url('${String(p.url).replace(/'/g, "%27")}')">${p.title ? `<div><h3>${esc(p.title)}</h3></div>` : ""}</div>`).join("")}</div>`; };
+
+/* 5. ACTIONS */
+// render() = draw now, refresh quietly in the background. reload() = refresh first, then draw (used after an action).
+const cancelM = async id => { const m = M.find(x => x.id == id); const ok = await store.update("matches", id, d => ["open", "live"].includes(d.status) ? {status:"cancelled"} : null); if (!ok) return;
+  for (const uid of Object.keys(m.players || {})) if (!(m.rf && m.rf[uid])) await store.update("users", uid, d => ({play:(d.play || 0) + m.fee, tx:addTx(d, "refund", "Refund: " + m.title, m.fee)})); };
+const autoCancel = async () => { let c = 0; for (const m of M) if (m.status == "open" && m.cat == "BR" && now() > m.start && n(m) < (m.min || m.max)) { await cancelM(m.id); c++; } return c > 0; };
+const H = {
+  login: act(async () => { await FBREADY; if (!FB && !LOCAL) { toast("Still loading. Please try again in a moment."); return; } if (FB) { const gp = new firebase.auth.GoogleAuthProvider(); try { await auth.signInWithPopup(gp); } catch (e) { if (e.code == "auth/popup-blocked" || e.code == "auth/operation-not-supported-in-this-environment" || e.code == "auth/popup-closed-by-user" && matchMedia("(display-mode: standalone)").matches) await auth.signInWithRedirect(gp); else throw e; } } else { ME = {uid:"demo", email:"demo@fraglord.app"}; READY = false; U = null; draw(); await track(); await reload(); } }),
+  logout: act(async () => { if (FB) await auth.signOut(); ME = null; U = null; READY = false; LB = []; LOADED = {}; draw(); }),
+  rules: () => { toggleSide(false); dlg("<b>Rules &amp; policies</b><p class='dim'>Cancelled or under-filled matches are fully refunded. No-shows and disqualified players are not. Hacking means disqualification. Play with the exact name and UID you registered.</p>"); },
+  help: () => { toggleSide(false); SCAT = ""; SIMG = null; go("support"); },
+  notice: act(async () => { await store.set("settings", "app", {notice:$("#an").value.trim(), noticeAt:now()}); toast("Announcement saved."); reload(); }),
+  ban: act(async (id, f) => { await store.set("users", id, {banned:f}); toast(f ? "User banned." : "User unbanned."); reload(); }),
+  saveProfile: act(async () => { const u = $("#u").value.trim(), id = $("#id").value.trim();
+    if (u.length < 3 || u.length > 20) return toast("Username must be 3-20 characters.");
+    if (!/^\d{6,15}$/.test(id)) return toast("UID must be 6-15 digits.");
+    const rc = (($("#rc") || {}).value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "");
+    await store.update("users", ME.uid, d => ({name:u, gid:id, refCode:d.refCode || mkCode(ME.uid), play:d.play || 0, win:d.win || 0, k:d.k || 0, w:d.w || 0, mt:d.mt || 0, joined:d.joined || {}, tx:d.tx || []}));
+    if (rc && FB) { try { await srv("ref_apply", {code:rc}); toast("Invite code applied 🎉"); } catch (e) { toast(e.user ? e.message : "Invite code could not be applied."); } }
+    try { localStorage.removeItem("fl_ref"); } catch (e) {} reload(); }),
+  rename: act(async () => { const v = $("#nn").value.trim(); if (v.length < 3) return toast("Username must be 3-20 characters."); await store.set("users", ME.uid, {name:v}); toast("Saved."); reload(); }),
+  join: act(async id => { const m = M.find(x => x.id == id); if (U.banned) return toast("Your account is suspended.");
+    if (tot() < m.fee) return dlg(`<b>Add money to join</b><p class="dim">The entry fee is ${R(m.fee)} and your wallet has ${R(tot())}.</p><button class="btn" onclick="closeDlg();H.addMoney()">Add money</button>`);
+    dlg(`<b>Confirm</b><p class="dim">${R(m.fee)} will be deducted from your wallet to join '${m.title}'.</p><button class="btn" onclick="H.doJoin('${id}')">CONFIRM</button>`); }),
+  doJoin: act(async id => { closeDlg(); const m = M.find(x => x.id == id); if (U.banned) return toast("Your account is suspended.");
+    const ok = await store.update("matches", id, d => { const p = d.players || {}; if (p[ME.uid] || Object.keys(p).length >= d.max || d.status != "open") return null; return {players:{[ME.uid]:Object.keys(p).length + 1}, pn:{[ME.uid]:U.name}}; });
+    if (!ok) return toast("Cannot join this match.");
+    await store.update("users", ME.uid, d => { const fp = Math.min(d.play || 0, m.fee); return {play:(d.play || 0) - fp, win:(d.win || 0) - (m.fee - fp), mt:(d.mt || 0) + 1, joined:{[id]:m.fee}, tx:addTx(d, "entry", "Entry: " + m.title, -m.fee)}; });
+    toast("You're in!"); reload(); }),
+  addMoney: act(async () => dlg(`<b>Add money</b>${fdBanner()}<label>Amount (₹10 - ₹10,000)</label><input id="am" type="number"><button class="btn" onclick="H.pay()">PAY</button>${FB ? "" : '<p class="dim">Demo mode: payment is simulated.</p>'}`)),
+  pay: act(async () => { const a = Math.round(+$("#am").value * 100) / 100; if (!(a >= 10 && a <= 10000)) return toast("Enter ₹10 to ₹10,000.");
+    if (!FB) { await store.update("users", ME.uid, d => ({play:(d.play || 0) + a, tx:addTx(d, "deposit", "Added money", a)})); closeDlg(); toast(R(a) + " added."); return reload(); }
+    const sa = matchMedia("(display-mode: standalone)").matches || document.referrer.startsWith("android-app://"), w = sa ? null : window.open("", "_blank"); const r = await fetch(PAY_URL, {method:"POST", body:JSON.stringify({action:"create", amount:a, token:await auth.currentUser.getIdToken()})}); const j = await r.json();
+    if (!j.url) { if (w) w.close(); return toast(j.error || "Payment could not start."); } if (w) w.location = j.url; else location.href = j.url; const before = U.play || 0;
+    dlg("<b>Waiting for payment...</b><p class='dim'>Your wallet updates automatically after payment. You can close this.</p>");
+    for (let i = 0; i < 75; i++) { await new Promise(s => setTimeout(s, 4000)); try { await fetch(PAY_URL, {method:"POST", body:JSON.stringify({action:"check", orderId:j.orderId, token:await auth.currentUser.getIdToken()})}); } catch (e) {} const u = await store.get("users", ME.uid); if ((u.play || 0) > before) { closeDlg(); toast("Money added to your wallet."); return reload(); } } }),
+  withdraw: act(async () => dlg(`<b>Withdraw</b><label>Amount (${R(CFG.wdMin)} up to your Winnings)</label><input id="wa" type="number"><label>UPI ID</label><input id="up" placeholder="name@bank"><button class="btn" onclick="H.reqWd()">REQUEST</button>`)),
+  reqWd: act(async () => { const a = +$("#wa").value, u = $("#up").value.trim(); if (a < CFG.wdMin || a > (U.win || 0)) return toast("Amount must be " + R(CFG.wdMin) + " or more, within your Winnings."); if (!/^[\w.\-]+@\w+$/.test(u)) return toast("Enter a valid UPI ID.");
+    if ((await store.where("withdrawals", "uid", ME.uid, 20)).some(w => w.st == "pending")) return toast("You already have a pending request.");
+    await store.set("withdrawals", "w" + now(), {uid:ME.uid, a, upi:u, st:"pending", at:now()}); await store.update("users", ME.uid, d => ({win:(d.win || 0) - a, tx:addTx(d, "withdraw", "Withdrawal to " + u, -a, 1)})); closeDlg(); toast("Withdrawal requested. It will be paid after admin approval."); reload(); }),
+  goLive: act(async () => { const st = new Date($("#hs").value).getTime(); if (!(st > now())) return toast("Pick a future start date and time.");
+    if (U.role == "host") { const mine = M.filter(x => x.by == ME.uid); if (mine.filter(x => now() - (x.created || 0) < 864e5).length >= HL.day) return toast("Daily room limit reached."); if (mine.filter(x => ["open", "live"].includes(x.status)).length >= HL.live) return toast("Too many rooms running at once."); }
+    const c = $("#hc").value, N = +$("#hp").value, md = $("#hm").value, tt = c == "BR" ? "Solo" : N / 2 + "v" + N / 2;
+    await store.set("matches", "m" + now(), {title:$("#ht").value.trim() || GM[$("#hg").value][c][0] + " " + tt, game:$("#hg").value, cat:c, team:tt, max:N, fee:+$("#hf").value, mode:md, win:md == "kill" ? 0 : +$("#hw").value, kill:md == "win" ? 0 : +$("#hk").value, map:$("#hmap").value.trim() || "Bermuda", start:st, min:c == "BR" ? Math.min(Math.max(+$("#hn").value || 1, 1), N) : N, created:now(), status:"open", players:{}, pn:{}, rules:$("#hr").value, by:ME.uid, img:((MATCH_IMAGES[$("#hg").value] || [])[HIMG] || {}).src || ""});
+    HIMG = -1; toast("Match is live and open for joining."); reload(); }),
+  room: act(async id => dlg(`<b>Publish room</b><label>Room ID</label><input id="ri"><label>Password</label><input id="rp"><button class="btn" onclick="H.saveRoom('${id}')">PUBLISH</button>`)),
+  saveRoom: act(async id => { const i = $("#ri").value.trim(), p = $("#rp").value.trim(); if (!i || !p) return toast("Enter both Room ID and password."); await store.set("matches", id, {room:{id:i, pw:p}, roomAt:now()}); closeDlg(); toast("Room published to joined players."); reload(); }),
+  results: act(async id => { const m = M.find(x => x.id == id), pn = m.pn || {};
+    dlg(`<b>Results: ${m.title}</b><p class="dim">Tick winners (each gets ${R(m.win)}) and enter kills (${R(m.kill)} per kill).</p><div id="rs">${Object.keys(m.players || {}).map(u => `<div class="card" data-u="${u}"><b>${pn[u] || u}</b><div class="row"><div><label>Kills</label><input type="number" class="rk" value="0" min="0"></div><div><label>Place (optional)</label><input type="number" class="rp" min="1" placeholder="-"></div><div><label><input type="checkbox" class="rw" style="width:auto"> Winner</label></div></div><div class="row"><button class="chip" onclick="H.refundOne('${id}','${u}')">Refund</button><button class="chip" onclick="H.ban('${u}',true)">Ban</button></div></div>`).join("")}</div><button class="btn ok" onclick="H.payout('${id}')">PAY OUT &amp; COMPLETE</button>`); }),
+  payout: act(async id => { const m = M.find(x => x.id == id); const ok = await store.update("matches", id, d => d.status == "live" ? {status:"completed"} : null); if (!ok) return toast("Already completed.");
+    const res = {}; for (const c of document.querySelectorAll("#rs [data-u]")) { const u = c.dataset.u, k = Math.max(0, Math.min(99, Math.floor(+c.querySelector(".rk").value || 0))), w = c.querySelector(".rw").checked, amt = (w && m.mode != "kill" ? m.win : 0) + (m.mode == "win" ? 0 : k * m.kill); if (m.rf && m.rf[u]) continue;
+      res[u] = {n:(m.pn || {})[u] || "", k, w, p:Math.floor(+c.querySelector(".rp").value || 0), a:amt};
+      await store.update("users", u, d => ({win:(d.win || 0) + amt, k:(d.k || 0) + k, w:(d.w || 0) + (w ? 1 : 0), tx:amt ? addTx(d, "prize", "Prize: " + m.title, amt) : (d.tx || [])})); }
+    await store.set("matches", id, {res, endedAt:now()}); closeDlg(); toast("Results saved. Prizes credited."); reload(); }),
+  refundOne: act(async (id, u) => { const m = M.find(x => x.id == id); if (m.rf && m.rf[u]) return toast("Already refunded."); await store.set("matches", id, {rf:{[u]:true}}); await store.update("users", u, d => ({play:(d.play || 0) + m.fee, tx:addTx(d, "refund", "Refund: " + m.title, m.fee)})); await refresh(); toast("Player refunded."); }),
+  bonus: act(async () => { const a = +$("#bn").value; if (!(a > 0 && a <= 10000)) return toast("Enter a bonus from ₹1 to ₹10,000."); const ids = $("#bl").value.split(",").map(x => x.trim()).filter(Boolean), all = $("#bt").value == "all";
+    const us = (await store.list("users", 1000)).filter(u => u.name && !u.banned && (all || ids.includes(u.gid))); if (!us.length) return toast("No matching players.");
+    for (const u of us) await store.update("users", u.id, d => ({play:(d.play || 0) + a, tx:addTx(d, "bonus", "Bonus", a)})); toast("Bonus sent to " + us.length + " players."); reload(); }),
+  setHost: act(async (id, f) => { const u = LB.find(x => x.id == id) || {}, em = (u.email || "").toLowerCase(); if (f && LB.filter(x => x.role == "host").length + HE.filter(h => h.on && !LB.some(x => (x.email || "").toLowerCase() == h.id)).length >= 10) return toast("Maximum 10 hosts allowed. Remove one first.");
+    await store.set("users", id, {role:f ? "host" : "player"}); if (em) await store.set("hostEmails", em, {on:f, at:now()}); toast(f ? "Host added." : "Host removed."); reload(); }),
+  addHostEmail: act(async () => { const em = $("#he").value.trim().toLowerCase(); if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return toast("Enter a valid email."); if (em == ADMIN_EMAIL) return toast("This is the owner account.");
+    const u = LB.find(x => (x.email || "").toLowerCase() == em); if (u) return H.setHost(u.id, true);
+    if (LB.filter(x => x.role == "host").length + HE.filter(h => h.on && !LB.some(x => (x.email || "").toLowerCase() == h.id)).length >= 10) return toast("Maximum 10 hosts allowed.");
+    await store.set("hostEmails", em, {on:true, at:now()}); toast("Host added. They become a host when they log in."); reload(); }),
+  delHostEmail: act(async em => { await store.set("hostEmails", em, {on:false}); reload(); }),
+  addPoster: act(async () => { const u = $("#pu").value.trim(); if (!/^(https?:\/\/|\/|data:image)/.test(u)) return toast("Paste a valid image link."); await store.set("posters", "p" + now(), {url:u, title:$("#pt").value.trim(), on:true, at:now()}); toast("Poster added."); reload(); }),
+  posterOn: act(async (id, f) => { await store.set("posters", id, {on:f}); reload(); }),
+  delPoster: act(async id => { await store.del("posters", id); toast("Poster removed."); reload(); }),
+  tag: (v) => { const i = $("#cm"); if (i && v) { i.value += "@" + v + " "; i.focus(); } },
+  limits: act(async () => { await store.set("settings", "app", {hostDay:+$("#hl1").value || 5, hostLive:+$("#hl2").value || 2}); toast("Limits saved."); reload(); }),
+  chat: () => { CT = "all"; go("chat"); },
+  send: act(async () => { const t = $("#cm").value.trim(); if (!t) return; const own = U.role == "master"; await store.update("chats", CT, d => ({msgs:[...(d.msgs || []), {f:ME.uid, n:own ? "Owner" : U.name, e:own ? ADMIN_EMAIL : (ME.email || U.email || ""), r:own ? "owner" : "host", t, at:now()}].slice(-200)})); $("#cm").value = ""; CM = await store.get("chats", CT); paint(); $("#msgs").scrollTop = 1e9; }),
+  shareWin: id => { const m = M.find(x => x.id == id), r = m && m.res && m.res[ME.uid]; if (r) doShare("I got " + (r.k || 0) + " kills" + (r.a ? " and won " + R(r.a) : "") + " in '" + m.title + "' on Fraglord! Join me: " + refLink()); },
+  copy: t => { try { navigator.clipboard.writeText(t); toast("Copied"); } catch (e) { toast(t); } },
+  shareRef: () => doShare("Join me on Fraglord: Free Fire & BGMI tournaments with real cash prizes! Use my invite code " + (U.refCode || mkCode(ME.uid)) + " and get " + R(CFG.refFriend) + " bonus. " + refLink()),
+  shareMatch: id => { const m = M.find(x => x.id == id); if (m) doShare("Join me in '" + m.title + "' on Fraglord! " + prize(m) + " • Entry " + (m.fee ? R(m.fee) : "Free") + " • " + T(m.start) + ". Sign up with my code " + (U.refCode || mkCode(ME.uid)) + ": " + refLink()); },
+  applyRef: act(async () => { const c = ($("#rc").value || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, ""); if (!c) return toast("Enter a code."); await srv("ref_apply", {code:c}); burst(); toast("Invite code applied 🎉"); reload(); }),
+  sfxSet: v => { SFX = !!v; try { localStorage.setItem("fl_sfx", v ? "1" : "0"); } catch (e) {} if (v) { sfx("win"); buzz(30); } render("now"); },
+  spinOpen: () => { const lk = spinLock(); if (lk) { toast(lk); return H.addMoney(); } if ((U.spin || {}).last == IST()) return toast("You already spun today. Come back tomorrow."); dlg(`<b>🎡 Lucky spin</b>${wheel(CFG.spin)}<div id="spr" class="center dim" style="min-height:24px">One free spin every day</div><button class="btn" id="spb" onclick="H.spin()">SPIN</button><button class="btn alt" onclick="closeDlg()">Close</button>`); },
+  spin: act(async () => { const b = $("#spb"); if (b) b.disabled = true; try { const j = await srv("spin"), w = $("#wh"); w.style.transition = "transform 4.2s cubic-bezier(.12,.7,.08,1)"; w.style.transform = "rotate(" + (1800 - (j.index * 45 + 22.5)) + "deg)"; { let t = 0, gap = 70; const tk = () => { sfx("tick"); buzz(5); t += gap; gap *= 1.085; if (t < 4100 && $("#wh")) setTimeout(tk, gap); }; tk(); } await new Promise(r => setTimeout(r, 4400)); $("#spr").innerHTML = j.amount > 0 ? "<b class=\"gold\">🎉 You won " + R(j.amount) + "!</b>" : "No luck this time. Try again tomorrow!"; if (j.amount > 0) burst(); if (b) b.style.display = "none"; await reload(); } catch (e) { if (b) b.disabled = false; throw e; } }),
+  daily: act(async () => { const j = await srv("daily"); if (j.amount > 0) burst(); toast(j.amount > 0 ? R(j.amount) + " added. Day " + ((j.streak - 1) % 7 + 1) + " streak!" : "Checked in!"); reload(); }),
+  gprev: () => { const e = $("#gprev"); if (e) e.innerHTML = gcard({amount:+$("#ga").value || 0, byName:U.name, note:$("#gn").value}); },
+  giftMake: act(async () => { const a = Math.round(+$("#ga").value * 100) / 100; if (!(a >= CFG.giftMin && a <= CFG.giftMax)) return toast("Amount must be " + R(CFG.giftMin) + " to " + R(CFG.giftMax) + "."); if (tot() < a * (1 + CFG.giftFee / 100)) return toast("Not enough balance in your wallet.");
+    const j = await srv("gift_create", {amount:a, note:$("#gn").value.trim()}); GT = "mine"; await reload(); dlg(`<b>🎫 Gift card ready!</b>${gcard(j.card)}<div class="row"><button class="btn" onclick="H.shareGift('${j.card.code}')">📲 Share</button><button class="btn alt" onclick="H.copy('${fmtCode(j.card.code)}')">Copy code</button></div><button class="btn alt" onclick="closeDlg()">Done</button>`); }),
+  shareGift: code => { const g = GC.find(x => x.code == code); doShare("🎁 I sent you a " + R(g ? g.amount : 0) + " Fraglord gift card! Code: " + fmtCode(code) + ". Claim it here: " + location.origin + "/?gift=" + code); },
+  giftUse: act(async () => { const c = ($("#gr").value || "").trim(); if (!c) return toast("Enter the gift card code."); const j = await srv("gift_redeem", {code:c}); closeDlg(); burst(); toast("🎉 " + R(j.amount) + " added to your wallet!"); reload(); }),
+  giftCancel: act(async code => { const j = await srv("gift_cancel", {code}); toast(R(j.amount) + " returned to your wallet."); reload(); }),
+  saveRewards: act(async () => { const g = (id, mx) => Math.min(Math.max(+$("#" + id).value || 0, 0), mx);
+    const ladder = [1, 2, 3, 4].map(i => ({n:Math.floor(g("rln" + i, 1000)), b:g("rlb" + i, 10000)})).filter(x => x.n > 0).sort((a, b) => a.n - b.n);
+    await store.set("settings", "app", {refOn:$("#ron").value == "1", refReferrer:g("rrf", 1000), refFriend:g("rfr", 1000), refMin:g("rmn", 10000), refLadder:ladder, dailyRewards:[0, 1, 2, 3, 4, 5, 6].map(i => g("rd" + i, 100)), giftOn:$("#gon").value == "1", giftMin:g("gmn", 10000) || 10, giftMax:g("gmx", 100000) || 5000, giftFee:g("gfe", 20), wdMin:g("wdm", 10000) || 100, spinOn:$("#son").value == "1", spinMin:g("smn", 100000), spinPrizes:[0, 1, 2, 3, 4, 5, 6, 7].map(i => g("rs" + i, 100)), fdPct:g("fdp", 100), fdMax:g("fdm", 10000)});
+    toast("Reward settings saved."); reload(); }),
+  pick: act(async el => { const f = el.files && el.files[0]; if (!f) return; if (!/^image\//.test(f.type)) return toast("Please choose an image."); SIMG = await shrink(f); el.value = ""; render("now"); toast("Screenshot attached."); }),
+  supSend: act(async () => { const t = ($("#sm").value || "").trim(); if (!t && !SIMG) return toast("Write a message or attach a screenshot."); if (SNEED.includes(SCAT) && !SIMG && !((SUP && SUP.msgs) || []).some(m => m.f == "u" && m.img && m.cat == SCAT)) return toast("Please attach a screenshot of the problem first (tap 📎)."); let img = ""; if (SIMG) { img = "s" + now() + Math.random().toString(36).slice(2, 6); await store.set("shots", img, {d:SIMG, uid:ME.uid, at:now()}); }
+    await store.update("support", ME.uid, d => ({uid:ME.uid, name:U.name || "", email:U.email || "", gid:U.gid || "", cat:SCAT, status:"open", msgs:[...(d.msgs || []), {f:"u", cat:SCAT, t:t.slice(0, 600), ...(img ? {img} : {}), at:now()}].slice(-80), last:now(), lastBy:"u", uSeen:now()})); SIMG = null; SUP = await store.get("support", ME.uid); render("now"); }),
+  shot: act(async id => { const x = await store.get("shots", sid(id)), d = x && safeImg(x.d); if (!d) return toast("Screenshot not found."); dlg(`<img src="${d}" style="width:100%;border-radius:10px"><button class="btn alt" onclick="closeDlg()">Close</button>`); }),
+  supOpen: act(async id => { ST = sid(id); SCK = null; const x = await store.get("support", ST), uu = x ? {} : (LB.find(u => u.id == ST) || await store.get("users", ST) || {}); STH = {...(x || {uid:ST, name:uu.name || "", email:uu.email || "", gid:uu.gid || "", cat:"Message from support"}), id:ST}; if (x) await store.set("support", ST, {aSeen:now()}); render("now"); }),
+  supQuick: act(async id => { await H.supOpen(id); await H.supCheck(); }),
+  msgUser: act(async id => { MTAB = "Support"; if (V != "master") go("master"); await H.supOpen(id); }),
+  supCont: () => { SCAT = SCATS.some(c => c[0] == (SUP || {}).cat) ? SUP.cat : "Other"; render("now"); },
+  supReply: act(async () => { const t = ($("#sm").value || "").trim(); if (!t) return; await store.update("support", ST, d => ({uid:ST, name:d.name || STH.name || "", email:d.email || STH.email || "", gid:d.gid || STH.gid || "", cat:d.cat || STH.cat || "Message from support", msgs:[...(d.msgs || []), {f:"a", n:"Support", t:t.slice(0, 600), at:now()}].slice(-80), last:now(), lastBy:"a", aSeen:now(), status:"open"})); const x = await store.get("support", ST); STH = {...(x || {}), id:ST}; render("now"); }),
+  supClose: act(async () => { const th = STH || {}, st = th.status == "closed" ? "open" : "closed"; await store.set("support", ST, {status:st}); STH = {...th, status:st}; toast(st == "closed" ? "Ticket closed." : "Ticket reopened."); render("now"); }),
+  supCheck: act(async () => { toast("Checking the account..."); SCK = await srv("support_check", {uid:ST}); render("now"); }),
+  fix: act(async i => { const f = SCK.checks[i].fix, j = await srv("support_fix", {uid:ST, ...f}); toast(j.msg || "Done."); SCK = await srv("support_check", {uid:ST}); await refresh(); render("now"); }),
+  manage: act(async id => { id = sid(id); const u = LB.find(x => x.id == id) || await store.get("users", id) || {};
+    dlg(`<b>Manage ${esc(u.name || "user")}</b><p class="dim">${esc(u.email || "")}<br>Play ${R(u.play || 0)} • Winnings ${R(u.win || 0)}${u.banned ? "<br>⛔ Banned" : ""}</p>
+     <label>Wallet</label><select id="mw"><option value="play">Play balance</option><option value="win">Winnings (withdrawable)</option></select>
+     <label>Amount (use minus to deduct, e.g. -50)</label><input id="ma" type="number" placeholder="50 or -50"><label>Reason (the user sees this)</label><input id="mr" maxlength="80" placeholder="Deposit delay correction">
+     <button class="btn" onclick="H.adjust('${id}')">APPLY</button><button class="btn alt" onclick="closeDlg();H.msgUser('${id}')">💬 Message user</button><button class="btn alt" onclick="H.ban('${id}',${!u.banned});closeDlg()">${u.banned ? "Unban user" : "Ban user"}</button><button class="btn alt" onclick="closeDlg()">Close</button>`); }),
+  adjust: act(async id => { const a = +$("#ma").value, r = ($("#mr").value || "").trim(); if (!a) return toast("Enter an amount."); if (!r) return toast("Write a short reason."); await srv("admin_adjust", {uid:sid(id), wallet:$("#mw").value, amount:a, reason:r}); closeDlg(); toast("Wallet updated."); await refresh(); render("now"); }),
+  bell: () => go("notif"),
+  install: act(async () => { if (DP) { DP.prompt(); DP = null; } }),
+  status: act(async (id, s) => { await store.set("matches", id, {status:s}); reload(); }),
+  cancel: act(async id => { await cancelM(id); toast("Match cancelled. Entry fees refunded."); reload(); }),
+  wd: act(async (id, st) => { const w = W.find(x => x.id == id); await store.set("withdrawals", id, {st}); if (st == "rejected") await store.update("users", w.uid, d => ({win:(d.win || 0) + w.a, tx:addTx(d, "refund", "Withdrawal rejected", w.a)})); reload(); }),
+  demoPrize: act(async () => { await store.update("users", ME.uid, d => ({win:(d.win || 0) + 500, tx:addTx(d, "prize", "Prize (demo)", 500)})); toast("₹500 added."); reload(); })
+};
+
+/* 6. SHELL */
+function toggleSide(f) { const o = f === undefined ? !$("#side").classList.contains("open") : f; $("#side").classList.toggle("open", o); $("#ov").classList.toggle("open", o); }
+const SAFE = ["home", "mode", "match", "my", "wallet", "lb", "notif", "refer"];
+const sig = () => JSON.stringify([NOTICE, INSTALLS, P, U, M, LB, W, OD, HE, HL, HLIST, CM, CMX, CFG, GC, MYW, GA, SUP, SL, SQ]);
+const MS = ms => ms.map(m => ({...m, game:m.game || "FF"}));
+async function refresh() {
+  try {
+    const host = () => U && ["host", "master"].includes(U.role);
+    // the four basic reads run together, not one after another
+    const [st, po, u, ms] = await Promise.all([store.get("settings", "app"), store.list("posters", 20).catch(() => []), ME ? store.get("users", ME.uid) : null, store.list("matches")]);
+    NOTICE = (st && st.notice) || ""; INSTALLS = (st && st.installs) || 0; NOTICE_AT = (st && st.noticeAt) || 0; HLIST = (st && st.hostList) || []; CFG = cfgOf(st);
+    P = po.sort((a, b) => (a.at || 0) - (b.at || 0)); HL = {day:(st && st.hostDay) || 5, live:(st && st.hostLive) || 2}; if (ME) U = u; M = MS(ms);
+    const job = [];
+    if (host() && V != "chat") job.push(store.get("chats", "all").then(x => { CMX = x; }));
+    if (V == "lb" || V == "master" || V == "refer" || (V == "chat" && U && U.role == "master")) job.push(store.list("users", 300).then(x => { LB = x; }));
+    if (ME) job.push(store.get("support", ME.uid).then(x => { SUP = x; }).catch(() => {}));
+    if (U && U.role == "master") { job.push(store.where("support", "lastBy", "u", 30).then(x => { SQ = x; const k = supUnread(); if (READY && k > SQN) toast("🎧 New customer message"); SQN = k; }).catch(() => {})); if (V == "master" && MTAB == "Support") job.push(store.list("support", 60).then(x => { SL = x; }).catch(() => {})); }
+    if (V == "gift" && FB) job.push(srv("gift_mine").then(x => { GC = x.cards || []; }).catch(() => {}));
+    if (V == "wallet" && ME) job.push(store.where("withdrawals", "uid", ME.uid, 20).then(x => { MYW = x; }).catch(() => {}));
+    if (V == "chat") job.push(store.get("chats", CT).then(x => { CM = x; }));
+    if (V == "master") job.push(store.list("withdrawals").then(x => { W = x; }), store.list("orders", 200).then(x => { OD = x.sort((a, b) => (b.at || 0) - (a.at || 0)); }), store.list("hostEmails", 50).then(x => { HE = x; }), store.list("giftcards", 300).then(x => { GA = x; }).catch(() => { GA = null; }));
+    await Promise.all(job);
+    if (V == "master") { const hl = LB.filter(x => x.role == "host").map(x => ({id:x.id, n:x.name || "", e:x.email || ""})); if (JSON.stringify(hl) != JSON.stringify(HLIST)) { HLIST = hl; await store.set("settings", "app", {hostList:hl}); } }
+    if (host() && await autoCancel()) M = MS(await store.list("matches"));
+    LAST = now();
+  } catch (e) { console.error(e); toast("Could not refresh. Showing last data."); }
+  finally { if (V == "lb" || V == "master") LOADED.lb = true; } }
+function draw() { FAILED = false; const app = $("#app");
+  if (!ME) return app.innerHTML = safe(loginV);
+  if (!READY) return app.innerHTML = BOOT;
+  if (!U || !U.name) return app.innerHTML = safe(setupV);
+  if (U.banned) return app.innerHTML = '<div class="center"><h2>Account suspended</h2><p class="dim">Please contact support.</p></div>';
+  const views = {home:homeV, mode:modeV, match:matchV, my:myV, wallet:walletV, lb:lbV, acct:acctV, set:setV, host:hostV, master:masterV, chat:chatV, notif:notifV, refer:referV, gift:giftV, support:supV};
+  const nav = [["home", "🏠", "Home"], ["my", "📅", "Matches"], ["lb", "🏆", "Leaderboard"], ["wallet", "👛", "Wallet"], ["acct", "👤", "Account"]]; if (U.role == "host") nav.splice(4, 0, ["host", "🎙️", "Host"]);
+  $("#side").innerHTML = `<a onclick="go('refer')">🎁 Invite &amp; Earn</a><a onclick="go('gift')">🎫 Gift cards</a><a onclick="go('set')">⚙️ Settings</a><a onclick="H.rules()">📜 Rules &amp; policies</a><a onclick="H.help()">💬 Help &amp; support</a>${["host", "master"].includes(U.role) ? '<a onclick="go(\'host\')">🎙️ Host panel</a>' : ""}${U.role == "master" ? '<a onclick="go(\'master\')">🛡️ Master admin</a>' : ""}${["host", "master"].includes(U.role) ? '<a onclick="H.chat()">💬 Host chat</a>' : ""}<a onclick="H.logout()">🚪 Log out</a>`;
+  const body = (V == "lb" || V == "master") && !LOADED.lb ? '<div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div>' : safe(views[V] || homeV);
+  const NI = Math.max(0, nav.findIndex(x => x[0] == V)), NP = PI; PI = NI;
+  app.innerHTML = `<header class="${R(tot()).length > 9 ? "tight" : ""}"><div class="ic" onclick="toggleSide()">☰</div><div class="img" ${bg("logo", "width:34px;height:34px;border-radius:8px")}></div><b>FRAGLORD</b>${U.role == "host" ? '<span class="tag">HOST ADMIN</span>' : ""}<div class="chip" data-k="chip" data-n="${tot()}" data-s=" +" onclick="go('wallet')">${R(tot())} +</div><div class="ic" onclick="go('notif')" style="position:relative">🔔${unread() ? `<span class="bdg">${unread()}</span>` : ""}</div></header>
+   <main>${body}</main><nav style="--i:${NI};--p:${NP};--n:${nav.length}">${nav.map(x => `<a class="${V == x[0] ? "on" : ""}" onclick="go('${x[0]}')"><em>${x[1]}</em>${x[2]}</a>`).join("")}</nav>`;
+  animNums(); if (ANIMV) { const mn = $("main"); if (mn) mn.classList.add("in"); ANIMV = false; } setTimeout(checkAch, 700);
+  setTimeout(deepLinks, 300); if (V == "support" || (V == "master" && ST)) { const c = $("#smsgs"); if (c) { c.scrollTop = c.scrollHeight; c.dataset.h = String((((V == "support" ? SUP : STH) || {}).msgs || []).length); } } if (V == "host") safe(hForm); if (V == "chat") { const c = $("#msgs"); if (c) c.scrollTop = c.scrollHeight; } }
+// draws the screen at once, then updates the data quietly (only redraws if something really changed)
+async function render(force) { draw(); if (!ME) return;
+  if (READY && now() - LAST < (force == "now" ? 0 : force ? 2000 : 8000)) return;
+  const my = ++RV, first = !READY, before = sig(); await refresh(); if (my != RV) return; READY = true;
+  if (!first) { if (sig() == before) return; const a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName) && $("#app").contains(a)) return; if (!SAFE.includes(V) && !(["master", "chat"].includes(V) && now() - NAVAT < 4000)) return; }   // never redraw a form the person may be filling in
+  const y = scrollY; draw(); if (!first) scrollTo(0, y); }
+async function reload() { ++RV; await refresh(); READY = true; draw(); }
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); DP = e; if (!ME) render(); });
+window.addEventListener("appinstalled", () => { store.update("settings", "app", d => ({installs:(d.installs || 0) + 1})).catch(() => {}); });
+setInterval(() => { if (ME && !document.hidden) store.set("users", ME.uid, {seen:now()}).catch(() => {}); }, 60000);
+if ("serviceWorker" in navigator) addEventListener("load", () => setTimeout(() => navigator.serviceWorker.register("/sw.js").catch(() => {}), 5000));
+setInterval(async () => { if (V == "chat" && ME && U && !document.hidden) { try { CM = await store.get("chats", CT); paint(); mark("chatSeen"); } catch (e) {} } }, 4000);
+setInterval(async () => { if (!ME || !U || document.hidden) return; try { if (V == "support") { SUP = await store.get("support", ME.uid); if (SUP && SUP.lastBy == "a" && (SUP.last || 0) > (SUP.uSeen || 0)) { store.set("support", ME.uid, {uSeen:now()}).catch(() => {}); SUP.uSeen = now(); } paintSup(); } else if (V == "master" && MTAB == "Support" && ST) { const x = await store.get("support", ST); if (x) { STH = {...x, id:ST}; if (x.lastBy == "u" && (x.last || 0) > (x.aSeen || 0)) { store.set("support", ST, {aSeen:now()}).catch(() => {}); } } paintSup(); } } catch (e) {} }, 4000);
+setInterval(() => { if (ME && READY && !document.hidden && V != "chat" && V != "support") render(); }, 20000);
+setInterval(() => { const a = document.activeElement; if (ME && READY && !document.hidden && ["home", "mode", "my"].includes(V) && !(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))) { const y = scrollY; draw(); scrollTo(0, y); } }, 30000);   // keeps the "starts in" timers fresh
+document.addEventListener("visibilitychange", () => { if (!document.hidden && ME && READY) render(true); });
+(async () => { const HINT = "fraglord_signed_in", hint = () => { try { return localStorage.getItem(HINT) == "1"; } catch (e) { return false; } };
+  let AUTHED = false;
+  if (!hint()) { ME = null; draw(); }                                              // no saved sign-in: show the login page immediately
+  setTimeout(() => { if (!AUTHED && !READY && !FAILED) { ME = null; draw(); } }, 8000);   // sign-in check is slow: show the login page anyway
+  const ok = await FBREADY;
+  if (ok && db && auth) {
+  auth.onAuthStateChanged(async u => { AUTHED = true; try { u ? localStorage.setItem(HINT, "1") : localStorage.removeItem(HINT); } catch (e) {} ME = u ? {uid:u.uid, email:u.email} : null; READY = false; U = null; LB = []; LOADED = {}; LAST = 0; if (ME) { draw(); try { await track(); } catch (e) { console.error(e); } } render("now"); }, e => { FBERR = String((e && (e.code || e.message)) || e); ME = null; render("now"); });
+  } else if (!LOCAL) { const net = !FBERR || /^could not load/.test(FBERR); fail(net ? "Could not connect" : "Could not start the app", net ? "Check your internet connection and try again." : "Your phone blocked something the app needs. Update Chrome and Android System WebView, then try again."); }
+  else render("now");
+})();
+</script>
+</body>
+</html>
