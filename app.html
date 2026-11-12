@@ -205,6 +205,18 @@ main.in>*:nth-child(2){animation-delay:.05s}main.in>*:nth-child(3){animation-del
 body.sc header{background:rgba(8,9,14,.82);box-shadow:0 10px 28px rgba(0,0,0,.5)}
 .sk{height:68px;border-radius:14px;margin:10px 0;background:linear-gradient(100deg,rgba(255,255,255,.04) 30%,rgba(255,255,255,.11) 50%,rgba(255,255,255,.04) 70%);background-size:220% 100%;animation:skl 1.3s linear infinite}@keyframes skl{to{background-position:-220% 0}}
 @media (prefers-reduced-motion:reduce){body::before,main.in>*,.sk{animation:none!important}nav a.on em{transform:none}}
+
+/* banner slot: posters, ads, video with sound button */
+.bn{position:relative}
+.bstrip{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;border-radius:16px}.bstrip::-webkit-scrollbar{display:none}
+.bs{flex:0 0 100%;height:176px;scroll-snap-align:center;position:relative;overflow:hidden;border-radius:16px;border:1px solid rgba(190,212,255,.45);background:#0b0e18 center/cover no-repeat;box-shadow:0 0 24px rgba(61,120,242,.25)}
+.bs.sh::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));pointer-events:none}
+.bs video,.bs iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;background:#000}
+.bs .bt{position:absolute;left:14px;right:14px;bottom:12px;z-index:2}.bs .bt h3{font-size:22px;font-style:italic;text-shadow:0 2px 10px rgba(0,0,0,.6)}.bs .bt p{color:var(--gold);font-weight:700;margin-top:2px}
+.bs.df .bt{left:auto;top:26px;bottom:auto;text-align:right}.bs.df .bt h3{font-size:26px}
+.adtag{position:absolute;top:10px;left:10px;z-index:3;font-size:10px;letter-spacing:.6px;padding:3px 9px;border-radius:10px;background:rgba(8,10,18,.65);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.abtn{position:absolute;z-index:3;bottom:10px;border:1px solid rgba(255,255,255,.38);background:rgba(8,10,18,.68);color:#fff;border-radius:18px;padding:6px 13px;font-size:13px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);text-decoration:none;font-family:inherit}.abtn.snd{right:10px;font-size:15px;padding:5px 11px}.abtn.lnk{left:10px}
+.bdots{display:flex;justify-content:center;gap:6px;margin-top:9px}.bdots i{width:6px;height:6px;border-radius:50%;background:#2a3042;transition:all .25s}.bdots i.on{width:18px;border-radius:4px;background:linear-gradient(90deg,#c9d6f2,#3d78f2)}
 </style>
 </head>
 <body>
@@ -368,7 +380,7 @@ const mcard = m => { const [l, c] = stat(m), pc = Math.min(100, n(m) / m.max * 1
  <small style="text-align:right;flex:none">${T(m.start)}${m.status == "open" ? '<br><b class="gold">⏱ ' + eta(m.start) + "</b>" : ""}</small></div>`; };
 
 const openM = () => M.filter(m => ["open", "live"].includes(m.status) && m.game == G && (!MODE || m.cat == MODE)).sort((a, b) => a.start - b.start);
-const homeV = () => `${NOTICE ? `<div class="card">📢 ${NOTICE}</div>` : ""}${greetV()}${posterV()}${safe(firstV)}${safe(rewardsHub)}
+const homeV = () => `${NOTICE ? `<div class="card">📢 ${NOTICE}</div>` : ""}${greetV()}<div id="bnr"></div>${safe(firstV)}${safe(rewardsHub)}
  <div class="tabs" style="margin-top:16px"><button class="${G == "FF" ? "on" : ""}" onclick="setG('FF')">Free Fire</button><button class="${G == "BGMI" ? "on" : ""}" onclick="setG('BGMI')">BGMI</button></div>
   <h2>🎮 GAME MODES</h2><div class="grid">${MODES[G].map(x => `<div class="mode" onclick="MODE='${x[3]}';go('mode')"><div class="img" ${bg(x[4])}></div><b>${x[2]} ${x[0]}</b><small>${x[1]}</small></div>`).join("")}</div>
  ${safe(winnersV)}<h2>📅 UPCOMING MATCHES</h2>${openM().map(m => safe(mcard, m)).join("") || '<p class="dim">No matches right now. Check back soon!</p>'}
@@ -424,7 +436,7 @@ function hForm() { if (!$("#hs").value) $("#hs").value = new Date(now() + 2 * H1
 /* ---------- MASTER ---------- */
 const masterV = () => { const day = now() - 864e5, on = now() - 12e4, by = id => LB.find(u => u.id == id) || {}, pend = W.filter(w => w.st == "pending"), paid = W.filter(w => w.st == "paid"), cash = id => paid.filter(w => w.uid == id).reduce((s, w) => s + w.a, 0), got = OD.filter(o => o.status == "paid");
  const box = (v, l) => `<div class="card center" style="padding:12px"><div class="big">${v}</div><small class="dim">${l}</small></div>`;
- const tabs = `<div class="tabs">${["Overview", "Payments", "Withdrawals", "Support", "Users", "Hosts", "Posters", "Bonus", "Rewards"].map(t => `<button class="${MTAB == t ? "on" : ""}" onclick="MTAB='${t}';render()">${t}${t == "Support" && supUnread() ? " (" + supUnread() + ")" : ""}</button>`).join("")}</div>`;
+ const tabs = `<div class="tabs">${["Overview", "Payments", "Withdrawals", "Support", "Users", "Hosts", "Posters", "Ads", "Bonus", "Rewards"].map(t => `<button class="${MTAB == t ? "on" : ""}" onclick="MTAB='${t}';render()">${t}${t == "Support" && supUnread() ? " (" + supUnread() + ")" : ""}</button>`).join("")}</div>`;
  const B = {
   Overview: `<div class="row">${box(LB.length, "Logged-in users")}${box(LB.filter(u => u.seen > on).length, "Online now")}</div><div class="row">${box(INSTALLS, "App installs")}${box(LB.filter(u => u.lastLogin > day).length, "Active in 24h")}</div><div class="row">${box(M.length, "Matches")}${box(R(LB.reduce((s, u) => s + (u.play || 0) + (u.win || 0), 0)), "All wallets")}</div>
    <h2>Announcement</h2><div class="card"><textarea id="an" rows="2">${NOTICE}</textarea><button class="btn alt" onclick="H.notice()">Save announcement</button></div>
@@ -440,7 +452,7 @@ const masterV = () => { const day = now() - 864e5, on = now() - 12e4, by = id =>
    <h2>Hosts</h2>${hs.map(u => { const my = M.filter(x => x.by == u.id); return `<div class="card"><b>${esc(u.name || "-")}</b> <span class="tag">HOST</span>${u.banned ? '<span class="tag x">BANNED</span>' : ""}<br><small class="dim">${mails(u)} • Game UID ${u.gid || "-"}<br>Last login ${u.lastLogin ? T(u.lastLogin) : "-"} • ${u.loginCount || 1} logins<br>Rooms: ${my.length} total • ${my.filter(x => now() - (x.created || 0) < 864e5).length} today • ${my.filter(x => ["open", "live"].includes(x.status)).length} running • ${my.filter(x => x.status == "completed").length} completed<br>Players joined: ${my.reduce((t, x) => t + n(x), 0)}</small><div class="row"><button class="chip" onclick="H.setHost('${u.id}',false)">Remove host</button><button class="chip" onclick="H.ban('${u.id}',${!u.banned})">${u.banned ? "Unban" : "Ban"}</button></div></div>`; }).join("") || '<p class="dim">No hosts yet.</p>'}
    ${pe.map(h => `<div class="card m" style="cursor:default"><span>${esc(h.id)}<br><small class="dim">Waiting for first login</small></span><button class="chip" onclick="H.delHostEmail('${h.id}')">Remove</button></div>`).join("")}
    <h2>All users</h2>${LB.filter(u => u.name && u.role != "host" && u.id != ME.uid).map(u => `<div class="card m" style="cursor:default"><span>${esc(u.name)}<br><small class="dim">${mails(u)}</small></span><button class="chip" onclick="H.setHost('${u.id}',true)">Make host</button></div>`).join("") || '<p class="dim">No other users yet.</p>'}`; })(),
-  Posters: `<div class="card"><label>Poster image link</label><input id="pu" placeholder="https://..."><label>Title (optional)</label><input id="pt" maxlength="40"><button class="btn" onclick="H.addPoster()">ADD POSTER</button></div>${P.map(p => `<div class="card"><div class="img" style="height:90px;border-radius:10px;background-image:url('${String(p.url).replace(/'/g, "%27")}')"></div><small class="dim">${esc(p.title || "")}</small> <span class="tag ${p.on ? "" : "x"}">${p.on ? "SHOWING" : "HIDDEN"}</span><div class="row"><button class="chip" onclick="H.posterOn('${p.id}',${!p.on})">${p.on ? "Hide" : "Show"}</button><button class="chip" onclick="H.delPoster('${p.id}')">Remove</button></div></div>`).join("") || '<p class="dim">No posters yet. The default banner is showing.</p>'}`,
+  Posters: `<div class="card"><label>Poster image link</label><input id="pu" placeholder="https://..."><label>Or choose a picture from your phone</label><input type="file" accept="image/*" onchange="H.posterFile(this)"><label>Title (optional)</label><input id="pt" maxlength="40"><button class="btn" onclick="H.addPoster()">ADD POSTER</button></div>${P.map(p => `<div class="card"><div class="img" style="height:90px;border-radius:10px;background-image:url('${String(p.url).replace(/'/g, "%27")}')"></div><small class="dim">${esc(p.title || "")}</small> <span class="tag ${p.on ? "" : "x"}">${p.on ? "SHOWING" : "HIDDEN"}</span><div class="row"><button class="chip" onclick="H.posterOn('${p.id}',${!p.on})">${p.on ? "Hide" : "Show"}</button><button class="chip" onclick="H.delPoster('${p.id}')">Remove</button></div></div>`).join("") || '<p class="dim">No posters yet. The default banner is showing.</p>'}`,
   Rewards: (() => { const c = CFG, L = c.ladder.slice().sort((a, b) => a.n - b.n), inp = (id, v, l) => `<div><label>${l}</label><input id="${id}" type="number" min="0" value="${v}"></div>`, sel = (id, on) => `<select id="${id}"><option value="1" ${on ? "selected" : ""}>ON</option><option value="0" ${on ? "" : "selected"}>OFF</option></select>`;
    const act = GA ? GA.filter(g => g.status == "active") : [];
    return `<div class="row">${box(LB.reduce((s, u) => s + (u.refCount || 0), 0), "Invites rewarded")}${box(R(LB.reduce((s, u) => s + (u.refEarn || 0), 0)), "Invite rewards paid")}</div><div class="row">${box(GA ? GA.length : "-", "Gift cards made")}${box(GA ? R(act.reduce((s, g) => s + g.amount, 0)) : "-", "Unclaimed gift value")}</div>
@@ -452,6 +464,10 @@ const masterV = () => { const day = now() - 864e5, on = now() - 12e4, by = id =>
    <h2>Lucky spin</h2><div class="card"><label>Lucky spin</label>${sel("son", c.spinOn)}${inp("smn", c.spinMin, "Unlocks after the user has added this much in total (₹)")}<small class="dim">8 wheel slots (₹). One random slot per spin, one spin a day. Repeat a value to make it more likely. 0 means no prize.</small><div class="row">${[0, 1, 2, 3].map(i => inp("rs" + i, c.spin[i], "Slot " + (i + 1))).join("")}</div><div class="row">${[4, 5, 6, 7].map(i => inp("rs" + i, c.spin[i], "Slot " + (i + 1))).join("")}</div></div>
    <h2>First deposit bonus</h2><div class="card"><div class="row">${inp("fdp", c.fdPct, "Bonus (%)")}${inp("fdm", c.fdMax, "Max bonus (₹)")}</div><small class="dim">Paid in play balance on a user's first paid deposit. Set 0 to turn it off.</small></div>
    <button class="btn" onclick="H.saveRewards()">SAVE REWARD SETTINGS</button>`; })(),
+  Ads: (() => { const it = i => ADS.items[i] || {}, opts = x => [["", "Off"], ["image", "Image"], ["video", "Video (with sound button)"], ["code", "Ad network code"]].map(o => `<option value="${o[0]}" ${x.t == o[0] ? "selected" : ""}>${o[1]}</option>`).join("");
+   const one = i => { const x = it(i); return `<div class="card"><b>Ad ${i + 1}</b><label>Type</label><select id="at${i}">${opts(x)}</select><label>Image or video link</label><input id="au${i}" value="${ea(x.u || "")}" placeholder="https://... or /ads/promo.mp4"><label>Ad code (only for “Ad network code”)</label><textarea id="ac${i}" rows="3" placeholder="Paste the code your ad network gave you">${ea(x.c || "")}</textarea><label>When tapped, open this link (optional)</label><input id="al${i}" value="${ea(x.l || "")}" placeholder="https://..."><label>Small label on the ad (default: Ad)</label><input id="an${i}" maxlength="14" value="${ea(x.n || "")}"></div>`; };
+   return `<div class="card"><label>Ads in the home banner</label><select id="aon"><option value="1" ${ADS.on ? "selected" : ""}>ON</option><option value="0" ${ADS.on ? "" : "selected"}>OFF</option></select><label>Where to show</label><select id="apos">${[["first", "Before the posters"], ["last", "After the posters"], ["only", "Only ads (hide posters)"]].map(o => `<option value="${o[0]}" ${ADS.pos == o[0] ? "selected" : ""}>${o[1]}</option>`).join("")}</select>
+   <small class="dim">Switch ON, tap Save, and the ads appear for every user within a few seconds. Videos start muted and users can tap 🔊 for sound. Keep videos short (under 10 s) and small (under 3 MB, mp4): put the file in the website's <b>ads</b> folder and write /ads/yourfile.mp4, or use any direct https link. Ad network code runs in a sealed box, so it cannot touch the app or wallets.</small></div>${adStatsV()}${[0, 1, 2].map(one).join("")}<button class="btn" onclick="H.saveAds()">SAVE ADS</button>`; })(),
   Bonus: `<div class="card"><label>Bonus amount (₹)</label><input id="bn" type="number"><label>Send to</label><select id="bt"><option value="all">All players</option><option value="ids">Chosen players</option></select><label>Chosen players: game UIDs separated by commas</label><textarea id="bl" rows="2"></textarea><button class="btn" onclick="H.bonus()">SEND BONUS</button></div>`};
  return `<h2>Master admin</h2>${tabs}${B[MTAB] || ""}`; };
 
@@ -587,11 +603,55 @@ const notifs = () => { const out = [], me = U || {};
  return out.sort((a, b) => b.at - a.at); };
 const unread = () => notifs().filter(x => x.at > seen("notifSeen")).length;
 const notifV = () => `<h2>Notifications</h2>${notifs().map(x => `<div class="card" style="cursor:default"><b>${x.ic} ${esc(x.t)}</b><br><small class="dim">${esc(x.d)}${x.at ? " • " + T(x.at) : ""}</small></div>`).join("") || '<p class="dim">You are all caught up.</p>'}`;
-const posterV = () => { const a = P.filter(p => p.on); if (!a.length) return `<div class="banner img" ${bg(G == "FF" ? "banner" : "bgmi")}><div><h3>${G == "FF" ? "FREE FIRE" : "BGMI"}</h3><p>${G == "FF" ? "BATTLE IN STYLE" : "WINNER WINNER"}</p></div></div>`;
- return `<div style="display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory">${a.map(p => `<div class="banner img" style="flex:0 0 100%;scroll-snap-align:center;background-image:url('${String(p.url).replace(/'/g, "%27")}')">${p.title ? `<div><h3>${esc(p.title)}</h3></div>` : ""}</div>`).join("")}</div>`; };
-
-/* 5. ACTIONS */
-// render() = draw now, refresh quietly in the background. reload() = refresh first, then draw (used after an action).
+// ---- home banner: posters and ads in one swipeable strip (built once, kept alive while the page redraws) ----
+let ADS = {on:false, pos:"first", items:[]}, BN = {sig:"", node:null, i:0, touch:0};
+const ea = t => String(t).replace(/[&"<>]/g, c => ({"&":"&amp;", '"':"&quot;", "<":"&lt;", ">":"&gt;"})[c]);
+const adsOf = st => { st = st || {}; return {on:st.adsOn === true, pos:["first", "last", "only"].includes(st.adPos) ? st.adPos : "first", items:(Array.isArray(st.ads) ? st.ads : []).filter(a => a && ["image", "video", "code"].includes(a.t) && (a.t == "code" ? a.c : a.u)).slice(0, 3)}; };
+const adStatsV = () => { if (!ADS.items.length) return ""; const today = IST(), d7 = new Date(now() + 198e5 - 6 * 864e5).toISOString().slice(0, 10), all = ADR || [];
+  const row = (a, i) => { if (!a.id) return `<tr><td>${i + 1}. ${esc(a.n || a.t)}</td><td colspan="6" class="dim">Save the ads once more to start counting</td></tr>`; const f = (rows, p) => rows.reduce((q, r) => q + (r[p + "_" + a.id] || 0), 0), t = all.filter(r => r.day == today), w = all.filter(r => r.day >= d7), v = f(all, "i"), c = f(all, "c");
+    return `<tr><td>${i + 1}. ${esc(a.n || a.t)}</td><td>${f(t, "i")}</td><td>${f(w, "i")}</td><td>${v}</td><td>${f(w, "u")}</td><td>${c}</td><td>${v ? (c / v * 100).toFixed(1) + "%" : "-"}</td></tr>`; };
+  return `<h2>Ad results</h2><div class="card" style="overflow-x:auto"><table><tr><th>Ad</th><th>Views today</th><th>Views 7 days</th><th>Views total</th><th>People 7 days</th><th>Taps total</th><th>Tap rate</th></tr>${ADS.items.map(row).join("")}</table><small class="dim">A view counts when the ad stays on screen for 1 second. “People” adds up the different people each day. Taps count the picture and the Learn more button; taps inside ad network code show only in that network's own report. Numbers can be about a minute late. Days follow Indian time.</small></div>`; };
+const bannerSlides = () => { const ps = P.filter(p => p.on).map(p => ({k:"poster", u:p.url, t:p.title})), ad = ADS.on ? ADS.items.map(a => ({k:"ad", ...a})) : [];
+  const s = ADS.pos == "only" && ad.length ? ad : ADS.pos == "last" ? [...ps, ...ad] : [...ad, ...ps]; return s.length ? s : [{k:"default"}]; };
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const setBg = (e, u) => { e.style.backgroundImage = 'url("' + String(u).replace(/"/g, "%22") + '")'; };
+let ADQ = {}, ADR = null; const ADLAST = {};
+const trackAd = (id, k) => { if (!id || !ME) return; const key = id + "|" + k; ADQ[key] = (ADQ[key] || 0) + 1; };
+const flushAds = async () => { const keys = Object.keys(ADQ); if (!keys.length) return; const ev = keys.map(key => { const [id, k] = key.split("|"); return {id, k, n:ADQ[key]}; }); ADQ = {}; try { await srv("ad_log", {ev}); } catch (e) { /* a few lost counts are fine */ } };
+setInterval(flushAds, 60000); document.addEventListener("visibilitychange", () => { if (document.hidden) flushAds(); });
+const mkSlide = (s, io, io2) => {
+  if (s.k == "default") { const d = el("div", "bs df"); if (IMG[G == "FF" ? "banner" : "bgmi"]) setBg(d, IMG[G == "FF" ? "banner" : "bgmi"]); const t = el("div", "bt"); t.append(el("h3", "", G == "FF" ? "FREE FIRE" : "BGMI"), el("p", "", G == "FF" ? "BATTLE IN STYLE" : "WINNER WINNER")); d.append(t); return d; }
+  if (s.k == "poster") { const d = el("div", "bs" + (s.t ? " sh" : "")); setBg(d, s.u); if (s.t) { const t = el("div", "bt"); t.append(el("h3", "", s.t)); d.append(t); } return d; }
+  const d = el("div", "bs"); d.dataset.kind = s.t; if (s.id) { d.dataset.aid = s.id; io2.observe(d); } d.append(el("span", "adtag", s.n || "Ad"));
+  const link = () => { if (!s.l) return; const a = el("a", "abtn lnk", "Learn more ›"); a.href = s.l; a.target = "_blank"; a.rel = "noopener sponsored"; a.onclick = () => trackAd(s.id, "c"); d.append(a); };
+  if (s.t == "image") { setBg(d, s.u); d.classList.add("sh"); if (s.l) { d.style.cursor = "pointer"; d.onclick = e => { if (!e.target.closest("a")) { trackAd(s.id, "c"); window.open(s.l, "_blank", "noopener"); } }; } link(); }
+  if (s.t == "video") { const v = document.createElement("video"); v.src = s.u; v.muted = true; v.setAttribute("muted", ""); v.loop = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.preload = "metadata"; v.autoplay = true; d.append(v); io.observe(v);
+    const b = el("button", "abtn snd", "🔇"); b.setAttribute("aria-label", "Sound on or off"); d.append(b);
+    const ui = () => { b.textContent = v.muted ? "🔇" : "🔊"; };
+    b.onclick = e => { e.stopPropagation(); v.muted = !v.muted; ui(); try { localStorage.setItem("fl_adsound", v.muted ? "0" : "1"); } catch (x) {} if (!v.muted) v.play().catch(() => {}); };
+    let pref = "0"; try { pref = localStorage.getItem("fl_adsound") || "0"; } catch (x) {}
+    if (pref == "1") { v.muted = false; v.play().then(ui).catch(() => { v.muted = true; ui(); v.play().catch(() => {}); }); }
+    link(); }
+  if (s.t == "code") { const f = document.createElement("iframe"); f.setAttribute("sandbox", "allow-scripts allow-popups allow-popups-to-escape-sandbox"); f.setAttribute("loading", "lazy"); f.setAttribute("title", "Advertisement");   // no access to the app, its login or your wallet
+    f.srcdoc = '<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{margin:0;height:100%;overflow:hidden;background:#0b0e18;display:flex;align-items:center;justify-content:center}</style>' + s.c; d.append(f); }
+  return d; };
+const mkBanner = () => { const sl = bannerSlides(), wrap = el("div", "bn"), strip = el("div", "bstrip"), n = sl.length;
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.play().catch(() => {}); else e.target.pause(); }), {root:strip, threshold:.6});
+  const timers = new Map();   // a view counts when an ad stays on screen for 1 second (at most once every 30 seconds per ad)
+  const io2 = new IntersectionObserver(es => es.forEach(e => { const id = e.target.dataset.aid; if (e.isIntersecting) { timers.set(id, setTimeout(() => { if (!document.hidden && now() - (ADLAST[id] || 0) > 30000) { ADLAST[id] = now(); trackAd(id, "i"); } }, 1000)); } else { clearTimeout(timers.get(id)); } }), {root:strip, threshold:.6});
+  sl.forEach(s => strip.append(mkSlide(s, io, io2))); wrap.append(strip);
+  if (n > 1) { const dots = el("div", "bdots"); for (let i = 0; i < n; i++) dots.append(el("i", i == 0 ? "on" : "")); wrap.append(dots);
+    strip.addEventListener("scroll", () => { const i = Math.max(0, Math.min(n - 1, Math.round(strip.scrollLeft / (strip.clientWidth + 8)))); BN.i = i; [...dots.children].forEach((d, k) => d.classList.toggle("on", k == i)); }, {passive:true});
+    strip.addEventListener("touchstart", () => { BN.touch = Date.now(); }, {passive:true}); }
+  wrap.strip = strip; return wrap; };
+const mountBanner = () => { const ph = $("#bnr"); if (!ph) return; const sig = JSON.stringify([ADS, P.filter(p => p.on).map(p => [p.id, p.url, p.title]), G]);
+  if (!BN.node || BN.sig != sig) { BN = {sig, node:mkBanner(), i:0, touch:0}; }
+  ph.replaceWith(BN.node); const st = BN.node.strip; if (BN.i) st.scrollTo({left:BN.i * (st.clientWidth + 8), behavior:"instant"});   // keep the place after a redraw
+  BN.node.querySelectorAll("video").forEach(v => v.play().catch(() => {})); };
+setInterval(() => { const nd = BN.node; if (!nd || !document.body.contains(nd) || document.hidden || Date.now() - BN.touch < 8000) return; const sl = nd.strip.children, n = sl.length; if (n < 2) return;
+  const k = sl[BN.i] && sl[BN.i].dataset.kind; if (k == "video" || k == "code") return;   // do not move away while someone watches a video or an ad
+  nd.strip.scrollTo({left:((BN.i + 1) % n) * (nd.strip.clientWidth + 8), behavior:"smooth"}); }, 5000);
+document.addEventListener("visibilitychange", () => { if (!BN.node) return; BN.node.querySelectorAll("video").forEach(v => { if (document.hidden) v.pause(); else v.play().catch(() => {}); }); });
 const cancelM = async id => { const m = M.find(x => x.id == id); const ok = await store.update("matches", id, d => ["open", "live"].includes(d.status) ? {status:"cancelled"} : null); if (!ok) return;
   for (const uid of Object.keys(m.players || {})) if (!(m.rf && m.rf[uid])) await store.update("users", uid, d => ({play:(d.play || 0) + m.fee, tx:addTx(d, "refund", "Refund: " + m.title, m.fee)})); };
 const autoCancel = async () => { let c = 0; for (const m of M) if (m.status == "open" && m.cat == "BR" && now() > m.start && n(m) < (m.min || m.max)) { await cancelM(m.id); c++; } return c > 0; };
@@ -654,6 +714,13 @@ const H = {
     if (LB.filter(x => x.role == "host").length + HE.filter(h => h.on && !LB.some(x => (x.email || "").toLowerCase() == h.id)).length >= 10) return toast("Maximum 10 hosts allowed.");
     await store.set("hostEmails", em, {on:true, at:now()}); toast("Host added. They become a host when they log in."); reload(); }),
   delHostEmail: act(async em => { await store.set("hostEmails", em, {on:false}); reload(); }),
+  posterFile: act(async inp => { const f = inp.files[0]; if (!f) return; const url = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => { const im = new Image(); im.onload = () => { const w = Math.min(1000, im.width), c = document.createElement("canvas"); c.width = w; c.height = Math.round(im.height * w / im.width); c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL("image/jpeg", .8)); }; im.onerror = rej; im.src = r.result; }; r.onerror = rej; r.readAsDataURL(f); });
+    if (url.length > 700000) return toast("That picture is too big. Choose a smaller one."); $("#pu").value = url; toast("Picture ready. Tap ADD POSTER."); }),
+  saveAds: act(async () => { const ok = u => /^(https?:\/\/|\/)/.test(u), lk = u => /^https?:\/\//.test(u), items = [];
+    for (let i = 0; i < 3; i++) { const t = $("#at" + i).value, u = $("#au" + i).value.trim(), c = $("#ac" + i).value.trim().slice(0, 6000), l = $("#al" + i).value.trim(), n = $("#an" + i).value.trim().slice(0, 14); if (!t) continue;
+      if (t != "code" && !ok(u)) return toast("Ad " + (i + 1) + ": paste a valid " + t + " link."); if (t == "code" && !c) return toast("Ad " + (i + 1) + ": paste the ad code."); if (l && !lk(l)) return toast("Ad " + (i + 1) + ": the tap link must start with https://");
+      const prev = ADS.items.find(a => a.t == t && (a.u || "") == (t == "code" ? "" : u) && (a.c || "") == (t == "code" ? c : "")); items.push({id:prev && prev.id ? prev.id : "a" + Math.random().toString(36).slice(2, 8), t, u:t == "code" ? "" : u, c:t == "code" ? c : "", l, n}); }
+    const on = $("#aon").value == "1"; await store.set("settings", "app", {adsOn:on, adPos:$("#apos").value, ads:items}); toast(on ? (items.length ? "Ads saved. They are live now." : "Ads are ON, but no ad is filled in yet.") : "Ads saved. They are OFF."); reload(); }),
   addPoster: act(async () => { const u = $("#pu").value.trim(); if (!/^(https?:\/\/|\/|data:image)/.test(u)) return toast("Paste a valid image link."); await store.set("posters", "p" + now(), {url:u, title:$("#pt").value.trim(), on:true, at:now()}); toast("Poster added."); reload(); }),
   posterOn: act(async (id, f) => { await store.set("posters", id, {on:f}); reload(); }),
   delPoster: act(async id => { await store.del("posters", id); toast("Poster removed."); reload(); }),
@@ -709,20 +776,21 @@ const H = {
 /* 6. SHELL */
 function toggleSide(f) { const o = f === undefined ? !$("#side").classList.contains("open") : f; $("#side").classList.toggle("open", o); $("#ov").classList.toggle("open", o); }
 const SAFE = ["home", "mode", "match", "my", "wallet", "lb", "notif", "refer"];
-const sig = () => JSON.stringify([NOTICE, INSTALLS, P, U, M, LB, W, OD, HE, HL, HLIST, CM, CMX, CFG, GC, MYW, GA, SUP, SL, SQ]);
+const sig = () => JSON.stringify([NOTICE, INSTALLS, P, U, M, LB, W, OD, HE, HL, HLIST, CM, CMX, CFG, GC, MYW, GA, SUP, SL, SQ, ADS, ADR]);
 const MS = ms => ms.map(m => ({...m, game:m.game || "FF"}));
 async function refresh() {
   try {
     const host = () => U && ["host", "master"].includes(U.role);
     // the four basic reads run together, not one after another
     const [st, po, u, ms] = await Promise.all([store.get("settings", "app"), store.list("posters", 20).catch(() => []), ME ? store.get("users", ME.uid) : null, store.list("matches")]);
-    NOTICE = (st && st.notice) || ""; INSTALLS = (st && st.installs) || 0; NOTICE_AT = (st && st.noticeAt) || 0; HLIST = (st && st.hostList) || []; CFG = cfgOf(st);
+    NOTICE = (st && st.notice) || ""; INSTALLS = (st && st.installs) || 0; NOTICE_AT = (st && st.noticeAt) || 0; HLIST = (st && st.hostList) || []; CFG = cfgOf(st); ADS = adsOf(st);
     P = po.sort((a, b) => (a.at || 0) - (b.at || 0)); HL = {day:(st && st.hostDay) || 5, live:(st && st.hostLive) || 2}; if (ME) U = u; M = MS(ms);
     const job = [];
     if (host() && V != "chat") job.push(store.get("chats", "all").then(x => { CMX = x; }));
     if (V == "lb" || V == "master" || V == "refer" || (V == "chat" && U && U.role == "master")) job.push(store.list("users", 300).then(x => { LB = x; }));
     if (ME) job.push(store.get("support", ME.uid).then(x => { SUP = x; }).catch(() => {}));
     if (U && U.role == "master") { job.push(store.where("support", "lastBy", "u", 30).then(x => { SQ = x; const k = supUnread(); if (READY && k > SQN) toast("🎧 New customer message"); SQN = k; }).catch(() => {})); if (V == "master" && MTAB == "Support") job.push(store.list("support", 60).then(x => { SL = x; }).catch(() => {})); }
+    if (V == "master" && MTAB == "Ads") job.push(srv("ad_report").then(x => { ADR = x.rows || []; }).catch(() => {}));
     if (V == "gift" && FB) job.push(srv("gift_mine").then(x => { GC = x.cards || []; }).catch(() => {}));
     if (V == "wallet" && ME) job.push(store.where("withdrawals", "uid", ME.uid, 20).then(x => { MYW = x; }).catch(() => {}));
     if (V == "chat") job.push(store.get("chats", CT).then(x => { CM = x; }));
@@ -745,7 +813,7 @@ function draw() { FAILED = false; const app = $("#app");
   const NI = Math.max(0, nav.findIndex(x => x[0] == V)), NP = PI; PI = NI;
   app.innerHTML = `<header class="${R(tot()).length > 9 ? "tight" : ""}"><div class="ic" onclick="toggleSide()">☰</div><div class="img" ${bg("logo", "width:34px;height:34px;border-radius:8px")}></div><b>FRAGLORD</b>${U.role == "host" ? '<span class="tag">HOST ADMIN</span>' : ""}<div class="chip" data-k="chip" data-n="${tot()}" data-s=" +" onclick="go('wallet')">${R(tot())} +</div><div class="ic" onclick="go('notif')" style="position:relative">🔔${unread() ? `<span class="bdg">${unread()}</span>` : ""}</div></header>
    <main>${body}</main><nav style="--i:${NI};--p:${NP};--n:${nav.length}">${nav.map(x => `<a class="${V == x[0] ? "on" : ""}" onclick="go('${x[0]}')"><em>${x[1]}</em>${x[2]}</a>`).join("")}</nav>`;
-  animNums(); if (ANIMV) { const mn = $("main"); if (mn) mn.classList.add("in"); ANIMV = false; } setTimeout(checkAch, 700);
+  mountBanner(); animNums(); if (ANIMV) { const mn = $("main"); if (mn) mn.classList.add("in"); ANIMV = false; } setTimeout(checkAch, 700);
   setTimeout(deepLinks, 300); if (V == "support" || (V == "master" && ST)) { const c = $("#smsgs"); if (c) { c.scrollTop = c.scrollHeight; c.dataset.h = String((((V == "support" ? SUP : STH) || {}).msgs || []).length); } } if (V == "host") safe(hForm); if (V == "chat") { const c = $("#msgs"); if (c) c.scrollTop = c.scrollHeight; } }
 // draws the screen at once, then updates the data quietly (only redraws if something really changed)
 async function render(force) { draw(); if (!ME) return;

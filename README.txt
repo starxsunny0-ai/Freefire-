@@ -31,7 +31,7 @@ STEPS
    Then UNINSTALL the old app and install the APK again (Android remembers the failed check).
    If you build a NEW APK with a new key, replace assetlinks.json with the new one from that zip.
 8. Keep the signing key from that zip safe. You need it for every update.
-9. fraglord.apk (the signed APK from PWABuilder) is already in this folder, so the Install button downloads it.
+9. fraglord.apk (the signed APK from PWABuilder, built for freefireearningturnament.netlify.app) is in this folder, so the Install button downloads it.
    For a new APK, replace fraglord.apk and deploy. Share the website link (the home page is the download page).
    The website shows only the download page. The app itself lives at /app.html and the installed app opens it directly.
    (Until fraglord.apk is uploaded, the Install button on the download page offers the web-app install instead.)
@@ -57,3 +57,18 @@ NEW: INVITE & EARN, DAILY CHECK-IN, GIFT CARDS (netlify/functions/payment.js mus
  - Invite rewards are paid in play balance, only after the friend's first successful deposit.
  - Gift cards are created and claimed on the server. The claimed money goes to the receiver's play balance.
  - Invite links look like  https://YOUR-SITE/?ref=CODE  and gift links  https://YOUR-SITE/?gift=CODE
+
+
+ADS AND BANNERS (home page)
+  Master admin > Posters: add banner pictures (paste a link or choose a picture from your phone).
+  Master admin > Ads: switch ADS ON/OFF and fill up to 3 ads. Each ad can be an Image, a Video (starts muted, the user
+  can tap the speaker button for sound) or Ad network code. Choose where ads show (before / after the posters / only ads)
+  and press SAVE ADS. They appear for users within a few seconds, no new deploy needed.
+  Videos: put the file in the folder  ads/  of this project (for example ads/promo.mp4), upload to GitHub, and write
+  /ads/promo.mp4 in the Ads tab. Keep videos short (under 10 s) and small (under 3 MB). Every view uses Netlify
+  bandwidth, which counts toward your Netlify credits.
+  Ad network code runs inside a sealed box, so it cannot read the app, the login or wallets.
+
+THE ANDROID APK
+  fraglord.apk is in the top folder next to index.html, and assetlinks.json matches its signing key (fingerprint 71:2A:53:D5...).
+  NEVER upload signing.keystore or signing-key-info.txt to GitHub. They are the key to your app: keep them only on your own device.

@@ -256,6 +256,42 @@ async function supportAction(body) {
   throw new UErr("Bad request");
 }
 
+// ---------- ad results: views, people and taps for each ad, per day ----------
+// The app sends small batches (about once a minute): [{ id: "<ad id>", k: "i" (view) or "c" (tap), n: how many }].
+// Only ads that exist in Master admin > Ads are counted, and each user has a daily limit, so the numbers cannot be pumped easily.
+async function adAction(body) {
+  const tok = await who(body.token), day = istDay();
+  if (body.action === "ad_report") {
+    if ((tok.email || "").toLowerCase() !== OWNER || tok.email_verified === false) throw new UErr("Only the owner can do this.");
+    const s = await db.collection("adstats").limit(400).get();
+    return { rows: s.docs.map((d) => d.data()) };
+  }
+  const st = (await db.collection("settings").doc("app").get()).data() || {};
+  const known = (Array.isArray(st.ads) ? st.ads : []).map((a) => a && a.id).filter(Boolean);
+  const ev = (Array.isArray(body.ev) ? body.ev : []).slice(0, 12).filter((e) => e && known.includes(e.id) && (e.k === "i" || e.k === "c"));
+  if (!ev.length) return { ok: true };
+  const uref = db.collection("users").doc(tok.uid), sref = db.collection("adstats").doc(day);
+  await db.runTransaction(async (t) => {
+    const usr = (await t.get(uref)).data() || {}, sn = await t.get(sref), cur = sn.exists ? sn.data() : {};
+    const ac = usr.adCount && usr.adCount.d === day ? { ...usr.adCount, s: [...(usr.adCount.s || [])] } : { d: day, i: 0, c: 0, s: [] };
+    const add = {};
+    for (const e of ev) {
+      const n = Math.min(Math.max(Math.floor(Number(e.n) || 0), 0), 20); if (!n) continue;
+      if (e.k === "i") {
+        const m = Math.min(n, 300 - ac.i); if (m <= 0) continue; ac.i += m; add["i_" + e.id] = (add["i_" + e.id] || 0) + m;
+        if (!ac.s.includes(e.id) && ac.s.length < 10) { ac.s.push(e.id); add["u_" + e.id] = (add["u_" + e.id] || 0) + 1; }   // first view of this ad today = one more person
+      } else {
+        const m = Math.min(n, 30 - ac.c); if (m <= 0) continue; ac.c += m; add["c_" + e.id] = (add["c_" + e.id] || 0) + m;
+      }
+    }
+    if (!Object.keys(add).length) return;
+    const upd = {}; for (const [k, v] of Object.entries(add)) upd[k] = (cur[k] || 0) + v;
+    if (sn.exists) t.update(sref, upd); else t.set(sref, { day, ...upd });
+    t.update(uref, { adCount: ac });
+  });
+  return { ok: true };
+}
+
 // FamGateway says an order is paid in one of these ways (field names differ a little between endpoints)
 const isPaid = (d) => {
   const x = inner(d);
@@ -336,6 +372,7 @@ exports.handler = async (e) => {
 
     // customer care tools (owner only)
     if (["support_check", "support_fix", "admin_adjust"].includes(body.action)) return reply(200, await supportAction(body));
+    if (["ad_log", "ad_report"].includes(body.action)) return reply(200, await adAction(body));
 
     // rewards (invite code, daily check-in, gift cards)
     if (["ref_apply", "daily", "spin", "gift_create", "gift_redeem", "gift_cancel", "gift_mine"].includes(body.action)) return reply(200, await rewardsAction(body));

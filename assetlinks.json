@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "app.netlify.freefireearningturnament.twa",
-        "sha256_cert_fingerprints": ["AB:16:CE:F2:79:E0:67:F5:C1:07:75:27:22:E3:99:BA:D0:3E:AF:7D:BA:12:3D:2E:49:7B:6A:8D:15:51:B6:37"]
+        "sha256_cert_fingerprints": ["71:2A:53:D5:15:37:30:66:5F:76:F0:3E:0A:7C:18:61:6C:19:DD:04:7B:19:77:27:E3:A4:A6:03:39:11:27:90"]
       }
     }]

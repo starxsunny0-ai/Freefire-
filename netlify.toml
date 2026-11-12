@@ -52,3 +52,8 @@
   for = "/icon-*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/ads/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

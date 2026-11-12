@@ -7,7 +7,7 @@ self.addEventListener("activate", e => e.waitUntil(caches.keys().then(k => Promi
 const save = (r, res) => { if (res && res.ok) { const c = res.clone(); caches.open(C).then(x => x.put(r, c)); } return res; };
 self.addEventListener("fetch", e => {
   const r = e.request, u = new URL(r.url);
-  if (r.method != "GET" || u.origin != location.origin || u.pathname.startsWith("/.netlify/") || u.pathname.endsWith(".apk")) return;   // payments, Firebase and the APK always go live
+  if (r.method != "GET" || u.origin != location.origin || u.pathname.startsWith("/.netlify/") || u.pathname.endsWith(".apk") || u.pathname.startsWith("/ads/")) return;   // payments, Firebase and the APK always go live
   if (u.pathname.startsWith("/img-") || u.pathname.startsWith("/icon-")) {      // pictures: cache first, refresh quietly
     e.respondWith(caches.match(r).then(m => m || fetch(r).then(res => save(r, res)))); return; }
   e.respondWith(new Promise(ok => {                                              // pages: network first, but never wait more than 4 seconds
